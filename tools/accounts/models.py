@@ -26,6 +26,9 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, login_user, password=None, **extra_fields):
+        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
         return self._create_user(
             email=email,
             login_user=login_user,
@@ -34,6 +37,9 @@ class UserManager(BaseUserManager):
         )
 
     def create_superuser(self, email, login_user, password, **extra_fields):
+        extra_fields['is_active'] = True
+        extra_fields['is_staff'] = True
+        extra_fields['is_superuser'] = True
         return self._create_user(
             email=email,
             login_user=login_user,
@@ -59,6 +65,25 @@ class User(AbstractBaseUser, PermissionsMixin):
         null=True,
         blank=False
     )
+    public_hall = models.ForeignKey(
+         PublicHall,
+         on_delete=models.CASCADE,
+         null=True,
+         blank=True,
+    )
+
+    is_superuser = models.BooleanField(
+        verbose_name=_("is_superuer"),
+        default=False
+    )
+    is_staff = models.BooleanField(
+        verbose_name=_('staff status'),
+        default=False,
+    )
+    is_active = models.BooleanField(
+        verbose_name=_('active'),
+        default=True,
+    )
     created_at = models.DateTimeField(
         verbose_name=_("created_at"),
         auto_now_add=True
@@ -66,12 +91,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(
         verbose_name=_("updateded_at"),
         auto_now=True
-    )
-    public_hall = models.ForeignKey(
-         PublicHall,
-         on_delete=models.CASCADE,
-         null=True,
-         blank=True,
     )
 
     objects = UserManager()
