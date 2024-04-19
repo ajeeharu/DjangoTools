@@ -3,4 +3,4 @@ mysqlclient
 djangorestframework
 django-filter
 openpyxl
-django-simple-history
+django-reversion

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'reversion',
     'accounting',
     'accounts',
 ]
@@ -138,4 +139,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.User" # カスタムユーザーを認証用ユーザーとして登録
 LOGIN_REDIRECT_URL = "accounts:index"
-LOGOUT_REDIRECT_URL = "accounts:login"
+LOGOUT_REDIRECT_URL = "accounts:index"

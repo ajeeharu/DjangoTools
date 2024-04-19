@@ -9,9 +9,11 @@ class SignUpForm(UserCreationForm):
         fields = (
             "login_user",
             "email",
-            "public_hall",
+            "name",
         )
 
+
+# ログインフォームを追加
 class LoginFrom(AuthenticationForm):
     class Meta:
         model = User
