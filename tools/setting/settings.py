@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'accounting.middleware.auth.authMiddleware',
 ]
 
 ROOT_URLCONF = 'setting.urls'
@@ -138,5 +139,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.User" # カスタムユーザーを認証用ユーザーとして登録
-LOGIN_REDIRECT_URL = "accounts:index"
-LOGOUT_REDIRECT_URL = "accounts:index"
+LOGIN_REDIRECT_URL = "accounting:index"
+LOGOUT_REDIRECT_URL = "accounts:login"

@@ -1,13 +1,15 @@
 from django.contrib.auth import login, authenticate
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView,CreateView
 from django.contrib.auth.views import LoginView as BaseLoginView,  LogoutView as BaseLogoutView
 from django.urls import reverse_lazy
 from .forms import SignUpForm, LoginFrom
 
 
 class IndexView(TemplateView):
-    """ ホームビュー """
-    template_name = "index.html"
+    # """ ホームビュー """
+    # template_name = "index.html"
+    form_class = LoginFrom
+    template_name = "accounts/login.html"
 
 
 class SignupView(CreateView):
@@ -26,10 +28,10 @@ class SignupView(CreateView):
         return response
 
 class LoginView(BaseLoginView):
-    print("kita")
     form_class = LoginFrom
     template_name = "accounts/login.html"
 
 # LogoutViewを追加
 class LogoutView(BaseLogoutView):
-    success_url = reverse_lazy("accounts:index")
+    template_name = "accounts/logout.html"
+    # success_url = reverse_lazy("accounts:login")

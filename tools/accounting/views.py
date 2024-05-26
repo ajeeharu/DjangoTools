@@ -1,8 +1,8 @@
 # coding: utf-8
 
-import django_filters
 from rest_framework import viewsets, filters
-
+from django.views.generic import TemplateView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 # from .models import PublicHall
 # from .serializer import PublicHallSerializer
 
@@ -11,3 +11,9 @@ from rest_framework import viewsets, filters
 #     queryset = PublicHall.objects.all()
 #     serializer_class = PublicHallSerializer
 
+
+
+
+class IndexView(TemplateView,LoginRequiredMixin):
+    """ ホームビュー """
+    template_name = "accounting/index.html"
