@@ -1,23 +1,96 @@
-{% extends 'base.html' %}
+{% extends 'base_without_header.html' %}
+{% load static %}
 {% block title %}
-<div class="h1">Create account</div>
+公民館ツール
 {% endblock %}
 {% block content %}
-<div>
-  <br />
-  <form method="POST">
-    {% csrf_token %}
-		{{ form.non_field_errors }}
-		{% for field in form %}
-		{{ field.label }}
-		{{ field }}
-		{{ field.errors }}
-    <br />
-    {% endfor %}
-    <div class="mt-3">
-      <button type="submit" class="btn btn-primary">Create</button>
-      <a href="{% url 'accounts:index' %}" class="btn btn-secondary">Back</a>
+
+<section class="bg-gray-50 da">
+  <div class="flex flex-row items-center">
+    <div
+      class="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12"
+    >
+      <img
+        data-src="{% static 'img/signup.jpg' %}"
+        class="w-full lazyload"
+        alt="サインアップ処理"
+      />
     </div>
-  </form>
-</div>
+    <div
+      class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+    >
+      <div class="w-80 bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h1
+            class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl"
+          >
+            ユーザー登録
+          </h1>
+          <form class="space-y-4 md:space-y-6" method="post">
+            {% csrf_token %}
+            <div>
+              <label
+                for="login_user"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >USER ID</label
+              >
+              {{ form.login_user }}
+              {{ form.login_user.errors }}
+
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Email</label
+              >
+              {{ form.email }}
+              {{ form.email.errors }}
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >公民館</label
+              >
+              {{ form.public_hall }}
+              {{ form.public_hall.errors }}
+            </div>
+
+            <div>
+              <label
+                for="password1"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Password</label
+              >
+              {{ form.password }}
+              {{ form.password.errors }}
+            </div>
+            <div>
+              <label
+                for="password2"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Password（確認用）</label
+              >
+              {{ form.password2 }}
+              {{ form.password2.errors.0 }}
+            </div>
+            {% if form.non_field_errors %}
+            <div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
+                {{ form.non_field_errors }}
+            </div>
+             {% endif %}
+            <button
+              type="submit"
+              class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+            ユーザー登録
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

@@ -57,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     email = models.EmailField(
         verbose_name=_("email"),
-        unique=True
+        # unique=True
     )
     name = models.CharField(
         verbose_name=_("name"),
