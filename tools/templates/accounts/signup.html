@@ -51,6 +51,15 @@
               <label
                 for="email"
                 class="block mb-2 text-sm font-medium text-gray-900"
+                >氏名</label
+              >
+              {{ form.name }}
+              {{ form.name.errors }}
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >公民館</label
               >
               {{ form.public_hall }}
@@ -63,8 +72,8 @@
                 class="block mb-2 text-sm font-medium text-gray-900"
                 >Password</label
               >
-              {{ form.password }}
-              {{ form.password.errors }}
+              {{ form.password1 }}
+              {{ form.password1.errors }}
             </div>
             <div>
               <label
@@ -73,7 +82,7 @@
                 >Password（確認用）</label
               >
               {{ form.password2 }}
-              {{ form.password2.errors.0 }}
+              {{ form.password2.errors }}
             </div>
             {% if form.non_field_errors %}
             <div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">

@@ -3,7 +3,7 @@ from django.views.generic import TemplateView,CreateView
 from django.contrib.auth.views import LoginView as BaseLoginView,  LogoutView as BaseLogoutView
 from django.urls import reverse_lazy
 from .forms import SignUpForm, LoginFrom
-
+from django.http import HttpResponseRedirect
 
 class IndexView(TemplateView):
     # """ ホームビュー """
@@ -16,16 +16,13 @@ class SignupView(CreateView):
     """ ユーザー登録用ビュー """
     form_class = SignUpForm # 作成した登録用フォームを設定
     template_name = "accounts/signup.html"
-    success_url = reverse_lazy("accounts:index") # ユーザー作成後のリダイレクト先ページ
+    success_url = reverse_lazy("accounting:index") # ユーザー作成後のリダイレクト先ページ
 
     def form_valid(self, form):
-        # ユーザー作成後にそのままログイン状態にする設定
-        response = super().form_valid(form)
-        login_user = form.cleaned_data.get("login_user")
-        password = form.cleaned_data.get("password1")
-        user = authenticate(login_user=login_user, password=password)
+        user = form.save() # formの情報を保存
         login(self.request, user)
-        return response
+        self.object = user
+        return HttpResponseRedirect(self.get_success_url())
 
 class LoginView(BaseLoginView):
     form_class = LoginFrom
