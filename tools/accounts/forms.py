@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import User,PublicHall
 from django import forms
 
+# ユーザー登録
 class SignUpForm(UserCreationForm):
     class Meta:
         model = User
@@ -30,3 +31,10 @@ class SignUpForm(UserCreationForm):
 class LoginFrom(AuthenticationForm):
     class Meta:
         model = User
+
+# 公民館情報
+class HallForm(forms.ModelForm):
+    class Meta:
+        model = PublicHall
+        # fields = ('number','name','email','tel','director')
+        fields = '__all__'

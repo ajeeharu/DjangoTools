@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %} {{ page_title }}{% endblock %}
+{%block content %}
+
+<section class="bg-white">
+  <div class="flex flex-row py-4 px-4 mx-auto max-w-screen-xl items-center justify-between">
+    <h1
+      class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900"
+    >
+      {{ page_title }}
+    </h1>
+    <div
+      class="space-y-2"
+    >
+      <a
+        href="#"
+        class="inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+      >
+        新規登録
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-xl text-left rtl:text-right text-gray-500">
+    <thead
+      class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
+      <tr>
+        <th scope="col" class="px-4 py-3">変更</th>
+        <th scope="col" class="px-4 py-3">公民館No.</th>
+        <th scope="col" class="px-4 py-3">公民館名</th>
+        <th scope="col" class="px-4 py-3">メールアドレス</th>
+        <th scope="col" class="px-4 py-3">電話番号</th>
+        <th scope="col" class="px-4 py-3">館長名</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="odd:bg-white even:bg-gray-50 border-b">
+        {% for object in object_list %}
+        <td class="px-4 py-4">
+          <a href="#" class="font-medium text-blue-600 hover:underline">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M21 12a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1m-15 .76V17a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .71-.29l6.92-6.93L21.71 8a1 1 0 0 0 0-1.42l-4.24-4.29a1 1 0 0 0-1.42 0l-2.82 2.83l-6.94 6.93a1 1 0 0 0-.29.71m10.76-8.35l2.83 2.83l-1.42 1.42l-2.83-2.83ZM8 13.17l5.93-5.93l2.83 2.83L10.83 16H8Z"
+              />
+            </svg>
+          </a>
+        </td>
+        <td class="px-4 py-4">{{ object.number }}</td>
+        <td class="px-4 py-4">{{ object.name }}</td>
+        <td class="px-4 py-4">{{ object.email }}</td>
+        <td class="px-4 py-4">{{ object.tel }}</td>
+        <td class="px-4 py-4">{{ object.director }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
