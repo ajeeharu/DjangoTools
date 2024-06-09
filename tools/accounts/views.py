@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from .forms import SignUpForm, LoginFrom, HallForm
 from django.http import HttpResponseRedirect
 from .models import PublicHall
+from django.contrib import messages
 
 class IndexView(TemplateView):
     # """ ホームビュー """
@@ -17,7 +18,7 @@ class SignupView(CreateView):
     """ ユーザー登録用ビュー """
     form_class = SignUpForm # 作成した登録用フォームを設定
     template_name = "accounts/signup.html"
-    success_url = reverse_lazy("accounting:index") # ユーザー作成後のリダイレクト先ページ
+    success_url = reverse_lazy('accounting:index') # ユーザー作成後のリダイレクト先ページ
 
     def form_valid(self, form):
         user = form.save() # formの情報を保存
@@ -33,6 +34,19 @@ class LoginView(BaseLoginView):
 class LogoutView(BaseLogoutView):
     template_name = "accounts/logout.html"
 
+class ModalHallCreateView(CreateView):
+    form_class = HallForm
+    success_url = reverse_lazy('accounts:hall')
+
+    def form_valid(self, form):
+        form.save() # formの情報を保存
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
+
+
 # 公民館情報
 class HallListView(ListView):
     template_name = "accounts/public_hall.html"
@@ -40,12 +54,8 @@ class HallListView(ListView):
     ordering = '-number'
 
     def get_context_data(self):
-        ctx = super().get_context_data()
+        context = super().get_context_data()
         # page_title を追加する
-        ctx['page_title'] = '公民館情報一覧'
-        return ctx
-
-class HallCreateView(CreateView):
-    form_class = HallForm
-    template_name = "accounts/create_public_hall.html"
-
+        context['page_title'] = '公民館情報一覧'
+        context['form'] = HallForm()    # Modal画面用
+        return context

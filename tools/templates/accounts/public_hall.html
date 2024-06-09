@@ -9,12 +9,22 @@
     >
       {{ page_title }}
     </h1>
+		<!-- メッセージ -->
+		{% if messages %}
+      {% for message in messages %}
+    	<div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-1/2 p-2.5">
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endif %}
     <div
       class="space-y-2"
     >
       <a
         href="#"
-        class="inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+				data-modal-target="#create-modal"
+				data-modal-toggle="authentication-modal"
+        class="js-modal-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
       >
         新規登録
       </a>
@@ -25,7 +35,7 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
   <table class="w-full text-xl text-left rtl:text-right text-gray-500">
     <thead
-      class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      class="text-gray-700 uppercase bg-gray-50"
     >
       <tr>
         <th scope="col" class="px-4 py-3">変更</th>
@@ -64,4 +74,30 @@
     </tbody>
   </table>
 </div>
+<!-- Modal Create -->
+{% include 'accounts/modals/modal_public_hall.html' %}
+
+
+<!-- Modal toggle -->
+{% comment %} <button data-modal-target="#create-modal" data-modal-toggle="authentication-modal" class="js-modal-button block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+  Toggle modal
+</button> {% endcomment %}
+
+<!-- Main modal -->
+<script>
+const modal = document.querySelector('.js-modal');
+const modalButton = document.querySelector('.js-modal-button');
+const modalClose = document.querySelector('.js-close-button');　// xボタンのjs-close-buttonを取得し変数に格納
+
+modalButton.addEventListener('click', () => {
+  modal.classList.add('flex');
+  modal.classList.remove('hidden');
+});
+
+modalClose.addEventListener('click', () => {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+	location.reload();
+});
+</script>
 {% endblock %}
