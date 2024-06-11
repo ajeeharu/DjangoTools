@@ -51,7 +51,7 @@ class ModalHallCreateView(CreateView):
 class HallListView(ListView):
     template_name = "accounts/public_hall.html"
     model = PublicHall
-    ordering = '-number'
+    ordering = 'number'
 
     def get_context_data(self):
         context = super().get_context_data()
