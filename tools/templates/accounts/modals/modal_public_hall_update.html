@@ -11,13 +11,12 @@
       <div
         class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
       >
-        <h3 class="text-xl font-semibold text-gray-900">公民館情報作成</h3>
+        <h3 class="text-xl font-semibold text-gray-900">公民館情報更新</h3>
         <button
           type="button"
           class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
           data-modal-hide="authentication-modal"
           data-modal-target="#update-modal"
-
         >
           <svg
             class="w-3 h-3"
@@ -39,15 +38,15 @@
       </div>
       <!-- Modal body -->
       <div class="p-4 md:p-5">
-        <form class="space-y-4" method="post" action="{% url 'accounts:modal_update_hall' %}">
+        <form id="form-update" class="space-y-4" method="post">
           {% csrf_token %}
           <div>
             <label
               for="number"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >公民館No.</label
+              >公民館No.（変更できません。）</label
             >
-            {{ form.number }}
+            <input type="number" name="number" step="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" readonly="readonly" id="id_update_number">
             {{ form.number.errors }}
           </div>
           <div>
@@ -56,7 +55,7 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >公民館名</label
             >
-            {{ form.name }}
+            <input type="text" name="name" maxlength="32" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required="" id="id_update_name">
             {{ form.name.errors }}
           </div>
           <div>
@@ -65,7 +64,7 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >メール</label
             >
-            {{ form.email }}
+            <input type="email" name="email" maxlength="128" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required="" id="id_update_email">
             {{ form.email.errors }}
           </div>
           <div>
@@ -74,7 +73,7 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >電話番号</label
             >
-            {{ form.tel }}
+            <input type="text" name="tel" maxlength="16" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="" id="id_update_tel">
             {{ form.tel.errors }}
           </div>
           <div>
@@ -83,7 +82,7 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >館長名</label
             >
-            {{ form.director }}
+           <input type="text" name="director" maxlength="32" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="" id="id_update_director">
             {{ form.director.errors }}
           </div>
           {% if form.non_field_errors %}
@@ -95,10 +94,47 @@
             type="submit"
             class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
           >
-            新規作成
+            更新
           </button>
         </form>
       </div>
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  const UpdateAjax = ( id )=>
+  {
+    let element_form = document.querySelector('#form-update');
+    let element_number = document.querySelector('#id_update_number');
+    let element_name = document.querySelector('#id_update_name');
+    let element_email = document.querySelector('#id_update_email');
+    let element_tel = document.querySelector('#id_update_tel');
+    let element_director = document.querySelector('#id_update_director');
+
+    // 番号表示
+    element_number.value=id;
+
+    // Delete処理パラメーター追加（form文）
+    element_form.setAttribute("action","/account/hall/modal/"+id+"/update");
+
+    // API経由でData取得
+    const CreateEndPoint ="/api/account/public-hall/"+id+"/";
+
+    fetch(CreateEndPoint, {
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => {
+        return response.json(); // 読み込むデータをJSONに設定
+    })
+    .then((data) => {
+        element_name.value= data["name"];
+        element_email.value= data["email"];
+        element_tel.value= data["tel"];
+        element_director.value= data["director"];
+    });
+  };
+</script>

@@ -107,7 +107,7 @@
 </div>
 <!-- Modal Create -->
 {% include 'accounts/modals/modal_public_hall_create.html' %}
-{% comment %} {% include 'accounts/modals/modal_public_hall_update.html' %} {% endcomment %}
+{% include 'accounts/modals/modal_public_hall_update.html' %}
 {% include 'accounts/modals/modal_public_hall_delete.html' %}
 
 <script type="text/javascript">
@@ -124,6 +124,11 @@
     {
       let id = event.currentTarget.attributes.getNamedItem("data-modal-id").value;
       DeleteAjax( id );
+    }
+    if(target == "#update-modal")
+    {
+      let id = event.currentTarget.attributes.getNamedItem("data-modal-id").value;
+      UpdateAjax( id );
     }
   };
   const modalClose =(event)=>{

@@ -46,7 +46,7 @@ class HallListView(ListView):
         context = super().get_context_data()
         # page_title を追加する
         context['page_title'] = '公民館情報一覧'
-        context['form'] = HallForm()    # CreateModal画面用
+        context['form'] = HallForm()    # Create/Update Modal画面用
         return context
 
 # 一覧表示からのModalWwindowで表示
