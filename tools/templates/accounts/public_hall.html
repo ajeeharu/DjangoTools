@@ -1,103 +1,149 @@
 {% extends 'base.html' %}
 {% block title %} {{ page_title }}{% endblock %}
 {%block content %}
-
-<section class="bg-white">
-  <div class="flex flex-row py-4 px-4 mx-auto max-w-screen-xl items-center justify-between">
-    <h1
-      class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900"
+<div id="content">
+  <section class="bg-white">
+    <div
+      class="flex flex-row py-4 px-4 mx-auto max-w-screen-xl items-center justify-between"
     >
-      {{ page_title }}
-    </h1>
-		<!-- メッセージ -->
-		{% if messages %}
-      {% for message in messages %}
-    	<div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-1/2 p-2.5">
+      <h1
+        class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900"
+      >
+        {{ page_title }}
+      </h1>
+      <!-- メッセージ -->
+      {% if messages %} {% for message in messages %}
+      <div
+        class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg block w-1/2 p-2.5"
+      >
         {{ message }}
       </div>
-      {% endfor %}
-    {% endif %}
-    <div
-      class="space-y-2"
-    >
-      <a
-        href="#"
-				data-modal-target="#create-modal"
-				data-modal-toggle="authentication-modal"
-        class="js-modal-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
-      >
-        新規登録
-      </a>
+      {% endfor %} {% endif %}
+      <div class="space-y-2 mr-4">
+        <button
+          type="button"
+          data-modal-target="#create-modal"
+          data-modal-toggle="authentication-modal"
+          class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+        >
+          新規登録
+        </button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-  <table class="w-full text-xl text-left rtl:text-right text-gray-500">
-    <thead
-      class="text-gray-700 uppercase bg-gray-50"
-    >
-      <tr>
-        <th scope="col" class="px-4 py-3">変更</th>
-        <th scope="col" class="px-4 py-3">公民館No.</th>
-        <th scope="col" class="px-4 py-3">公民館名</th>
-        <th scope="col" class="px-4 py-3">メールアドレス</th>
-        <th scope="col" class="px-4 py-3">電話番号</th>
-        <th scope="col" class="px-4 py-3">館長名</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="odd:bg-white even:bg-gray-50 border-b">
-        {% for object in object_list %}
-        <td class="px-4 py-4">
-          <a href="#" class="font-medium text-blue-600 hover:underline">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M21 12a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1m-15 .76V17a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .71-.29l6.92-6.93L21.71 8a1 1 0 0 0 0-1.42l-4.24-4.29a1 1 0 0 0-1.42 0l-2.82 2.83l-6.94 6.93a1 1 0 0 0-.29.71m10.76-8.35l2.83 2.83l-1.42 1.42l-2.83-2.83ZM8 13.17l5.93-5.93l2.83 2.83L10.83 16H8Z"
-              />
-            </svg>
-          </a>
-        </td>
-        <td class="px-4 py-4">{{ object.number }}</td>
-        <td class="px-4 py-4">{{ object.name }}</td>
-        <td class="px-4 py-4">{{ object.email }}</td>
-        <td class="px-4 py-4">{{ object.tel }}</td>
-        <td class="px-4 py-4">{{ object.director }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-xl text-left rtl:text-right text-gray-500">
+      <thead class="text-gray-700 uppercase bg-gray-50">
+        <tr>
+          <th scope="col" class="px-4 py-3">変更</th>
+          <th scope="col" class="px-4 py-3">公民館No.</th>
+          <th scope="col" class="px-4 py-3">公民館名</th>
+          <th scope="col" class="px-4 py-3">メールアドレス</th>
+          <th scope="col" class="px-4 py-3">電話番号</th>
+          <th scope="col" class="px-4 py-3">館長名</th>
+          <th scope="col" class="px-4 py-3">削除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd:bg-white even:bg-gray-50 border-b">
+          {% for object in object_list %}
+          <td class="px-4 py-4">
+          <button
+            type="button"
+            class="modal-open-button font-medium text-blue-600"
+            data-modal-hide="authentication-modal"
+            data-modal-target="#update-modal"
+            data-modal-id = {{object.number}}
+          >
+
+            <a href="#" class=" hover:underline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M21 12a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1m-15 .76V17a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .71-.29l6.92-6.93L21.71 8a1 1 0 0 0 0-1.42l-4.24-4.29a1 1 0 0 0-1.42 0l-2.82 2.83l-6.94 6.93a1 1 0 0 0-.29.71m10.76-8.35l2.83 2.83l-1.42 1.42l-2.83-2.83ZM8 13.17l5.93-5.93l2.83 2.83L10.83 16H8Z"
+                />
+              </svg>
+            </a>
+          </td>
+          <td class="px-4 py-4">{{ object.number }}</td>
+          <td class="px-4 py-4">{{ object.name }}</td>
+          <td class="px-4 py-4">{{ object.email }}</td>
+          <td class="px-4 py-4">{{ object.tel }}</td>
+          <td class="px-4 py-4">{{ object.director }}</td>
+          <td class="px-4 py-4">
+          <button
+            type="button"
+            class="modal-open-button font-medium text-red-600"
+            data-modal-hide="authentication-modal"
+            data-modal-target="#delete-modal"
+            data-modal-id = {{object.number}}
+          >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                  d="M5.442 3.5H12.5A1.5 1.5 0 0 1 14 5v6a1.5 1.5 0 0 1-1.5 1.5H5.442a1.5 1.5 0 0 1-1.171-.563L1.796 8.844a1.35 1.35 0 0 1 0-1.688l2.475-3.093A1.5 1.5 0 0 1 5.44 3.5Zm-2.343-.374A3 3 0 0 1 5.442 2H12.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.442a3 3 0 0 1-2.343-1.126L.625 9.781a2.85 2.85 0 0 1 0-3.562zM7.28 5.47a.75.75 0 0 0-1.06 1.06L7.69 8L6.22 9.47a.75.75 0 1 0 1.06 1.06l1.47-1.47l1.47 1.47a.75.75 0 1 0 1.06-1.06L9.81 8l1.47-1.47a.75.75 0 0 0-1.06-1.06L8.75 6.94z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 <!-- Modal Create -->
-{% include 'accounts/modals/modal_public_hall.html' %}
+{% include 'accounts/modals/modal_public_hall_create.html' %}
+{% comment %} {% include 'accounts/modals/modal_public_hall_update.html' %} {% endcomment %}
+{% include 'accounts/modals/modal_public_hall_delete.html' %}
+
+<script type="text/javascript">
+  const modalOpenButtons = document.querySelectorAll(".modal-open-button");
+  const modalCloseButtons = document.querySelectorAll(".modal-close-button"); // xボタンのmodal-close-buttonを取得し変数に格納
 
 
-<!-- Modal toggle -->
-{% comment %} <button data-modal-target="#create-modal" data-modal-toggle="authentication-modal" class="js-modal-button block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
-  Toggle modal
-</button> {% endcomment %}
+  const modalOpen =(event)=> {
+    let target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
+    let modal = document.querySelector(target);
+    modal.classList.add("flex");
+    modal.classList.remove("hidden");
+    if(target == "#delete-modal")
+    {
+      let id = event.currentTarget.attributes.getNamedItem("data-modal-id").value;
+      DeleteAjax( id );
+    }
+  };
+  const modalClose =(event)=>{
+    let target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
+    let modal = document.querySelector(target);
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  };
 
-<!-- Main modal -->
-<script>
-const modal = document.querySelector('.js-modal');
-const modalButton = document.querySelector('.js-modal-button');
-const modalClose = document.querySelector('.js-close-button');　// xボタンのjs-close-buttonを取得し変数に格納
-
-modalButton.addEventListener('click', () => {
-  modal.classList.add('flex');
-  modal.classList.remove('hidden');
-});
-
-modalClose.addEventListener('click', () => {
-  modal.classList.add('hidden');
-  modal.classList.remove('flex');
-	location.reload();
-});
+  //  モーダルOPENボタン処理
+  modalOpenButtons.forEach( (modalbutton) => {
+    modalbutton.addEventListener("click", (event) => {
+      modalOpen(event);
+    });
+  });
+//  モーダルCLOSEボタン処理
+  modalCloseButtons.forEach( (modalbutton) => {
+    modalbutton.addEventListener("click", (event) => {
+      modalClose(event);
+    });
+  });
 </script>
 {% endblock %}

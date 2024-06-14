@@ -20,13 +20,14 @@ from django.conf.urls import include
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
+from accounts.urls import router as accounts_router
 
-router = DefaultRouter()
 
 urlpatterns = [
 	path('',include("accounting.urls")),
 	path('account/', include("accounts.urls")),
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    # api
+    path('api/account/', include(accounts_router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
