@@ -111,44 +111,7 @@
 {% include 'accounts/modals/modal_public_hall_delete.html' %}
 
 <script type="text/javascript">
-  const modalOpenButtons = document.querySelectorAll(".modal-open-button");
-  const modalCloseButtons = document.querySelectorAll(".modal-close-button"); // xボタンのmodal-close-buttonを取得し変数に格納
-
-
-  const modalOpen =(event)=> {
-    let target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
-    let modal = document.querySelector(target);
-    modal.classList.add("flex");
-    modal.classList.remove("hidden");
-    if(target == "#delete-modal")
-    {
-      let id = event.currentTarget.attributes.getNamedItem("data-modal-id").value;
-      DeleteAjax( id );
-    }
-    if(target == "#update-modal")
-    {
-      let id = event.currentTarget.attributes.getNamedItem("data-modal-id").value;
-      UpdateAjax( id );
-    }
-  };
-  const modalClose =(event)=>{
-    let target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
-    let modal = document.querySelector(target);
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  };
-
-  //  モーダルOPENボタン処理
-  modalOpenButtons.forEach( (modalbutton) => {
-    modalbutton.addEventListener("click", (event) => {
-      modalOpen(event);
-    });
-  });
-//  モーダルCLOSEボタン処理
-  modalCloseButtons.forEach( (modalbutton) => {
-    modalbutton.addEventListener("click", (event) => {
-      modalClose(event);
-    });
-  });
+//  モーダル制御用CallBack登録
+  SetCallback( null, UpdateHall, DeleteHall);
 </script>
 {% endblock %}
