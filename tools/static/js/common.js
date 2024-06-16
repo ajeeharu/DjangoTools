@@ -29,11 +29,11 @@ const SetCallback = ( func_create=null, func_update=null, func_delete=null ) => 
 }
 
 const modalOpen =(event)=> {
-  let target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
-  let modal = document.querySelector(target);
+  const target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
+  const modal = document.querySelector(target);
   modal.classList.add("flex");
   modal.classList.remove("hidden");
-  let id = event.currentTarget.attributes.getNamedItem("data-modal-id").value;
+  const id = event.currentTarget.attributes.getNamedItem("data-modal-id").value;
 
   if (target == "#create-modal" && createCallback != null) {
     createCallback(id);
@@ -47,8 +47,8 @@ const modalOpen =(event)=> {
 };
 
 const modalClose =(event)=>{
-  let target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
-  let modal = document.querySelector(target);
+  const target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
+  const modal = document.querySelector(target);
   modal.classList.add("hidden");
   modal.classList.remove("flex");
 };
@@ -67,6 +67,46 @@ document.addEventListener("DOMContentLoaded", () => {
   modalCloseButtons.forEach((modalbutton) => {
     modalbutton.addEventListener("click", (event) => {
       modalClose(event);
+    });
+  });
+});
+
+// ドロップダウンメニュー関連ライブラり
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dropDownButtons = document.querySelectorAll(".dropdownbutton");
+  const dropDownMenus = document.querySelectorAll(".dropdownmenu");
+  // const toggleArrows = document.querySelectorAll("dropdownarrow");
+
+  // Toggle dropdown open/close when dropdown button is clicked
+  dropDownButtons.forEach((dropbutton) => {
+    dropbutton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      event.currentTarget.lastElementChild.classList.toggle("arrow");    // SVGを取得
+      const target = event.currentTarget.attributes.getNamedItem("data-dropdown-toggle").value;
+      const menu = document.getElementById(target);
+      // button位置からmenu位置を設定
+      const rect = dropbutton.getBoundingClientRect();
+      menu.style.top = rect.bottom + "px";
+      menu.style.left = rect.left + "px";
+      menu.classList.toggle("hidden");
+      menu.classList.toggle("block");
+    });
+  });
+  // Close dropdown when dom element is clicked
+  document.documentElement.addEventListener("click",  () => {
+    dropDownMenus.forEach((dropmenu) => {
+      if (dropmenu.classList.contains("block")) {
+        dropmenu.classList.toggle("hidden");
+        dropmenu.classList.toggle("block");
+        dropDownButtons.forEach((dropbutton) => {
+          let target = dropbutton.attributes.getNamedItem("data-dropdown-toggle").value;
+          if( dropmenu.id == target )
+          {
+            dropbutton.lastElementChild.classList.toggle("arrow"); // SVGを取得
+          }
+        });
+      }
     });
   });
 });
