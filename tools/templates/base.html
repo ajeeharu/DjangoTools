@@ -46,7 +46,7 @@
 
         <a
           href="{% url 'accounts:hall' %}"
-          class="dropdownbutton text-xl text-teal-50 hover:text-white font-medium rounded-lg px-5 py-1 text-center inline-flex items-center"
+          class="text-xl text-teal-50 hover:text-white font-medium rounded-lg px-5 py-1 text-center inline-flex items-center"
         >
           公民館情報
         </a>
@@ -82,7 +82,7 @@
             <div class="font-medium truncate">name@flowbite.com</div>
           </div>
           <ul
-            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            class="py-2 text-sm text-gray-700"
             aria-labelledby="dropdownInformationButton"
           >
             <li>
@@ -130,26 +130,29 @@
         <!-- Dropdown menu -->
         <div
           id="dropdownSupplier"
-          class="dropdownmenu z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute mt-2"
+          class="dropdownmenu z-10 hidden bg-green-50 divide-y divide-gray-100 rounded-lg shadow absolute mt-2"
         >
           <div class="px-4 py-3 text-sm text-gray-900">
-            <div>Bonnie Green</div>
-            <div class="font-medium truncate">name@flowbite.com</div>
+            <div>{{ user.public_hall.name }}</div>
+            <div>公民館用</div>
           </div>
           <ul
-            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            class="py-2 text-sm text-gray-700 bg-white"
             aria-labelledby="dropdownInformationButton"
           >
             <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100"
-                >Dashboard</a
+              <a
+                href="{% url 'accounting:creditor' %}"
+                class="block px-4 py-2 hover:bg-gray-100"
+                >納入者情報</a
               >
             </li>
             <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Earnings</a>
+              <a
+                href="{% url 'accounting:creditor' %}"
+                class="block px-4 py-2 hover:bg-gray-100"
+                >債権者情報</a
+              >
             </li>
           </ul>
           <div class="py-2">

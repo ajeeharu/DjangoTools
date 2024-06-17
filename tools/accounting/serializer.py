@@ -1,12 +1,9 @@
 # coding: utf-8
 
 from rest_framework import serializers
+from .models import Creditor
 
-# from .models import PublicHall
-
-
-# class PublicHallSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = PublicHall
-#         fields = ('number','name', 'email', 'tel')
-
+class CreditorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Creditor
+        fields = '__all__'
