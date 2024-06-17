@@ -34,7 +34,7 @@
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-xl text-left rtl:text-right text-gray-500">
-      <thead class="text-gray-700 uppercase bg-gray-50">
+      <thead class="text-gray-700 uppercase bg-blue-50">
         <tr>
           <th scope="col" class="px-4 py-3">変更</th>
           <th scope="col" class="px-4 py-3">公民館No.</th>
@@ -46,8 +46,8 @@
         </tr>
       </thead>
       <tbody>
+        {% for object in object_list %}
         <tr class="odd:bg-white even:bg-gray-50 border-b">
-          {% for object in object_list %}
           <td class="px-4 py-4">
           <button
             type="button"
