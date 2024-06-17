@@ -46,14 +46,14 @@
 
         <a
           href="{% url 'accounts:hall' %}"
-          class="inline-block mt-0 text-teal-50 hover:text-white mr-4"
+          class="dropdownbutton text-xl text-teal-50 hover:text-white font-medium rounded-lg px-5 py-1 text-center inline-flex items-center"
         >
           公民館情報
         </a>
         <button
           type="button"
           data-dropdown-toggle="dropdownAccounting"
-          class="dropdownbutton text-base text-teal-50 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg px-5 py-2.5 text-center inline-flex items-center"
+          class="dropdownbutton text-xl text-teal-50 hover:text-white font-medium rounded-lg px-5 py-1 text-center inline-flex items-center"
         >
           経理基本情報
           <svg
@@ -72,10 +72,43 @@
             />
           </svg>
         </button>
+        <!-- Dropdown menu -->
+        <div
+          id="dropdownAccounting"
+          class="dropdownmenu z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute mt-2"
+        >
+          <div class="px-4 py-3 text-sm text-gray-900">
+            <div>Bonnie Green</div>
+            <div class="font-medium truncate">name@flowbite.com</div>
+          </div>
+          <ul
+            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="dropdownInformationButton"
+          >
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100"
+                >Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Earnings</a>
+            </li>
+          </ul>
+          <div class="py-2">
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >Sign out</a
+            >
+          </div>
+        </div>
         <button
           type="button"
           data-dropdown-toggle="dropdownSupplier"
-          class="dropdownbutton text-base text-teal-50 hover:text-white focus:ring-4  focus:outline-none focus:ring-gray-300 font-medium rounded-lg px-5 py-2.5 text-center inline-flex items-center"
+          class="dropdownbutton text-xl text-teal-50 hover:text-white font-medium rounded-lg px-5 py-1 text-center inline-flex items-center"
         >
           業者情報
           <svg
