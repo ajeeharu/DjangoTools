@@ -58,7 +58,7 @@
           >
           <input type="text" name="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" readonly="readonly" id="id_delete_address">
         </div>
-        <div>
+        <div class="hidden">
           <label
             for="public_hall"
             class="block mb-2 text-xl font-medium text-gray-900"
@@ -89,10 +89,10 @@
 
 
     // Delete処理パラメーター追加（form文）
-    element_form.setAttribute("action","/accounting/creditor/modal/"+id+"/delete");
+    element_form.setAttribute("action","/accounting/supplier/modal/"+id+"/delete");
 
     // API経由でData取得
-    const CreateEndPoint ="/api/accounting/creditor/"+id+"/";
+    const CreateEndPoint ="/api/accounting/supplier/"+id+"/";
 
     fetch(CreateEndPoint, {
       method: 'GET',

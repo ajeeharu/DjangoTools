@@ -132,35 +132,26 @@
           id="dropdownSupplier"
           class="dropdownmenu z-10 hidden bg-green-50 divide-y divide-gray-100 rounded-lg shadow absolute mt-2"
         >
-          <div class="px-4 py-3 text-sm text-gray-900">
-            <div>{{ user.public_hall.name }}</div>
-            <div>公民館用</div>
-          </div>
-          <ul
-            class="py-2 text-sm text-gray-700 bg-white"
-            aria-labelledby="dropdownInformationButton"
-          >
-            <li>
-              <a
-                href="{% url 'accounting:supplier' %}"
-                class="block px-4 py-2 hover:bg-gray-100"
-                >納入者情報</a
-              >
-            </li>
-            <li>
-              <a
-                href="{% url 'accounting:creditor' %}"
-                class="block px-4 py-2 hover:bg-gray-100"
-                >債権者情報</a
-              >
-            </li>
-          </ul>
-          <div class="py-2">
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >Sign out</a
+          <div class="p-2 text-xl">
+            <ul
+              class="py-2 text-gray-700 bg-white"
+              aria-labelledby="dropdownInformationButton"
             >
+              <li class="border-b-2 border-dashed border-gray-500">
+                <a
+                  href="{% url 'accounting:supplier' %}"
+                  class="block px-4 py-2 hover:bg-gray-100 hover:underline"
+                  >納入者情報</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'accounting:creditor' %}"
+                  class="block px-4 py-2 hover:bg-gray-100 hover:underline"
+                  >債権者情報</a
+                >
+              </li>
+            </ul>
           </div>
         </div>
       </div>

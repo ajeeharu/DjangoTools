@@ -60,7 +60,7 @@
             {{ form_update.address }}
             {{ form_update.address.errors }}
           </div>
-          <div>
+          <div class="hidden">
             <label
               for="public_hall "
               class="block mb-2 text-xl font-medium text-gray-900"
@@ -96,11 +96,11 @@
     // Delete処理パラメーター追加（form文）
     element_form.setAttribute(
       "action",
-      "/accounting/creditor/modal/" + id + "/update"
+      "/accounting/supplier/modal/" + id + "/update"
     );
 
     // API経由でData取得
-    const CreateEndPoint = "/api/accounting/creditor/" + id + "/";
+    const CreateEndPoint = "/api/accounting/supplier/" + id + "/";
 
     fetch(CreateEndPoint, {
       method: "GET",
@@ -115,7 +115,7 @@
     .then((data) => {
       element_name.value = data["name"];
       element_address.value = data["address"];
-      SetSelect(element_public_hall.options)
+      SetSelect(element_public_hall.options, data["public_hall"]["number"])
     });
   };
 </script>
