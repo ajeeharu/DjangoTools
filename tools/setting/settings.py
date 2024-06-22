@@ -141,3 +141,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "accounts.User" # カスタムユーザーを認証用ユーザーとして登録
 LOGIN_REDIRECT_URL = "accounting:index"
 LOGOUT_REDIRECT_URL = "accounts:login"
+
+# 秘匿性の高い情報は gitignore 対象ファイルに格納
+try:
+    from .local_settings import *
+except ImportError:
+    pass

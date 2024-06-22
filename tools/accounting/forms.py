@@ -21,6 +21,7 @@ class CreditorUpdateForm(CreditorForm):
         self.fields['address'].widget.attrs['id'] = "id_update_address"
         self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
 
+
 class CreditorDeleteForm(CreditorForm):
     def __init__(self, *args, **kwargs):
         super(CreditorForm, self).__init__(*args, **kwargs)

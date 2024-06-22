@@ -60,7 +60,7 @@
             {{ form_update.address }}
             {{ form_update.address.errors }}
           </div>
-          <div>
+          <div class="hidden">
             <label
               for="public_hall "
               class="block mb-2 text-xl font-medium text-gray-900"
@@ -115,7 +115,7 @@
     .then((data) => {
       element_name.value = data["name"];
       element_address.value = data["address"];
-      SetSelect(element_public_hall.options)
+      SetSelect(element_public_hall.options, data["public_hall"]["number"])
     });
   };
 </script>
