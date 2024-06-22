@@ -10,9 +10,6 @@
         class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900"
       >
         {{ page_title }}一覧
-        <span class="text-gray-600 text-xl ml-2">
-          （{{ user.public_hall.name }}公民館）
-        </span>
       </h1>
       <!-- メッセージ -->
       {% if messages %} {% for message in messages %}
@@ -105,11 +102,11 @@
   </div>
 </div>
 <!-- Modal Create -->
-{% include 'accounting/modals/modal_creditor_create.html' %}
+{% include 'accounting/modals/modal_supplier_create.html' %}
 <!-- Modal Update -->
-{% include 'accounting/modals/modal_creditor_update.html' %}
+{% include 'accounting/modals/modal_supplier_update.html' %}
 <!-- Modal Delete -->
-{% include 'accounting/modals/modal_creditor_delete.html' %}
+{% include 'accounting/modals/modal_supplier_delete.html' %}
 
 <script type="text/javascript">
 //  モーダル制御用CallBack登録

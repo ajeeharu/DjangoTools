@@ -10,6 +10,9 @@ urlpatterns = [
     path('creditor/modal/create', views.ModalCreditorCreateView.as_view(), name="modal_create_creditor"),
     path('creditor/modal/<int:pk>/update', views.ModalCreditorUpdateView.as_view(), name="modal_update_creditor"),
     path('creditor/modal/<int:pk>/delete', views.ModalCreditorDeleteView.as_view(), name="modal_delete_creditor"),
+
+    path('supplier', views.SupplierListView.as_view(), name="supplier"),
+
 ]
 
 router = DefaultRouter()

@@ -12,7 +12,7 @@ class CreditorForm(forms.ModelForm):
         for i ,n in enumerate( self.fields ):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 
-class CreditorCreateForm(CreditorForm):
+class CreditorUpdateForm(CreditorForm):
     def __init__(self, *args, **kwargs):
         super(CreditorForm, self).__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
@@ -20,3 +20,13 @@ class CreditorCreateForm(CreditorForm):
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['address'].widget.attrs['id'] = "id_update_address"
         self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
+
+class CreditorDeleteForm(CreditorForm):
+    def __init__(self, *args, **kwargs):
+        super(CreditorForm, self).__init__(*args, **kwargs)
+        for i ,n in enumerate( self.fields ):
+            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            self.fields[ n ].widget.attrs['readonly'] = "readonly"
+        self.fields['name'].widget.attrs['id'] = "id_delete_name"
+        self.fields['address'].widget.attrs['id'] = "id_delete_address"
+        self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"

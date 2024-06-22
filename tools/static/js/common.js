@@ -110,3 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// Dataの初期化関連
+// select文のoption文に"selected"を付加
+const SetSelect = (options, target) =>{
+  for( const option of options) {
+    option.selected =( target == option.value );
+  }
+}
