@@ -20,7 +20,6 @@ class IndexView(LoginRequiredMixin,TemplateView):
 class CreditorListView(LoginRequiredMixin,ListView):
     template_name = "accounting/creditor.html"
     model = Creditor
-    # ordering = 'number'
 
     def get_queryset(self):
         current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得

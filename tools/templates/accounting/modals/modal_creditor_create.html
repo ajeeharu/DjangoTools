@@ -38,7 +38,7 @@
       </div>
       <!-- Modal body -->
       <div class="p-4 md:p-5">
-        <form class="space-y-4" method="post" action="{% url 'accounting:modal_create_creditor' %}">
+        <form class="space-y-4" method="post" id="form">
           {% csrf_token %}
           <div>
             <label
@@ -58,7 +58,7 @@
             {{ form.address }}
             {{ form.address.errors }}
           </div>
-          <div>
+          <div class="hidden">
             <label
               for="public_hall "
               class="block mb-2 text-xl font-medium text-gray-900"
@@ -83,3 +83,14 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  const Create = ( id=0 )=>
+  {
+    let element_form = document.querySelector("#form");
+    let element_public_hall = document.querySelector('#id_public_hall');
+
+    // Create処理パラメーター追加（form文）
+    element_form.setAttribute("action","{% url 'accounting:modal_create_creditor' %}");
+    SetSelect(element_public_hall.options, {{ user.public_hall.number }})
+  };
+</script>

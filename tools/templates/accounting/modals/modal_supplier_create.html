@@ -58,14 +58,15 @@
             {{ form.address }}
             {{ form.address.errors }}
           </div>
-          <div>
+          <div class="hidden">
             <label
               for="public_hall "
               class="block mb-2 text-xl font-medium text-gray-900"
               >公民館</label
             >
-            {{ form.public_hall  }}
-            {{ form.public_hall.errors }}
+            <input type=text name="public_hall" value={{ user.public_hall.name }}>
+            {% comment %} {{ form.public_hall  }}
+            {{ form.public_hall.errors }} {% endcomment %}
           </div>
           {% if form.non_field_errors %}
           <div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
