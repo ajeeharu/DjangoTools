@@ -1,119 +1,105 @@
-{% extends 'base.html' %}
-{% block title %} {{ page_title }}{% endblock %}
-{%block content %}
-<div id="content">
-  <section class="bg-white">
+{% extends 'base_without_header.html' %}
+{% load static %}
+{% block title %}
+公民館ツール
+{% endblock %}
+{% block content %}
+
+<section class="bg-gray-50">
+  <div class="flex flex-row items-center">
     <div
-      class="flex flex-row py-4 px-4 mx-auto items-center justify-between"
+      class="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12"
     >
-      <h1
-        class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900"
-      >
-        {{ page_title }}一覧
-        <span class="text-gray-600 text-xl ml-2">
-          （{{ user.public_hall.name }}公民館）
-        </span>
-      </h1>
-      <!-- メッセージ -->
-      {% if messages %} {% for message in messages %}
-      <div
-        class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg block w-1/2 p-2.5"
-      >
-        {{ message }}
-      </div>
-      {% endfor %} {% endif %}
-      <div class="space-y-2 mr-4">
-        <button
-          type="button"
-          data-modal-target="#create-modal"
-          data-modal-toggle="authentication-modal"
-          data-modal-id = "0"
-          class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
-        >
-          新規登録
-        </button>
+      <img
+        data-src="{% static 'img/signup.jpg' %}"
+        class="w-full lazyload"
+        alt="サインアップ処理"
+      />
+    </div>
+    <div
+      class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+    >
+      <div class="w-80 bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h1
+            class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl"
+          >
+            ユーザー登録
+          </h1>
+          <form class="space-y-4 md:space-y-6" method="post">
+            {% csrf_token %}
+            <div>
+              <label
+                for="login_user"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >USER ID</label
+              >
+              {{ form.login_user }}
+              {{ form.login_user.errors }}
+
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Email</label
+              >
+              {{ form.email }}
+              {{ form.email.errors }}
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >氏名</label
+              >
+              {{ form.name }}
+              {{ form.name.errors }}
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >公民館</label
+              >
+              {{ form.public_hall }}
+              {{ form.public_hall.errors }}
+            </div>
+
+            <div>
+              <label
+                for="password1"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Password</label
+              >
+              {{ form.password1 }}
+              {{ form.password1.errors }}
+            </div>
+            <div>
+              <label
+                for="password2"
+                class="block mb-2 text-sm font-medium text-gray-900"
+                >Password（確認用）</label
+              >
+              {{ form.password2 }}
+              {{ form.password2.errors }}
+            </div>
+            {% if form.non_field_errors %}
+            <div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
+                {{ form.non_field_errors }}
+            </div>
+             {% endif %}
+            <button
+              type="submit"
+              class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+            ユーザー登録
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </section>
-
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-xl text-left rtl:text-right text-gray-500">
-      <thead class="text-gray-700 uppercase bg-blue-50">
-        <tr>
-          <th scope="col" class="px-4 py-3">変更</th>
-          <th scope="col" class="px-4 py-3">社名</th>
-          <th scope="col" class="px-4 py-3">住所</th>
-<!--      <th scope="col" class="px-4 py-3">公民館</th> -->
-          <th scope="col" class="px-4 py-3">削除</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for object in object_list %}
-        <tr class="odd:bg-white even:bg-gray-50 border-b">
-          <td class="px-4 py-4">
-          <button
-            type="button"
-            class="modal-open-button font-medium text-blue-600"
-            data-modal-hide="authentication-modal"
-            data-modal-target="#update-modal"
-            data-modal-id = {{object.pk}}
-          >
-
-            <a href="#" class=" hover:underline">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M21 12a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1m-15 .76V17a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .71-.29l6.92-6.93L21.71 8a1 1 0 0 0 0-1.42l-4.24-4.29a1 1 0 0 0-1.42 0l-2.82 2.83l-6.94 6.93a1 1 0 0 0-.29.71m10.76-8.35l2.83 2.83l-1.42 1.42l-2.83-2.83ZM8 13.17l5.93-5.93l2.83 2.83L10.83 16H8Z"
-                />
-              </svg>
-            </a>
-          </td>
-          <td class="px-4 py-4">{{ object.name }}</td>
-          <td class="px-4 py-4">{{ object.address }}</td>
-<!--      <td class="px-4 py-4">{{ object.public_hall }}</td> -->
-          <td class="px-4 py-4">
-          <button
-            type="button"
-            class="modal-open-button font-medium text-red-600"
-            data-modal-hide="authentication-modal"
-            data-modal-target="#delete-modal"
-            data-modal-id = {{object.pk}}
-          >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  d="M5.442 3.5H12.5A1.5 1.5 0 0 1 14 5v6a1.5 1.5 0 0 1-1.5 1.5H5.442a1.5 1.5 0 0 1-1.171-.563L1.796 8.844a1.35 1.35 0 0 1 0-1.688l2.475-3.093A1.5 1.5 0 0 1 5.44 3.5Zm-2.343-.374A3 3 0 0 1 5.442 2H12.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.442a3 3 0 0 1-2.343-1.126L.625 9.781a2.85 2.85 0 0 1 0-3.562zM7.28 5.47a.75.75 0 0 0-1.06 1.06L7.69 8L6.22 9.47a.75.75 0 1 0 1.06 1.06l1.47-1.47l1.47 1.47a.75.75 0 1 0 1.06-1.06L9.81 8l1.47-1.47a.75.75 0 0 0-1.06-1.06L8.75 6.94z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </button>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
   </div>
-</div>
-<!-- Modal Create -->
-{% include 'accounting/modals/modal_supplier_create.html' %}
-<!-- Modal Update -->
-{% include 'accounting/modals/modal_supplier_update.html' %}
-<!-- Modal Delete -->
-{% include 'accounting/modals/modal_supplier_delete.html' %}
+</section>
 
-<script type="text/javascript">
-//  モーダル制御用CallBack登録
-  SetCallback( Create, Update, Delete);
-</script>
 {% endblock %}

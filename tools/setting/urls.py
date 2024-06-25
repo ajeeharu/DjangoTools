@@ -25,11 +25,15 @@ from accounting.urls import router as accounting_router
 
 
 urlpatterns = [
-	path('accounting/',include("accounting.urls")),
+	# apli
+	path('',include("common.urls")),
 	path('accounts/', include("accounts.urls")),
-    path('admin/', admin.site.urls),
+	path('accounting/',include("accounting.urls")),
     # api
     path('api/account/', include(accounts_router.urls)),
     path('api/accounting/', include(accounting_router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # admin
+    path('admin/', admin.site.urls),
+
 ]

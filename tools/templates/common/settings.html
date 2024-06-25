@@ -1,0 +1,51 @@
+{% extends 'base_without_header.html' %}
+{% block title %} {{ page_title }}{% endblock %}
+{% block content %}
+<div id="content">
+  <section class="bg-white">
+    <div class="flex flex-row py-4 px-4 mx-auto items-center justify-between">
+      <h1
+        class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900"
+      >
+        {{ page_title }}
+        <spzn
+          class="ml-2 mb-2 text-xl font-extrabold tracking-tight leading-none text-gray-600"
+        >
+          （{{ user.public_hall.name }}公民館）
+        </spzn>
+      </h1>
+    </div>
+  </section>
+  <section class="bg-white"></section>
+  <section>
+    <dl
+      class="mt-4 max-w-md text-gray-900 divide-y divide-gray-200"
+    >
+      <div class="flex flex-col pb-3">
+        <dt class="mb-1 text-gray-500 md:text-lg">
+          公民館関連
+        </dt>
+        <dd class="text-lg font-semibold hover:bg-gray-100">
+          <a href="{% url 'accounts:hall' %}"> 公民館設定 </a>
+        </dd>
+      </div>
+      <div class="flex flex-col py-3">
+        <dt class="mb-1 text-gray-500 md:text-lg">
+          経理関連
+        </dt>
+        <dd class="text-lg font-semibold hover:bg-gray-100">
+          <a href="{% url 'accounts:hall' %}"> 会計年度設定 </a>
+        </dd>
+      </div>
+      <div class="flex flex-col pt-3">
+        <dt class="mb-1 text-gray-500 md:text-lg">
+          Phone number
+        </dt>
+        <dd class="text-lg font-semibold">+00 123 456 789 / +12 345 678</dd>
+      </div>
+    </dl>
+  </section>
+</div>
+
+<script type="text/javascript"></script>
+{% endblock %}

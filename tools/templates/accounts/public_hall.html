@@ -42,7 +42,9 @@
           <th scope="col" class="px-4 py-3">メールアドレス</th>
           <th scope="col" class="px-4 py-3">電話番号</th>
           <th scope="col" class="px-4 py-3">館長名</th>
+<!--
           <th scope="col" class="px-4 py-3">削除</th>
+-->
         </tr>
       </thead>
       <tbody>
@@ -76,8 +78,9 @@
           <td class="px-4 py-4">{{ object.email }}</td>
           <td class="px-4 py-4">{{ object.tel }}</td>
           <td class="px-4 py-4">{{ object.director }}</td>
+<!--
           <td class="px-4 py-4">
-          <button
+            <button
             type="button"
             class="modal-open-button font-medium text-red-600"
             data-modal-hide="authentication-modal"
@@ -99,6 +102,7 @@
               </svg>
             </button>
           </td>
+-->
         </tr>
         {% endfor %}
       </tbody>
@@ -108,10 +112,10 @@
 <!-- Modal Create -->
 {% include 'accounts/modals/modal_public_hall_create.html' %}
 {% include 'accounts/modals/modal_public_hall_update.html' %}
-{% include 'accounts/modals/modal_public_hall_delete.html' %}
+{% comment %} {% include 'accounts/modals/modal_public_hall_delete.html' %} {% endcomment %}
 
 <script type="text/javascript">
 //  モーダル制御用CallBack登録
-  SetCallback( null, UpdateHall, DeleteHall);
+  SetCallback( null, UpdateHall, null);
 </script>
 {% endblock %}

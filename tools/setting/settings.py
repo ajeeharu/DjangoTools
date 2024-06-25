@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'reversion',
     'accounting',
     'accounts',
+    'common',
 ]
 
 MIDDLEWARE = [
