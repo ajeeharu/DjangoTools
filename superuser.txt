@@ -2,5 +2,5 @@ uer:fukui-publichall
 password:ai3mZMJnDRdK
 uer:admin_fukui
 password:admin_password
-user:test_user
-password:pbkdf2_sha256$720000$OaXrlUVvzJPqrrNGGXrubT$+ztliYc5iECO7QsbsuOoNfIXcMPnEoY1OHRj1LaxKqg=
+user:test
+password:Pecha0123

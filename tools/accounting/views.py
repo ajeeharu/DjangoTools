@@ -17,7 +17,7 @@ class IndexView(LoginRequiredMixin,TemplateView):
 
 # 債権者情報
 class CreditorListView(LoginRequiredMixin,ListView):
-    template_name = "accounting/creditor.html"
+    template_name = "common/creditor.html"
     model = Creditor
 
     def get_queryset(self):
