@@ -86,7 +86,7 @@
       data-dropdown-toggle="dropdownAccountingDetail"
       class="dropdownbutton text-xs text-gray-500 hover:text-gray-500 font-medium rounded-lg px-5 py-1 absolute right-2 bottom-2"
     >
-    詳細
+      詳細
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -192,46 +192,34 @@
       class="w-full text-xs text-center rtl:text-right text-gray-500 border-gray-500 border-x border-solid"
     >
       <thead class="text-gray-700">
-        <tr class="border-gray-500 border-y border-solid">
+        <tr class="border-gray-500 border-y border-solid bg-gray-200">
           <th
             scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-16"
-          >
-            番号<br />固定
-          </th>
-          <th
-            scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-16"
+            class="border-gray-500 border-x border-solid p-1 w-16"
           >
             詳細<br />変更
           </th>
           <th
             scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-8"
+            class="border-gray-500 border-x border-solid p-1 w-16"
           >
+            番号<br />固定
+          </th>
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
             月
           </th>
-          <th
-            scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-8"
-          >
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
             日
           </th>
-          <th
-            scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-8"
-          >
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
             項<br />(目)
           </th>
-          <th
-            scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-8"
-          >
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
             目<br />(節)
           </th>
           <th
             scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-40"
+            class="border-gray-500 border-x border-solid p-1 w-40"
           >
             債権者<br />納入者
           </th>
@@ -243,13 +231,13 @@
           </th>
           <th
             scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-16"
+            class="border-gray-500 border-x border-solid p-1 w-16"
           >
             収入<br />番号
           </th>
           <th
             scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-16"
+            class="border-gray-500 border-x border-solid p-1 w-16"
           >
             支出<br />番号
           </th>
@@ -271,16 +259,10 @@
           >
             差引残高
           </th>
-          <th
-            scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-8"
-          >
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
             見<br />積
           </th>
-          <th
-            scope="col"
-            class="border-gray-500 border-x border-solid px-2 py-2 w-8"
-          >
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
             領<br />収
           </th>
         </tr>
@@ -288,10 +270,46 @@
       <tbody id="multiDragDemo text-xs">
         {% comment %} {% for object in object_list %} {% endcomment %}
 
-        <tr class="bg-white border-b">
-          <td
-            class="border-gray-200 border-x border-solid px-2 py-2 text-center"
-          >
+        <tr class="border-gray-500 border-y border-solid">
+          <td class="border-gray-500 border-x border-solid p-1 text-center">
+            <span class="relative group">
+              <span
+                class="whitespace-nowrap rounded bg-black px-2 py-1 text-white absolute -top-12 left-1/2 -translate-x-1/2 before:content-[''] before:absolute before:-translate-x-1/2 before:left-1/2 before:top-full before:border-4 before:border-transparent before:border-t-black
+                          opacity-0
+          group-hover:opacity-100
+          transition
+        pointer-events-none"
+              >
+                Hello World
+              </span>
+              <button
+                type="button"
+                class="modal-open-button font-medium text-blue-600 mx-auto transition"
+                data-modal-hide="authentication-modal"
+                data-modal-target="#update-modal"
+                data-modal-id="{{object.pk}}"
+              >
+                <a href="#" class="hover:underline">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="m18.988 2.012l3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287l-3-3L8 13z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M19 19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2z"
+                    />
+                  </svg>
+                </a>
+              </button>
+            </span>
+          </td>
+          <td class="border-gray-500 border-x border-solid p-1 text-center">
             <button type="button" class="font-medium text-gray-500 mx-auto">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -322,67 +340,36 @@
 -->
           </td>
 
-          <td
-            class="border-gray-200 border-x border-solid px-2 py-2 text-center"
-          >
-            <button
-              type="button"
-              class="modal-open-button font-medium text-blue-600 mx-auto"
-              data-modal-hide="authentication-modal"
-              data-modal-target="#update-modal"
-              data-modal-id="{{object.pk}}"
-            >
-              <a href="#" class="hover:underline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="m18.988 2.012l3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287l-3-3L8 13z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M19 19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2z"
-                  />
-                </svg>
-              </a>
-            </button>
-          </td>
-          <td class="border-gray-200 border-x border-solid text-center">10</td>
-          <td class="border-gray-200 border-x border-solid text-center">19</td>
-          <td class="border-gray-200 border-x border-solid text-center">
+          <td class="border-gray-500 border-x border-solid text-center">10</td>
+          <td class="border-gray-500 border-x border-solid text-center">19</td>
+          <td class="border-gray-500 border-x border-solid text-center">
             市交
           </td>
-          <td class="border-gray-200 border-x border-solid text-center">
+          <td class="border-gray-500 border-x border-solid text-center">
             運営
           </td>
-          <td class="border-gray-200 border-x border-solid text-center">
+          <td class="border-gray-500 border-x border-solid text-center">
             ロリポップ
           </td>
-          <td class="border-gray-200 border-x border-solid text-center">
+          <td class="border-gray-500 border-x border-solid text-center">
             レンタルサーバー代
           </td>
-          <td class="border-gray-200 border-x border-solid text-center"></td>
-          <td class="border-gray-200 border-x border-solid text-center">1</td>
+          <td class="border-gray-500 border-x border-solid text-center"></td>
+          <td class="border-gray-500 border-x border-solid text-center">1</td>
           <td
-            class="border-gray-200 border-x border-solid text-right pr-1 text-xl"
+            class="border-gray-500 border-x border-solid text-right pr-1 text-xs"
           ></td>
           <td
-            class="border-gray-200 border-x border-solid text-right pr-1 text-xl"
+            class="border-gray-500 border-x border-solid text-right pr-1 text-xs"
           >
             ￥11,000
           </td>
           <td
-            class="border-gray-200 border-x border-solid text-right pr-1 text-xl"
+            class="border-gray-500 border-x border-solid text-right pr-1 text-xs"
           >
             -￥11,000
           </td>
-          <td
-            class="border-gray-200 border-x border-solid px-2 py-2 text-center"
-          >
+          <td class="border-gray-500 border-x border-solid p-1 text-center">
             <!--
             <button type="button" class="font-medium text-red-500 mx-auto">
               <svg
@@ -412,9 +399,7 @@
               </svg>
             </button>
           </td>
-          <td
-            class="border-gray-200 border-x border-solid px-2 py-2 text-center"
-          >
+          <td class="border-gray-500 border-x border-solid p-1 text-center">
             <button type="button" class="font-medium text-gray-500 mx-auto">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -444,7 +429,6 @@
             </button>
 -->
           </td>
-
         </tr>
 
         {% comment %} {% endfor %} {% endcomment %}
