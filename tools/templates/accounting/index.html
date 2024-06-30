@@ -271,45 +271,58 @@
         {% comment %} {% for object in object_list %} {% endcomment %}
 
         <tr class="border-gray-500 border-y border-solid">
-          <td class="border-gray-500 border-x border-solid p-1 text-center">
+          <td class="border-gray-500 border-x border-solid text-center">
+<!--
+    tdの枠を超えられないtooltip
             <span class="relative group">
               <span
-                class="whitespace-nowrap rounded bg-black px-2 py-1 text-white absolute -top-12 left-1/2 -translate-x-1/2 before:content-[''] before:absolute before:-translate-x-1/2 before:left-1/2 before:top-full before:border-4 before:border-transparent before:border-t-black
-                          opacity-0
-          group-hover:opacity-100
-          transition
-        pointer-events-none"
+                class="whitespace-nowrap rounded bg-blue-600 px-2 py-1 text-gray-200 absolute -top-12 left-1/2 -translate-x-1/2 before:content-[''] before:absolute before:-translate-x-1/2 before:left-1/2 before:top-full before:border-4 before:border-transparent before:border-t-black opacity-0 group-hover:opacity-100 transition pointer-events-none"
               >
                 Hello World
               </span>
-              <button
-                type="button"
-                class="modal-open-button font-medium text-blue-600 mx-auto transition"
-                data-modal-hide="authentication-modal"
-                data-modal-target="#update-modal"
-                data-modal-id="{{object.pk}}"
-              >
-                <a href="#" class="hover:underline">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="m18.988 2.012l3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287l-3-3L8 13z"
-                    />
-                    <path
-                      fill="currentColor"
-                      d="M19 19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2z"
-                    />
-                  </svg>
-                </a>
-              </button>
+              <span class="w-fill transition absolute top-0 right-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 56 56"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M46.645 11.71c0-1.733-1.313-2.812-3.376-2.812l-30.538-.023c-2.04 0-3.376 1.078-3.376 2.813c0 .937.422 1.71.915 2.695L24.87 44.5c.984 1.992 1.899 2.625 3.14 2.625c1.22 0 2.134-.633 3.118-2.625L45.73 14.383c.493-.961.915-1.735.915-2.672"
+                  />
+                </svg>
+              </span>
             </span>
+-->
+            <button
+              type="button"
+              class="modal-open-button font-medium text-blue-600 mx-auto"
+              data-modal-hide="authentication-modal"
+              data-modal-target="#update-modal"
+              data-modal-id="{{object.pk}}"
+            >
+              <a href="#" class="hover:underline">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="m18.988 2.012l3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287l-3-3L8 13z"
+                  />
+                  <path
+                    fill="currentColor"
+                    d="M19 19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2z"
+                  />
+                </svg>
+              </a>
+            </button>
+
           </td>
-          <td class="border-gray-500 border-x border-solid p-1 text-center">
+          <td class="border-gray-500 border-x border-solid text-center">
             <button type="button" class="font-medium text-gray-500 mx-auto">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
