@@ -7,17 +7,34 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from rest_framework import viewsets
 from .serializer import CreditorSerializer,SupplierSerializer
-from .models import Creditor,Supplier
+from .models import Creditor,Supplier,PageManager,FiscalTerms,AccountingBook
 from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm
 
 
 
-class IndexView(LoginRequiredMixin,TemplateView):
+class IndexView(LoginRequiredMixin,ListView):
     template_name = "accounting/index.html"
+    model = PageManager
+
+    def get_queryset(self):
+        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        if current_public_hall:
+            queryset = PageManager.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
+        return queryset
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        # page_title を追加する
+        context['page_title'] = '出納帳'
+        context['fiscal_term_objects'] = FiscalTerms.objects.all()
+        context['accounting_book_objects'] = AccountingBook.objects.all()
+        return context
+
+
 
 # 債権者情報
 class CreditorListView(LoginRequiredMixin,ListView):
-    template_name = "common/creditor.html"
+    template_name = "accounting/creditor.html"
     model = Creditor
 
     def get_queryset(self):

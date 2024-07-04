@@ -39,27 +39,25 @@
       <!--会計年度-->
       <form class="max-w-sm">
         <select
-          id="countries"
+          id="fiscal_terms"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
         >
-          <option selected>会計年度選択</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
+          <option selected value="none">会計年度選択</option>
+          {% for fiscal_term in fiscal_term_objects %}
+          <option value="{{ fiscal_term.id }}">{{ fiscal_term.name }}</option>
+          {% endfor%}
         </select>
       </form>
       <!--現金出納帳-->
       <form class="max-w-sm">
         <select
-          id="countries"
+          id="accountign_book"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
         >
-          <option selected>出納帳選択</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
+          <option selected value="none">出納帳選択</option>
+          {% for accounting_book in accounting_book_objects %}
+          <option value="{{ accounting_book.id }}">{{ accounting_book.name }}</option>
+          {% endfor%}
         </select>
       </form>
       <!--支出合計-->
@@ -84,7 +82,7 @@
     <button
       type="button"
       data-dropdown-toggle="dropdownAccountingDetail"
-      class="dropdownbutton text-xs text-gray-500 hover:text-gray-500 font-medium rounded-lg px-5 py-1 absolute right-2 bottom-2"
+      class="dropdownbutton text-xs text-gray-500 hover:text-gray-500 font-medium rounded-lg px-5 py-1 absolute right-2 top-2"
     >
       詳細
       <svg
@@ -143,24 +141,23 @@
         <!--会計年度-->
         <form class="max-w-sm">
           <select
-            id="countries"
+            id="fiscal_terms"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
           >
             <option selected>会計年度選択</option>
-            <option value="US">United States</option>
-            <option value="CA">Canada</option>
-            <option value="FR">France</option>
-            <option value="DE">Germany</option>
+            {% for fiscal_term in fiscal_term_objects %}
+            <option value="{{ fiscal_term.id }}">{{ fiscal_term.name }}</option>
+            {% endfor%}
           </select>
         </form>
         <!--現金出納帳-->
         <form class="max-w-sm">
           <select
-            id="countries"
+            id="accountign_book"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
           >
             <option selected>出納帳選択</option>
-            <option value="US">United States</option>
+            <option value="US">あめりか</option>
             <option value="CA">Canada</option>
             <option value="FR">France</option>
             <option value="DE">Germany</option>
@@ -272,7 +269,7 @@
 
         <tr class="border-gray-500 border-y border-solid">
           <td class="border-gray-500 border-x border-solid text-center">
-<!--
+            <!--
     tdの枠を超えられないtooltip
             <span class="relative group">
               <span
@@ -320,7 +317,6 @@
                 </svg>
               </a>
             </button>
-
           </td>
           <td class="border-gray-500 border-x border-solid text-center">
             <button type="button" class="font-medium text-gray-500 mx-auto">
