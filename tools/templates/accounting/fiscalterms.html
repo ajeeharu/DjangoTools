@@ -10,9 +10,6 @@
         class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900"
       >
         {{ page_title }}一覧
-        <span class="text-gray-600 text-xl ml-2">
-          （{{ user.public_hall.name }}公民館）
-        </span>
       </h1>
       <!-- メッセージ -->
       {% if messages %} {% for message in messages %}
@@ -41,9 +38,9 @@
       <thead class="text-gray-700 uppercase bg-blue-50">
         <tr>
           <th scope="col" class="px-4 py-3">変更</th>
-          <th scope="col" class="px-4 py-3">社名</th>
-          <th scope="col" class="px-4 py-3">住所</th>
-<!--      <th scope="col" class="px-4 py-3">公民館</th> -->
+          <th scope="col" class="px-4 py-3">会計年度名</th>
+          <th scope="col" class="px-4 py-3">開始年月日</th>
+          <th scope="col" class="px-4 py-3">終了年月日</th>
           <th scope="col" class="px-4 py-3">削除</th>
         </tr>
       </thead>
@@ -74,8 +71,8 @@
             </a>
           </td>
           <td class="px-4 py-4">{{ object.name }}</td>
-          <td class="px-4 py-4">{{ object.address }}</td>
-<!--      <td class="px-4 py-4">{{ object.public_hall }}</td> -->
+          <td class="px-4 py-4">{{ object.start_date }}</td>
+          <td class="px-4 py-4">{{ object.end_date }}</td>
           <td class="px-4 py-4">
           <button
             type="button"
@@ -106,11 +103,11 @@
   </div>
 </div>
 <!-- Modal Create -->
-{% include 'accounting/modals/modal_supplier_create.html' %}
+{% include 'accounting/modals/modal_fiscalterms_create.html' %}
 <!-- Modal Update -->
-{% include 'accounting/modals/modal_supplier_update.html' %}
+{% include 'accounting/modals/modal_fiscalterms_update.html' %}
 <!-- Modal Delete -->
-{% include 'accounting/modals/modal_supplier_delete.html' %}
+{% include 'accounting/modals/modal_fiscalterms_delete.html' %}
 
 <script type="text/javascript">
 //  モーダル制御用CallBack登録

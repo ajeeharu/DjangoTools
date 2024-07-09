@@ -1,0 +1,154 @@
+<div
+  id="delete-modal"
+  tabindex="-1"
+  aria-hidden="true"
+  class="js-modal hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-[calc(100%-1rem)] max-h-full bg-gray-500/50"
+>
+  <div class="relative p-4 w-full max-w-md max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow">
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
+      >
+        <h3 class="text-xl font-semibold text-gray-900">{{ page_title }}削除</h3>
+        <button
+          type="button"
+          class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+          data-modal-hide="authentication-modal"
+          data-modal-target="#delete-modal"
+        >
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4">
+        <div class="mb-4 text-2xl bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong class="font-bold">注意！</strong>
+          <span class="block">下記の内容が削除されます。</span>
+        </div>
+          <div>
+            <label
+              for="name"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >科目名</label
+            >
+            {{ form_delete.name }}
+            {{ form_delete.name.errors }}
+          </div>
+          <div>
+            <label
+              for="acronym"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >略語</label
+            >
+            {{ form_delete.acronym }}
+            {{ form_delete.acronym.errors }}
+          </div>
+          <div>
+            <label
+              for="budget"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >予算額</label
+            >
+            {{ form_delete.budget }}
+            {{ form_delete.budget.errors }}
+          </div>
+          <div>
+            <label
+              for="fiscal_terms"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >会計年度</label
+            >
+            {{ form_delete.fiscal_terms }}
+            {{ form_delete.fiscal_terms.errors }}
+          </div>
+          <div>
+            <label
+              for="accountig_book"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >出納帳</label
+            >
+            {{ form_delete.accountig_book }}
+            {{ form_delete.accountig_book.errors }}
+          </div>
+          <div class="hidden">
+            <label
+              for="public_hall "
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >公民館</label
+            >
+            {{ form_delete.public_hall  }}
+            {{ form_delete.public_hall.errors }}
+          </div>
+        <form id="form-cancel" class="mt-4 space-y-4" method="post">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
+          >
+            削除
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  const Delete = ( id )=>
+  {
+    let element_form = document.querySelector('#form-cancel');
+    let element_name = document.querySelector("#id_delete_name");
+    let element_acronym = document.querySelector("#id_delete_acronym");
+    let element_budget = document.querySelector("#id_delete_budget");
+    let element_fiscal_terms = document.querySelector("#id_delete_fiscal_terms");
+    let element_accountig_book = document.querySelector("#id_delete_accountig_book");
+    let element_public_hall = document.querySelector("#id_delete_public_hall");
+
+
+
+    // Delete処理パラメーター追加（form文）
+    element_form.setAttribute("action","/accounting/subjectspending/modal/"+id+"/delete");
+
+    // API経由でData取得
+    const CreateEndPoint ="/api/accounting/subjectspending/"+id+"/";
+
+    fetch(CreateEndPoint, {
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => {
+        return response.json(); // 読み込むデータをJSONに設定
+    })
+    .then((data) => {
+      element_name.value = data["name"];
+      element_acronym.value = data["acronym"];
+      element_budget.value = data["budget"];
+      element_fiscal_terms.value = data["fiscal_terms"];
+      SetSelect(element_fiscal_terms.options, data["fiscal_terms"]);
+      SetSelect(element_accountig_book.options, data["accountig_book"]);
+      SetSelect(element_public_hall.options, data["public_hall"]["number"]);
+      // select 他の項目(option)に変更できないようにする。
+      document.querySelectorAll('select[readonly] option')
+        .forEach(option => option.disabled = !option.selected);
+    });
+  };
+</script>

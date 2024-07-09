@@ -57,13 +57,13 @@ class SubjectSpending(models.Model):
 
 # 節（支出)
 class SectionSpending(models.Model):
-	FORMAT = (
+	FORMAT_CHOICES = (
 			('0', '支出命令（様式１)'),
 			('1', '支出命令（様式２)'),
 			('2', '支出命令（様式３)')
 	)
 	name = models.CharField('節名', max_length=32)
-	print_format = models.CharField('印刷FORMAT',max_length=2,choices=FORMAT,default='0')
+	print_format = models.CharField('印刷FORMAT',max_length=2,choices=FORMAT_CHOICES,default='0')
 	acronym = models.CharField('略語',max_length=8)
 
 	def __str__(self):
