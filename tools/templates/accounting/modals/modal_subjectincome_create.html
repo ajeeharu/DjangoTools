@@ -44,19 +44,46 @@
             <label
               for="name"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >社名</label
+              >科目名</label
             >
             {{ form.name }}
             {{ form.name.errors }}
           </div>
           <div>
             <label
-              for="address"
+              for="acronym"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >住所</label
+              >略語</label
             >
-            {{ form.address }}
-            {{ form.address.errors }}
+            {{ form.acronym }}
+            {{ form.acronym.errors }}
+          </div>
+          <div>
+            <label
+              for="budget"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >予算額</label
+            >
+            {{ form.budget }}
+            {{ form.budget.errors }}
+          </div>
+          <div>
+            <label
+              for="fiscal_terms"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >会計年度</label
+            >
+            {{ form.fiscal_terms }}
+            {{ form.fiscal_terms.errors }}
+          </div>
+          <div>
+            <label
+              for="accountig_book"
+              class="block mb-2 text-xl font-medium text-gray-900"
+              >出納帳</label
+            >
+            {{ form.accountig_book }}
+            {{ form.accountig_book.errors }}
           </div>
           <div class="hidden">
             <label
@@ -90,7 +117,7 @@
     let element_public_hall = document.querySelector('#id_public_hall');
 
     // Create処理パラメーター追加（form文）
-    element_form.setAttribute("action","{% url 'accounting:modal_create_creditor' %}");
+    element_form.setAttribute("action","{% url 'accounting:modal_create_subjectincome' %}");
     SetSelect(element_public_hall.options, {{ user.public_hall.number }})
   };
 </script>

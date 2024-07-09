@@ -351,7 +351,7 @@ class SubjectIncomeListView(LoginRequiredMixin,ListView):
     def get_context_data(self):
         context = super().get_context_data()
         # page_title を追加する
-        context['page_title'] = '節（支出）情報'
+        context['page_title'] = '科目（収入）情報'
         context['form'] = SubjectIncomeForm()    # Create Modal画面
         context['form_update'] = SubjectIncomeUpdateForm()    # Update Modal画面
         context['form_delete'] = SubjectIncomeDeleteForm()    # Delete Modal画面
