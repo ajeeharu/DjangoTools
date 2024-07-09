@@ -46,25 +46,55 @@
           <label
             for="name"
             class="block mb-2 text-xl font-medium text-gray-900"
-            >社名</label
+            >科目名</label
           >
-          <input type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" readonly="readonly" id="id_delete_name">
+          {{ form_delete.name }}
+          {{ form_delete.name.errors }}
         </div>
         <div>
           <label
-            for="address"
+            for="acronym"
             class="block mb-2 text-xl font-medium text-gray-900"
-            >住所</label
+            >略語</label
           >
-          <input type="text" name="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" readonly="readonly" id="id_delete_address">
+          {{ form_delete.acronym }}
+          {{ form_delete.acronym.errors }}
+        </div>
+        <div>
+          <label
+            for="budget"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >予算額</label
+          >
+          {{ form_delete.budget }}
+          {{ form_delete.budget.errors }}
+        </div>
+        <div>
+          <label
+            for="fiscal_terms"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >会計年度</label
+          >
+          {{ form_delete.fiscal_terms }}
+          {{ form_delete.fiscal_terms.errors }}
+        </div>
+        <div>
+          <label
+            for="accountig_book"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >出納帳</label
+          >
+          {{ form_delete.accountig_book }}
+          {{ form_delete.accountig_book.errors }}
         </div>
         <div class="hidden">
           <label
-            for="public_hall"
+            for="public_hall "
             class="block mb-2 text-xl font-medium text-gray-900"
-            >公民館名</label
+            >公民館</label
           >
-          <input type="text" name="public_hall" class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" readonly="readonly" id="id_delete_public_hall">
+          {{ form_delete.public_hall  }}
+          {{ form_delete.public_hall.errors }}
         </div>
         <form id="form-cancel" class="mt-4 space-y-4" method="post">
           {% csrf_token %}
@@ -83,16 +113,20 @@
   const Delete = ( id )=>
   {
     let element_form = document.querySelector('#form-cancel');
-    let element_name = document.querySelector('#id_delete_name');
-    let element_address = document.querySelector('#id_delete_address');
-    let element_public_hall = document.querySelector('#id_delete_public_hall');
+    let element_name = document.querySelector("#id_delete_name");
+    let element_acronym = document.querySelector("#id_delete_acronym");
+    let element_budget = document.querySelector("#id_delete_budget");
+    let element_fiscal_terms = document.querySelector("#id_delete_fiscal_terms");
+    let element_accountig_book = document.querySelector("#id_delete_accountig_book");
+    let element_public_hall = document.querySelector("#id_delete_public_hall");
+
 
 
     // Delete処理パラメーター追加（form文）
-    element_form.setAttribute("action","/accounting/creditor/modal/"+id+"/delete");
+    element_form.setAttribute("action","/accounting/subjectincome/modal/"+id+"/delete");
 
     // API経由でData取得
-    const CreateEndPoint ="/api/accounting/creditor/"+id+"/";
+    const CreateEndPoint ="/api/accounting/subjectincome/"+id+"/";
 
     fetch(CreateEndPoint, {
       method: 'GET',
@@ -105,10 +139,15 @@
         return response.json(); // 読み込むデータをJSONに設定
     })
     .then((data) => {
-        element_name.value= data["name"];
-        element_address.value= data["address"];
-        element_public_hall.value= data["public_hall"]["name"];
+      element_name.value = data["name"];
+      element_acronym.value = data["acronym"];
+      element_budget.value = data["budget"];
+      SetSelect(element_fiscal_terms.options, data["fiscal_terms"]);
+      SetSelect(element_accountig_book.options, data["accountig_book"]);
+      SetSelect(element_public_hall.options, data["public_hall"]["number"]);
+      // select 他の項目(option)に変更できないようにする。
+      document.querySelectorAll('select[readonly] option')
+        .forEach(option => option.disabled = !option.selected);
     });
-
   };
 </script>

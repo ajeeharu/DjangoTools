@@ -212,6 +212,7 @@ class SubjectIncomeUpdateForm(SubjectIncomeForm):
         for i ,n in enumerate( self.fields ):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         self.fields['name'].widget.attrs['id'] = "id_update_name"
+        self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
         self.fields['budget'].widget.attrs['id'] = "id_update_budget"
         self.fields['fiscal_terms'].widget.attrs['id'] = "id_update_fiscal_terms"
         self.fields['accountig_book'].widget.attrs['id'] = "id_update_accountig_book"
@@ -225,6 +226,7 @@ class SubjectIncomeDeleteForm(SubjectIncomeForm):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
+        self.fields['acronym'].widget.attrs['id'] = "id_delete_acronym"
         self.fields['budget'].widget.attrs['id'] = "id_delete_budget"
         self.fields['fiscal_terms'].widget.attrs['id'] = "id_delete_fiscal_terms"
         self.fields['accountig_book'].widget.attrs['id'] = "id_delete_accountig_book"

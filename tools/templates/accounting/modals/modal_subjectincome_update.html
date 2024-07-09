@@ -42,33 +42,60 @@
       <div class="p-4 md:p-5">
         <form id="form-update" class="space-y-4" method="post">
           {% csrf_token %}
-          <div>
-            <label
-              for="name"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >社名</label
-            >
-            {{ form_update.name }}
-            {{ form_update.name.errors }}
-          </div>
-          <div>
-            <label
-              for="address"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >住所</label
-            >
-            {{ form_update.address }}
-            {{ form_update.address.errors }}
-          </div>
-          <div class="hidden">
-            <label
-              for="public_hall "
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >公民館</label
-            >
-            {{ form_update.public_hall  }}
-            {{ form_update.public_hall.errors }}
-          </div>
+        <div>
+          <label
+            for="name"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >科目名</label
+          >
+          {{ form_update.name }}
+          {{ form_update.name.errors }}
+        </div>
+        <div>
+          <label
+            for="acronym"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >略語</label
+          >
+          {{ form_update.acronym }}
+          {{ form_update.acronym.errors }}
+        </div>
+        <div>
+          <label
+            for="budget"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >予算額</label
+          >
+          {{ form_update.budget }}
+          {{ form_update.budget.errors }}
+        </div>
+        <div>
+          <label
+            for="fiscal_terms"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >会計年度</label
+          >
+          {{ form_update.fiscal_terms }}
+          {{ form_update.fiscal_terms.errors }}
+        </div>
+        <div>
+          <label
+            for="accountig_book"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >出納帳</label
+          >
+          {{ form_update.accountig_book }}
+          {{ form_update.accountig_book.errors }}
+        </div>
+        <div class="hidden">
+          <label
+            for="public_hall "
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >公民館</label
+          >
+          {{ form_update.public_hall  }}
+          {{ form_update.public_hall.errors }}
+        </div>
           {% if form_update.non_field_errors %}
           <div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
             {{ form_update.non_field_errors }}
@@ -89,18 +116,22 @@
   const Update = (id) => {
     let element_form = document.querySelector("#form-update");
     let element_name = document.querySelector("#id_update_name");
-    let element_address = document.querySelector("#id_update_address");
+    let element_acronym = document.querySelector("#id_update_acronym");
+    let element_budget = document.querySelector("#id_update_budget");
+    let element_fiscal_terms = document.querySelector("#id_update_fiscal_terms");
+    let element_accountig_book = document.querySelector("#id_update_accountig_book");
     let element_public_hall = document.querySelector("#id_update_public_hall");
+
 
 
     // Delete処理パラメーター追加（form文）
     element_form.setAttribute(
       "action",
-      "/accounting/creditor/modal/" + id + "/update"
+      "/accounting/subjectincome/modal/" + id + "/update"
     );
 
     // API経由でData取得
-    const CreateEndPoint = "/api/accounting/creditor/" + id + "/";
+    const CreateEndPoint = "/api/accounting/subjectincome/" + id + "/";
 
     fetch(CreateEndPoint, {
       method: "GET",
@@ -114,8 +145,11 @@
     })
     .then((data) => {
       element_name.value = data["name"];
-      element_address.value = data["address"];
-      SetSelect(element_public_hall.options, data["public_hall"]["number"])
+      element_acronym.value = data["acronym"];
+      element_budget.value = data["budget"];
+      SetSelect(element_fiscal_terms.options, data["fiscal_terms"]);
+      SetSelect(element_accountig_book.options, data["accountig_book"]);
+      SetSelect(element_public_hall.options, data["public_hall"]["number"]);
     });
   };
 </script>

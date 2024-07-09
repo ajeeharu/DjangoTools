@@ -42,60 +42,60 @@
           <strong class="font-bold">注意！</strong>
           <span class="block">下記の内容が削除されます。</span>
         </div>
-          <div>
-            <label
-              for="name"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >科目名</label
-            >
-            {{ form_delete.name }}
-            {{ form_delete.name.errors }}
-          </div>
-          <div>
-            <label
-              for="acronym"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >略語</label
-            >
-            {{ form_delete.acronym }}
-            {{ form_delete.acronym.errors }}
-          </div>
-          <div>
-            <label
-              for="budget"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >予算額</label
-            >
-            {{ form_delete.budget }}
-            {{ form_delete.budget.errors }}
-          </div>
-          <div>
-            <label
-              for="fiscal_terms"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >会計年度</label
-            >
-            {{ form_delete.fiscal_terms }}
-            {{ form_delete.fiscal_terms.errors }}
-          </div>
-          <div>
-            <label
-              for="accountig_book"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >出納帳</label
-            >
-            {{ form_delete.accountig_book }}
-            {{ form_delete.accountig_book.errors }}
-          </div>
-          <div class="hidden">
-            <label
-              for="public_hall "
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >公民館</label
-            >
-            {{ form_delete.public_hall  }}
-            {{ form_delete.public_hall.errors }}
-          </div>
+        <div>
+          <label
+            for="name"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >科目名</label
+          >
+          {{ form_delete.name }}
+          {{ form_delete.name.errors }}
+        </div>
+        <div>
+          <label
+            for="acronym"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >略語</label
+          >
+          {{ form_delete.acronym }}
+          {{ form_delete.acronym.errors }}
+        </div>
+        <div>
+          <label
+            for="budget"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >予算額</label
+          >
+          {{ form_delete.budget }}
+          {{ form_delete.budget.errors }}
+        </div>
+        <div>
+          <label
+            for="fiscal_terms"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >会計年度</label
+          >
+          {{ form_delete.fiscal_terms }}
+          {{ form_delete.fiscal_terms.errors }}
+        </div>
+        <div>
+          <label
+            for="accountig_book"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >出納帳</label
+          >
+          {{ form_delete.accountig_book }}
+          {{ form_delete.accountig_book.errors }}
+        </div>
+        <div class="hidden">
+          <label
+            for="public_hall "
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >公民館</label
+          >
+          {{ form_delete.public_hall  }}
+          {{ form_delete.public_hall.errors }}
+        </div>
         <form id="form-cancel" class="mt-4 space-y-4" method="post">
           {% csrf_token %}
           <button
