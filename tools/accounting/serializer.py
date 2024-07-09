@@ -47,7 +47,8 @@ class SubjectIncomeSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class SectionIncomeSerializer(serializers.ModelSerializer):
-	public_hall=PublicHallSerializer()
+	serializer_choice_field = GetChoiceField
+
 	class Meta:
 		model = SectionIncome
 		fields = '__all__'

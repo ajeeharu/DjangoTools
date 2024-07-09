@@ -62,12 +62,11 @@
             <label
               for="acronym"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >印刷フォーマット</label
+              >略語</label
             >
             {{ form.acronym }}
             {{ form.acronym.errors }}
           </div>
-
           {% if form.non_field_errors %}
           <div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
             {{ form.non_field_errors }}
@@ -87,6 +86,9 @@
 <script type="text/javascript">
   const Create = ( id=0 )=>
   {
+    let element_form = document.querySelector("#form");
 
+    // Create処理パラメーター追加（form文）
+    element_form.setAttribute("action","{% url 'accounting:modal_create_sectionincome' %}");
   };
 </script>

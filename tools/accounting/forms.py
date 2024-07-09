@@ -250,8 +250,8 @@ class SectionIncomeUpdateForm(SectionIncomeForm):
         for i ,n in enumerate( self.fields ):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         self.fields['name'].widget.attrs['id'] = "id_update_name"
-        self.fields['address'].widget.attrs['id'] = "id_update_address"
-        self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
+        self.fields['print_format'].widget.attrs['id'] = "id_update_print_format"
+        self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
 
 
 class SectionIncomeDeleteForm(SectionIncomeForm):
@@ -261,5 +261,5 @@ class SectionIncomeDeleteForm(SectionIncomeForm):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
-        self.fields['address'].widget.attrs['id'] = "id_delete_address"
-        self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"
+        self.fields['print_format'].widget.attrs['id'] = "id_delete_print_format"
+        self.fields['acronym'].widget.attrs['id'] = "id_delete_public_acronym"

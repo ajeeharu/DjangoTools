@@ -96,11 +96,11 @@
     // Delete処理パラメーター追加（form文）
     element_form.setAttribute(
       "action",
-      "/accounting/sectionspending/modal/" + id + "/update"
+      "/accounting/sectionincome/modal/" + id + "/update"
     );
 
     // API経由でData取得
-    const CreateEndPoint = "/api/accounting/sectionspending/" + id + "/";
+    const CreateEndPoint = "/api/accounting/sectionincome/" + id + "/";
 
     fetch(CreateEndPoint, {
       method: "GET",

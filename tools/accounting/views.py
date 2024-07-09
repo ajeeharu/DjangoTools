@@ -396,16 +396,10 @@ class SectionIncomeListView(LoginRequiredMixin,ListView):
     template_name = "accounting/sectionincome.html"
     model = SectionIncome
 
-    def get_queryset(self):
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
-        if current_public_hall:
-            queryset = SectionIncome.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
-        return queryset
-
     def get_context_data(self):
         context = super().get_context_data()
         # page_title を追加する
-        context['page_title'] = '債権者情報'
+        context['page_title'] = '節（収入）情報'
         context['form'] = SectionIncomeForm()    # Create Modal画面
         context['form_update'] = SectionIncomeUpdateForm()    # Update Modal画面
         context['form_delete'] = SectionIncomeDeleteForm()    # Delete Modal画面
