@@ -1,4 +1,4 @@
-from .models import Creditor,Supplier,PageManager,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome
+from .models import Creditor,Supplier,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome,IncomeRecord,SpendingRecord
 from django import forms
 
 # 債権者情報
@@ -14,9 +14,7 @@ class CreditorForm(forms.ModelForm):
 
 class CreditorUpdateForm(CreditorForm):
     def __init__(self, *args, **kwargs):
-        super(CreditorForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['address'].widget.attrs['id'] = "id_update_address"
         self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
@@ -24,9 +22,8 @@ class CreditorUpdateForm(CreditorForm):
 
 class CreditorDeleteForm(CreditorForm):
     def __init__(self, *args, **kwargs):
-        super(CreditorForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
         self.fields['address'].widget.attrs['id'] = "id_delete_address"
@@ -45,9 +42,7 @@ class SupplierForm(forms.ModelForm):
 
 class SupplierUpdateForm(SupplierForm):
     def __init__(self, *args, **kwargs):
-        super(SupplierForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['address'].widget.attrs['id'] = "id_update_address"
         self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
@@ -55,9 +50,8 @@ class SupplierUpdateForm(SupplierForm):
 
 class SupplierDeleteForm(SupplierForm):
     def __init__(self, *args, **kwargs):
-        super(SupplierForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
         self.fields['address'].widget.attrs['id'] = "id_delete_address"
@@ -78,9 +72,7 @@ class FiscalTermsForm(forms.ModelForm):
 
 class FiscalTermsUpdateForm(FiscalTermsForm):
     def __init__(self, *args, **kwargs):
-        super(FiscalTermsForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['start_date'].widget.attrs['id'] = "id_update_start_date"
         self.fields['end_date'].widget.attrs['id'] = "id_update_end_date"
@@ -88,9 +80,8 @@ class FiscalTermsUpdateForm(FiscalTermsForm):
 
 class FiscalTermsDeleteForm(FiscalTermsForm):
     def __init__(self, *args, **kwargs):
-        super(FiscalTermsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
         self.fields['start_date'].widget.attrs['id'] = "id_delete_start_date"
@@ -109,17 +100,14 @@ class AccountingBookForm(forms.ModelForm):
 
 class AccountingBookUpdateForm(AccountingBookForm):
     def __init__(self, *args, **kwargs):
-        super(AccountingBookForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['id'] = "id_update_name"
 
 
 class AccountingBookDeleteForm(AccountingBookForm):
     def __init__(self, *args, **kwargs):
-        super(AccountingBookForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
 
@@ -137,9 +125,7 @@ class SubjectSpendingForm(forms.ModelForm):
 
 class SubjectSpendingUpdateForm(SubjectSpendingForm):
     def __init__(self, *args, **kwargs):
-        super(SubjectSpendingForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
 
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
@@ -151,9 +137,8 @@ class SubjectSpendingUpdateForm(SubjectSpendingForm):
 
 class SubjectSpendingDeleteForm(SubjectSpendingForm):
     def __init__(self, *args, **kwargs):
-        super(SubjectSpendingForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
         self.fields['acronym'].widget.attrs['id'] = "id_delete_acronym"
@@ -176,9 +161,7 @@ class SectionSpendingForm(forms.ModelForm):
 
 class SectionSpendingUpdateForm(SectionSpendingForm):
     def __init__(self, *args, **kwargs):
-        super(SectionSpendingForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['print_format'].widget.attrs['id'] = "id_update_print_format"
         self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
@@ -186,9 +169,8 @@ class SectionSpendingUpdateForm(SectionSpendingForm):
 
 class SectionSpendingDeleteForm(SectionSpendingForm):
     def __init__(self, *args, **kwargs):
-        super(SectionSpendingForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
         self.fields['print_format'].widget.attrs['id'] = "id_delete_print_format"
@@ -208,9 +190,7 @@ class SubjectIncomeForm(forms.ModelForm):
 
 class SubjectIncomeUpdateForm(SubjectIncomeForm):
     def __init__(self, *args, **kwargs):
-        super(SubjectIncomeForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
         self.fields['budget'].widget.attrs['id'] = "id_update_budget"
@@ -221,9 +201,8 @@ class SubjectIncomeUpdateForm(SubjectIncomeForm):
 
 class SubjectIncomeDeleteForm(SubjectIncomeForm):
     def __init__(self, *args, **kwargs):
-        super(SubjectIncomeForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
         self.fields['acronym'].widget.attrs['id'] = "id_delete_acronym"
@@ -246,9 +225,7 @@ class SectionIncomeForm(forms.ModelForm):
 
 class SectionIncomeUpdateForm(SectionIncomeForm):
     def __init__(self, *args, **kwargs):
-        super(SectionIncomeForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['id'] = "id_update_name"
         self.fields['print_format'].widget.attrs['id'] = "id_update_print_format"
         self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
@@ -256,10 +233,45 @@ class SectionIncomeUpdateForm(SectionIncomeForm):
 
 class SectionIncomeDeleteForm(SectionIncomeForm):
     def __init__(self, *args, **kwargs):
-        super(SectionIncomeForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
         self.fields['name'].widget.attrs['id'] = "id_delete_name"
         self.fields['print_format'].widget.attrs['id'] = "id_delete_print_format"
         self.fields['acronym'].widget.attrs['id'] = "id_delete_public_acronym"
+
+# 収入詳細
+class IncomeRecordForm(forms.ModelForm):
+    class Meta:
+        model = IncomeRecord
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(SectionIncomeForm, self).__init__(*args, **kwargs)
+        for i ,n in enumerate( self.fields ):
+            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+
+class IncomeRecordUpdateForm(IncomeRecordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['id'] = "id_update_name"
+        self.fields['print_format'].widget.attrs['id'] = "id_update_print_format"
+        self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
+
+# 支出詳細
+class SpendingRecordForm(forms.ModelForm):
+    class Meta:
+        model = SpendingRecord
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(SpendingRecordForm, self).__init__(*args, **kwargs)
+        for i ,n in enumerate( self.fields ):
+            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+
+class SpendingRecordUpdateForm(SpendingRecordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['id'] = "id_update_name"
+        self.fields['print_format'].widget.attrs['id'] = "id_update_print_format"
+        self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"

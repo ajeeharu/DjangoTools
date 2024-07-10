@@ -12,22 +12,23 @@ from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierFo
     AccountingBookForm,AccountingBookUpdateForm,AccountingBookDeleteForm,SubjectSpendingForm,SubjectSpendingUpdateForm,SubjectSpendingDeleteForm,SectionSpendingForm,SectionSpendingUpdateForm,SectionSpendingDeleteForm, \
     SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm
 
+
+#
 class IndexView(LoginRequiredMixin,ListView):
     template_name = "accounting/index.html"
     model = PageManager
 
-    def get_queryset(self):
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
-        if current_public_hall:
-            queryset = PageManager.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
-        return queryset
-
     def get_context_data(self):
         context = super().get_context_data()
         # page_title を追加する
-        context['page_title'] = '出納帳'
+        context['page_title'] = '現金出納帳'
         context['fiscal_term_objects'] = FiscalTerms.objects.all()
         context['accounting_book_objects'] = AccountingBook.objects.all()
+        context['form_income_create'] = IncomeCreateForm()        # Create Modal画面
+        context['form_spending_create'] = SpendingCreateForm()    # Create Modal画面
+        context['form_income_update'] = IncomeUpdateForm()        # Update Modal画面
+        context['form_spending_update'] = SpendingUpdateForm()    # Update Modal画面
+
         return context
 
 # 債権者情報

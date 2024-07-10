@@ -6,6 +6,7 @@ app_name = "accounting"
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name="index"),
+
     path('creditor', views.CreditorListView.as_view(), name="creditor"),
     path('creditor/modal/create', views.ModalCreditorCreateView.as_view(), name="modal_create_creditor"),
     path('creditor/modal/<int:pk>/update', views.ModalCreditorUpdateView.as_view(), name="modal_update_creditor"),
