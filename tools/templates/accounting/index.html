@@ -37,9 +37,9 @@
         </button>
       </div>
       <!--会計年度-->
-      <form class="max-w-sm">
+      <div class="max-w-sm">
         <select
-          id="fiscal_terms"
+          id="select_fiscal_terms"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
         >
           <option selected value="none">会計年度選択</option>
@@ -47,11 +47,11 @@
           <option value="{{ fiscal_term.id }}">{{ fiscal_term.name }}</option>
           {% endfor%}
         </select>
-      </form>
+      </div>
       <!--現金出納帳-->
-      <form class="max-w-sm">
+      <div class="max-w-sm">
         <select
-          id="accountign_book"
+          id="select_accounting_book"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
         >
           <option selected value="none">出納帳選択</option>
@@ -59,7 +59,7 @@
           <option value="{{ accounting_book.id }}">{{ accounting_book.name }}</option>
           {% endfor%}
         </select>
-      </form>
+      </div>
       <!--支出合計-->
       <div class="flex justify-between items-center w-52">
         <div class="text-xl">支出合計：</div>
@@ -69,7 +69,7 @@
       <div class="space-y-2 flex items-center justify-items-center">
         <button
           type="button"
-          data-modal-target="#create-modal"
+          data-modal-target="#delete-modal"
           data-modal-toggle="authentication-modal"
           data-modal-id="0"
           class="modal-open-button inline-flex justify-center items-center p-2 text-xs font-medium text-center text-white rounded-lg bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300"
@@ -101,7 +101,7 @@
         />
       </svg>
     </button>
-    <div
+    {% comment %} <div
       id="dropdownAccountingDetail"
       class="dropdownmenu z-10 hidden border-t border-dotted border-gray-400"
     >
@@ -181,7 +181,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
   </section>
 
   <div class="max-w-6xl relative overflow-x-auto mx-auto">
@@ -264,34 +264,11 @@
           </th>
         </tr>
       </thead>
-      <tbody id="multiDragDemo text-xs">
+      <tbody id="AccountingList" class="text-xs">
         {% comment %} {% for object in object_list %} {% endcomment %}
 
         <tr class="border-gray-500 border-y border-solid">
           <td class="border-gray-500 border-x border-solid text-center">
-            <!--
-    tdの枠を超えられないtooltip
-            <span class="relative group">
-              <span
-                class="whitespace-nowrap rounded bg-blue-600 px-2 py-1 text-gray-200 absolute -top-12 left-1/2 -translate-x-1/2 before:content-[''] before:absolute before:-translate-x-1/2 before:left-1/2 before:top-full before:border-4 before:border-transparent before:border-t-black opacity-0 group-hover:opacity-100 transition pointer-events-none"
-              >
-                Hello World
-              </span>
-              <span class="w-fill transition absolute top-0 right-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 56 56"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M46.645 11.71c0-1.733-1.313-2.812-3.376-2.812l-30.538-.023c-2.04 0-3.376 1.078-3.376 2.813c0 .937.422 1.71.915 2.695L24.87 44.5c.984 1.992 1.899 2.625 3.14 2.625c1.22 0 2.134-.633 3.118-2.625L45.73 14.383c.493-.961.915-1.735.915-2.672"
-                  />
-                </svg>
-              </span>
-            </span>
--->
             <button
               type="button"
               class="modal-open-button font-medium text-blue-600 mx-auto"
@@ -443,8 +420,16 @@
         {% comment %} {% endfor %} {% endcomment %}
       </tbody>
     </table>
+    <div class="hidden bg-red-100 border border-red-400 text-2xl text-red-700 px-4 py-3 mt-8 rounded font-bold" role="alert" id="warning_message">
+    </div>
   </div>
 </div>
+<!-- Modal 収入伝票作成 -->
+{% include 'accounting/modals/modal_income_record_create.html' %}
+<!-- Modal 支出伝票作成 -->
+{% include 'accounting/modals/modal_spending_record_create.html' %}
+<!-- Modal 詳細変更 -->
+{% include 'accounting/modals/modal_cash_book_update.html' %}
 
 <script type="text/javascript">
   const onStartEvent = (event) => {
@@ -463,7 +448,7 @@
     console.log("onSort!!");
   };
 
-  new Sortable(multiDragDemo, {
+  new Sortable(AccountingList, {
     multiDrag: true, // Enable multi-drag
     selectedClass: "selected", // The class applied to the selected items
     fallbackTolerance: 3, // So that we can select items on mobile
@@ -473,5 +458,58 @@
     onChange: onChangeEvent, // 2-3, ドラッグ変化時
     onSort: onSortEvent, // 2-4, 並び替え終了時
   });
+
+  //  モーダル制御用CallBack登録
+  SetCallback( IncomeSlipCreate, ExpenditureSlipCreate, CashBookUpdate);
+  // 本来は支出伝票作成はCreate処理なのだが、今回はDelete用のCallBack関数登録を行い、MoalOpen時にCallBack処理を行う。
+
+
+   // Warning Message
+  const element_warning_message = document.querySelector('#warning_message');
+
+  // 会計年度と出納帳の選択状況
+  const element_fiscal_terms = document.querySelector('#select_fiscal_terms');
+  const element_accounting_book = document.querySelector('#select_accounting_book');
+
+  let  fiscal_terms_value = 'none';
+  let  accounting_book_value = 'none';
+
+  const SetWarningMessage =()=>{
+    if (fiscal_terms_value=='none'){
+      element_warning_message.textContent ="会計年度を選択してください！";
+      element_warning_message.classList.remove("hidden");
+
+    }else if(accounting_book_value=='none'){
+      element_warning_message.textContent ="出納帳を選択してください！";
+      element_warning_message.classList.remove("hidden");
+    }else{
+      element_warning_message.textContent ="";
+      element_warning_message.classList.add("hidden");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    fiscal_terms_value = 'none';
+    accounting_book_value = 'none';
+    SetWarningMessage();
+
+    element_fiscal_terms.addEventListener("change", (event) => {
+      fiscal_terms_value = event.target.value;
+      SetWarningMessage();
+    });
+    element_accounting_book.addEventListener("change", (event) => {
+      accounting_book_value = event.target.value;
+      SetWarningMessage();
+    });
+  });
+
+  // モーダル表示前のチェック
+  const CheckAccountingBook =() =>{
+    return ((fiscal_terms_value=='none')|| (accounting_book_value=='none'));
+  }
+  SetPreCheckCallBack(CheckAccountingBook);
+
 </script>
+
+
 {% endblock %}

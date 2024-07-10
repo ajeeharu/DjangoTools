@@ -21,14 +21,25 @@ const getCookie = (name)=> {
 let createCallback;
 let updateCallback;
 let deleteCallback;
+let precheckCallback = null;
 
 const SetCallback = ( func_create=null, func_update=null, func_delete=null ) => {
   createCallback = func_create;
   updateCallback = func_update;
   deleteCallback = func_delete;
 }
+const SetPreCheckCallBack = (func_prechek = null ) => {
+  precheckCallback = func_prechek;
+};
 
 const modalOpen =(event)=> {
+// ModalOpen前の事前チェック
+  if (precheckCallback != null) {
+    if( precheckCallback() == true ){
+      return;
+    }
+  }
+
   const target = event.currentTarget.attributes.getNamedItem("data-modal-target").value;
   const modal = document.querySelector(target);
   modal.classList.add("flex");

@@ -144,8 +144,8 @@ class PageManager(models.Model):
 	income_select = models.CharField('収支指定',max_length=2,choices=SELECT,default='0')
 	accountig_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)
 	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)
-	subject_income = models.ForeignKey(SpendingRecord, on_delete=models.CASCADE)	# 支出レコード
-	section_income = models.ForeignKey(IncomeRecord, on_delete=models.CASCADE)		# 収入レコード
+	spending_record = models.ForeignKey(SpendingRecord, on_delete=models.CASCADE)	# 支出レコード
+	income_record = models.ForeignKey(IncomeRecord, on_delete=models.CASCADE)		# 収入レコード
 	public_hall = models.ForeignKey(PublicHall, on_delete=models.CASCADE,null=False)
 
 	def __str__(self):
