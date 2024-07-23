@@ -3,3 +3,4 @@ migrations/
 __pycache__/
 node_modules/
 /setting/local_setting.py
+tools/media/

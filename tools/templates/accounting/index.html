@@ -22,7 +22,7 @@
       <!--収入合計-->
       <div class="flex justify-between items-center w-52">
         <div class="text-xl">収入合計：</div>
-        <div class="text-xl text-gray-500" id="id_income_total"></div>
+        <div class="text-xl text-gray-500" id="income_total"></div>
       </div>
       <!--収入伝票-->
       <div class="space-y-2 flex items-center justify-items-center">
@@ -63,7 +63,7 @@
       <!--支出合計-->
       <div class="flex justify-between items-center w-52">
         <div class="text-xl">支出合計：</div>
-        <div class="text-xl text-gray-500" id="id_speding_total"></div>
+        <div class="text-xl text-gray-500" id="spending_total"></div>
       </div>
       <!--支出伝票-->
       <div class="space-y-2 flex items-center justify-items-center">
@@ -265,158 +265,6 @@
         </tr>
       </thead>
       <tbody id="AccountingList" class="text-xs">
-        {% comment %} {% for object in object_list %} {% endcomment %}
-        <tr class="border-gray-500 border-y border-solid">
-          <td class="border-gray-500 border-x border-solid text-center">
-            <button
-              type="button"
-              class="modal-open-button font-medium text-blue-600 mx-auto"
-              data-modal-hide="authentication-modal"
-              data-modal-target="#update-modal"
-              data-modal-id="{{object.pk}}"
-            >
-              <a href="#" class="hover:underline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="m18.988 2.012l3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287l-3-3L8 13z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M19 19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2z"
-                  />
-                </svg>
-              </a>
-            </button>
-          </td>
-          <td class="border-gray-500 border-x border-solid text-center">
-            <button type="button" class="font-medium text-gray-500 mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V5h14zM17.99 9l-1.41-1.42l-6.59 6.59l-2.58-2.57l-1.42 1.41l4 3.99z"
-                />
-              </svg>
-            </button>
-            <!--
-						<button type="button" class="font-medium text-gray-500 mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M3 21V3h18v18zm2-2h14V5H5zm0 0V5z"
-                />
-              </svg>
-            </button>
--->
-          </td>
-
-          <td class="border-gray-500 border-x border-solid text-center">10</td>
-          <td class="border-gray-500 border-x border-solid text-center">19</td>
-          <td class="border-gray-500 border-x border-solid text-center">
-            市交
-          </td>
-          <td class="border-gray-500 border-x border-solid text-center">
-            運営
-          </td>
-          <td class="border-gray-500 border-x border-solid text-center">
-            ロリポップ
-          </td>
-          <td class="border-gray-500 border-x border-solid text-center">
-            レンタルサーバー代
-          </td>
-          <td class="border-gray-500 border-x border-solid text-center"></td>
-          <td class="border-gray-500 border-x border-solid text-center">1</td>
-          <td
-            class="border-gray-500 border-x border-solid text-right pr-1 text-xs"
-          ></td>
-          <td
-            class="border-gray-500 border-x border-solid text-right pr-1 text-xs"
-          >
-            ￥11,000
-          </td>
-          <td
-            class="border-gray-500 border-x border-solid text-right pr-1 text-xs"
-          >
-            -￥11,000
-          </td>
-          <td class="border-gray-500 border-x border-solid p-1 text-center">
-            <!--
-            <button type="button" class="font-medium text-red-500 mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V5h14zM17.99 9l-1.41-1.42l-6.59 6.59l-2.58-2.57l-1.42 1.41l4 3.99z"
-                />
-              </svg>
-            </button>
-					-->
-            <button type="button" class="font-medium text-gray-500 mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M3 21V3h18v18zm2-2h14V5H5zm0 0V5z"
-                />
-              </svg>
-            </button>
-          </td>
-          <td class="border-gray-500 border-x border-solid p-1 text-center">
-            <button type="button" class="font-medium text-gray-500 mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V5h14zM17.99 9l-1.41-1.42l-6.59 6.59l-2.58-2.57l-1.42 1.41l4 3.99z"
-                />
-              </svg>
-            </button>
-            <!--
-						<button type="button" class="font-medium text-gray-500 mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M3 21V3h18v18zm2-2h14V5H5zm0 0V5z"
-                />
-              </svg>
-            </button>
--->
-          </td>
-        </tr>
-
-        {% comment %} {% endfor %} {% endcomment %}
       </tbody>
     </table>
     <div class="hidden bg-red-100 border border-red-400 text-2xl text-red-700 px-4 py-3 mt-8 rounded font-bold" role="alert" id="warning_message">
@@ -698,6 +546,7 @@
 // tr（1行）書き込み
         element_tbody.appendChild(tr_element);
       }
+      SetTotalAmount();
     })
     .catch(error => {
       console.error('通信に失敗しました', error);
@@ -744,18 +593,32 @@
   // 会計年度と出納帳の選択状況
   const element_fiscal_terms = document.querySelector('#select_fiscal_terms');
   const element_accounting_book = document.querySelector('#select_accounting_book');
+  const element_income_total = document.querySelector('#income_total');
+  const element_spendign_total = document.querySelector('#spending_total');
 
   let  fiscal_terms_value = 'none';
   let  accounting_book_value = 'none';
+
+  const SetTotalAmount =()=>{
+    element_spendign_total.textContent = spending_amount_total.toLocaleString('ja-JP', {style:'currency', currency: 'JPY'});
+    element_income_total.textContent = income_amount_total.toLocaleString('ja-JP', {style:'currency', currency: 'JPY'});
+  }
 
   const SetWarningMessage =()=>{
     if (fiscal_terms_value=='none'){
       element_warning_message.textContent ="会計年度を選択してください！";
       element_warning_message.classList.remove("hidden");
+      spending_amount_total =0;
+      income_amount_total = 0;
+      SetTotalAmount();
 
     }else if(accounting_book_value=='none'){
       element_warning_message.textContent ="出納帳を選択してください！";
       element_warning_message.classList.remove("hidden");
+      spending_amount_total =0;
+      income_amount_total = 0;
+      SetTotalAmount();
+
     }else{
       element_warning_message.textContent ="";
       element_warning_message.classList.add("hidden");
