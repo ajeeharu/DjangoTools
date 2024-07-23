@@ -1,22 +1,23 @@
 # coding: utf-8
 
-from django.views.generic import TemplateView,CreateView,ListView,UpdateView,DeleteView
+from django.views.generic import CreateView,ListView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from rest_framework import viewsets
-from .serializer import CreditorSerializer,SupplierSerializer,FiscalTermsSerializer,AccountingBookSerializer,SubjectSpendingSerializer,SectionSpendingSerializer,SubjectIncomeSerializer,SectionIncomeSerializer
-from .models import Creditor,Supplier,PageManager,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome
+from .serializer import CreditorSerializer,SupplierSerializer,FiscalTermsSerializer,AccountingBookSerializer,SubjectSpendingSerializer,SectionSpendingSerializer,SubjectIncomeSerializer,SectionIncomeSerializer,SpendingRecordSerializer,IncomeRecordSerializer,PageManagerSerializer
+from .models import Creditor,Supplier,PageManager,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome,IncomeRecord,PageManager,SpendingRecord,IncomeRecord
 from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm,FiscalTermsForm,FiscalTermsUpdateForm,FiscalTermsDeleteForm, \
     AccountingBookForm,AccountingBookUpdateForm,AccountingBookDeleteForm,SubjectSpendingForm,SubjectSpendingUpdateForm,SubjectSpendingDeleteForm,SectionSpendingForm,SectionSpendingUpdateForm,SectionSpendingDeleteForm, \
-    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm
+    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm,IncomeRecordForm,SpendingRecordForm,PageManagerForm, \
+    PageManagerUpdateForm,IncomeRecordUpdateForm,SpendingRecordUpdateForm
 
-
-#
+# 現金出納帳
 class IndexView(LoginRequiredMixin,ListView):
     template_name = "accounting/index.html"
     model = PageManager
+    success_url = reverse_lazy('accounting:index')
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -24,12 +25,66 @@ class IndexView(LoginRequiredMixin,ListView):
         context['page_title'] = '現金出納帳'
         context['fiscal_term_objects'] = FiscalTerms.objects.all()
         context['accounting_book_objects'] = AccountingBook.objects.all()
-        context['form_income_create'] = IncomeCreateForm()        # Create Modal画面
-        context['form_spending_create'] = SpendingCreateForm()    # Create Modal画面
-        context['form_income_update'] = IncomeUpdateForm()        # Update Modal画面
-        context['form_spending_update'] = SpendingUpdateForm()    # Update Modal画面
+        context['form_page_create'] = PageManagerForm()                 # Create Modal画面
+        context['form_income_create'] = IncomeRecordForm()              # Create Modal画面
+        context['form_spending_create'] = SpendingRecordForm()          # Create Modal画面
+        context['form_page_update'] = PageManagerUpdateForm()           # Update Modal画面
+        context['form_income_update'] = IncomeRecordUpdateForm()        # Update Modal画面
+        context['form_spending_update'] = SpendingRecordUpdateForm()    # Update Modal画面
 
         return context
+
+    def form_valid(self, form):
+        return
+
+def ModalIncomeRecordCreateView(request):
+    model = IncomeRecord
+    form_class = IncomeRecordForm
+    success_url = reverse_lazy('accounting:index')
+
+    def post(self, request, *args, **kwargs):
+        form_income_create = IncomeRecordForm(**self.get_form_kwargs())
+        form_page_create = PageManagerForm(**self.get_form_kwargs())
+        form_income_create.save(commit=False)
+        # form_page_create.save(commit=False)
+
+        form_income_create.save()
+        return self.form_valid(form_income_create)
+
+    def form_valid(self, form):
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
+
+
+class ModalSpendingRecordApiView(viewsets.ModelViewSet):
+    queryset = SpendingRecord.objects.all()
+    serializer_class = SpendingRecordSerializer
+
+class ModalIncomeRecordApiView(viewsets.ModelViewSet):
+    queryset = IncomeRecord.objects.all()
+    serializer_class = IncomeRecordSerializer
+
+class PageManagerApiView(viewsets.ModelViewSet):
+    serializer_class = PageManagerSerializer
+
+    def get_queryset(self):
+        queryset = PageManager.objects.all()
+        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        if current_public_hall:
+            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
+        current_fiscal_terms = self.request.query_params.get('fiscal_terms')
+        if current_fiscal_terms is not None:
+            queryset = queryset.filter(fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
+        current_accountig_book = self.request.query_params.get('accountig_book')
+        if current_accountig_book is not None:
+            queryset = queryset.filter(accountig_book=current_accountig_book)   # QuerySet（出納帳が一致）
+        queryset = queryset.order_by('number')                                 # シリアル番号順
+
+        return queryset
+
 
 # 債権者情報
 class CreditorListView(LoginRequiredMixin,ListView):
@@ -37,9 +92,10 @@ class CreditorListView(LoginRequiredMixin,ListView):
     model = Creditor
 
     def get_queryset(self):
+        queryset = Creditor.objects.all()
         current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = Creditor.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
+            queryset = queryset.filter(public_hall=current_public_hall)     # QuerySet（一致するレコード全て取得）
         return queryset
 
     def get_context_data(self):
@@ -421,7 +477,7 @@ class ModalSectionIncomeCreateView(LoginRequiredMixin,CreateView):
 
 class ModalSectionIncomeUpdateView(LoginRequiredMixin,UpdateView):
     model = SectionIncome
-    form_class = SectionIncomeUpdateForm
+    form_class = SubjectIncomeUpdateForm
     success_url = reverse_lazy('accounting:sectionincome')
 
     def form_valid(self, form):
@@ -434,7 +490,7 @@ class ModalSectionIncomeUpdateView(LoginRequiredMixin,UpdateView):
 
 class ModalSectionIncomeDeleteView(LoginRequiredMixin,DeleteView):
     model = SectionIncome
-    success_url = reverse_lazy('accounting:sectionincome')
+    success_url = reverse_lazy('accounting:subjectincome')
 
 class ModalSectionIncomeApiView(viewsets.ModelViewSet):
     queryset = SectionIncome.objects.all()

@@ -46,6 +46,10 @@ urlpatterns = [
     path('sectionincome/modal/create', views.ModalSectionIncomeCreateView.as_view(), name="modal_create_sectionincome"),
     path('sectionincome/modal/<int:pk>/update', views.ModalSectionIncomeUpdateView.as_view(), name="modal_update_sectionincome"),
     path('sectionincome/modal/<int:pk>/delete', views.ModalSectionIncomeDeleteView.as_view(), name="modal_delete_sectionincome"),
+
+    path('incomerecord/modal/create', views.ModalIncomeRecordCreateView, name="modal_create_incomerecord"),
+
+
 ]
 
 router = DefaultRouter()
@@ -57,3 +61,7 @@ router.register(r'subjectspending', views.ModalSubjectSpendingApiView,basename="
 router.register(r'sectionspending', views.ModalSectionSpendingApiView,basename="sectionspending")
 router.register(r'subjectincome', views.ModalSubjectIncomeApiView,basename="subjectincome")
 router.register(r'sectionincome', views.ModalSectionIncomeApiView,basename="sectionincome")
+
+router.register(r'spendingrecord', views.ModalSpendingRecordApiView,basename="spendingrecord")
+router.register(r'incomerecord', views.ModalIncomeRecordApiView,basename="incomerecord")
+router.register(r'pagemanager', views.PageManagerApiView,basename="pagemanager")

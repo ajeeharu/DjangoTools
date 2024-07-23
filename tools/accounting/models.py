@@ -105,9 +105,9 @@ class SpendingRecord(models.Model):
 	description = models.CharField('摘要', max_length=64)
 	amount = models.IntegerField('金額', default=0)
 	memo = models.CharField('メモ（印刷対象外)', max_length=64, blank=True)
-	receipt = models.FileField(upload_to ='receipt/%Y/%m/%d/',null=True) 			# 領収書
-	estimate = models.FileField(upload_to ='estimate/%Y/%m/%d/',null=True) 		# 見積書等
-	creditor = models.ForeignKey(Creditor, on_delete=models.CASCADE)					# 債権者
+	receipt = models.FileField(upload_to ='receipt/%Y/%m/%d/',null=True,blank=True) 						# 領収書
+	estimate = models.FileField(upload_to ='estimate/%Y/%m/%d/',null=True,blank=True) 					# 見積書等
+	creditor = models.ForeignKey(Creditor, on_delete=models.CASCADE)														# 債権者
 	behalf_pay = models.BooleanField('立替',default=False)
 	rebersal_monies = models.BooleanField('戻入',default=False)
 	tax_withholding = models.BooleanField('源泉',default=False)
@@ -115,39 +115,39 @@ class SpendingRecord(models.Model):
 	attachement = models.BooleanField('別紙',default=False)
 
 	def __str__(self):
-			return self.number+'：'+self.description
+			return self.description
 
 # 収入詳細
 class IncomeRecord(models.Model):
-	number = models.IntegerField('収入番号')
+	number = models.IntegerField('収入番号',null=True, default=0)
 	date = models.DateField('日付')
-	subject_income = models.ForeignKey(SubjectIncome, on_delete=models.CASCADE,null=False)		# 収入科目
-	section_income = models.ForeignKey(SectionIncome, on_delete=models.CASCADE,null=False)		# 収入節
+	subject_income = models.ForeignKey(SubjectIncome, on_delete=models.CASCADE,null=False)			# 収入科目
+	section_income = models.ForeignKey(SectionIncome, on_delete=models.CASCADE,null=False)			# 収入節
 	description = models.CharField('摘要', max_length=64)
 	amount = models.IntegerField('金額', default=0)
 	memo = models.CharField('メモ（印刷対象外)', max_length=64, blank=True)
-	receipt = models.FileField(upload_to ='receipt/%Y/%m/%d/',null=True)
-	estimate = models.FileField(upload_to ='estimate/%Y/%m/%d/',null=True)
-	creditor = models.ForeignKey(Supplier, on_delete=models.CASCADE)							# 納入者
+	notice1 = models.FileField(upload_to ='notice/%Y/%m/%d/' ,null=True,blank=True)							# 通知書１
+	notice2 = models.FileField(upload_to ='notice/%Y/%m/%d/' ,null=True,blank=True)							# 通知書２
+	supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)														# 納入者
 
 	def __str__(self):
-			return self.number+'：'+self.description
+			return self.description
 
 # 一覧画面制御用
 class PageManager(models.Model):
-	SELECT = (
+	SELECT_CHOICES = (
 			('0', '支出命令'),
 			('1', '収入命令'),
 	)
 	number = models.IntegerField('シリアル番号')
 	fixed_number = models.BooleanField('番号固定',default=False)
-	income_select = models.CharField('収支指定',max_length=2,choices=SELECT,default='0')
-	accountig_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)
-	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)
-	spending_record = models.ForeignKey(SpendingRecord, on_delete=models.CASCADE)	# 支出レコード
-	income_record = models.ForeignKey(IncomeRecord, on_delete=models.CASCADE)		# 収入レコード
-	public_hall = models.ForeignKey(PublicHall, on_delete=models.CASCADE,null=False)
+	income_select = models.CharField('収支指定',max_length=2,choices=SELECT_CHOICES,default='0')
+	accountig_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)							# 出納帳
+	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)									# 会計年度
+	spending_record = models.ForeignKey(SpendingRecord, on_delete=models.SET_NULL,null=True,blank=True)	# 支出レコード
+	income_record = models.ForeignKey(IncomeRecord, on_delete=models.SET_NULL,null=True,blank=True)			# 収入レコード
+	public_hall = models.ForeignKey(PublicHall, on_delete=models.CASCADE,null=False)										# 公民館
 
 	def __str__(self):
-			return self.number
+			return str(self.number)
 

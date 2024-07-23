@@ -22,7 +22,7 @@
       <!--収入合計-->
       <div class="flex justify-between items-center w-52">
         <div class="text-xl">収入合計：</div>
-        <div class="text-xl text-gray-500">￥12,423</div>
+        <div class="text-xl text-gray-500" id="id_income_total"></div>
       </div>
       <!--収入伝票-->
       <div class="space-y-2 flex items-center justify-items-center">
@@ -63,7 +63,7 @@
       <!--支出合計-->
       <div class="flex justify-between items-center w-52">
         <div class="text-xl">支出合計：</div>
-        <div class="text-xl text-gray-500">￥123,423</div>
+        <div class="text-xl text-gray-500" id="id_speding_total"></div>
       </div>
       <!--支出伝票-->
       <div class="space-y-2 flex items-center justify-items-center">
@@ -266,7 +266,6 @@
       </thead>
       <tbody id="AccountingList" class="text-xs">
         {% comment %} {% for object in object_list %} {% endcomment %}
-
         <tr class="border-gray-500 border-y border-solid">
           <td class="border-gray-500 border-x border-solid text-center">
             <button
@@ -432,6 +431,281 @@
 {% include 'accounting/modals/modal_cash_book_update.html' %}
 
 <script type="text/javascript">
+  let spending_amount_total = 0;
+  let income_amount_total = 0;
+
+  const PageManagerList = (fiscal_terms,accounting_book)=>
+  {
+    let element_tbody = document.querySelector('#AccountingList');
+
+    // 子要素をすべて削除する
+    while(element_tbody.firstChild){
+      element_tbody.removeChild(element_tbody.firstChild);
+    }
+
+    // API経由でData取得
+    const CreateEndPoint ="/api/accounting/pagemanager/?accountig_book="+accounting_book+"&fiscal_terms="+fiscal_terms;
+
+    fetch(CreateEndPoint, {
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => {
+        return response.json(); // 読み込むデータをJSONに設定
+    })
+    .then((result) => {
+      for(i=0; i<result.length; i++){
+        let data=result[i];
+
+        let tr_element = document.createElement("tr");
+        tr_element.className = "border-gray-500 border-y border-solid";
+
+// Update用のModalボタン
+        let td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+
+        let button_element = document.createElement("button");
+        button_element.type="button";
+        button_element.className = "modal-open-button font-medium text-blue-600 mx-auto";
+        button_element.setAttribute("data-modal-hide","authentication-modal");
+        button_element.setAttribute("data-modal-target","#update-modal");
+        button_element.setAttribute("data-id",data.id);
+
+        let href_element = document.createElement("a");
+        href_element.href = "#";
+        href_element.innerHTML=
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
+                    +'<path fill="currentColor" d="m18.988 2.012l3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287l-3-3L8 13z"/>'
+                    +'<path fill="currentColor"'
+                    +'d="M19 19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2z"'
+                    +'/>'
+                    +'</svg>';
+
+        button_element.appendChild(href_element);
+        td_element.appendChild(button_element);
+        tr_element.appendChild(td_element);
+
+// 番号固定
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+
+        button_element = document.createElement("button");
+        button_element.type="button";
+        button_element.className = "font-medium text-gray-500 mx-auto";
+        if( data.fixed_number ){
+          button_element.innerHTML =
+              '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
+              +'<path fill="currentColor"'
+              +   'd="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V5h14zM17.99 9l-1.41-1.42l-6.59 6.59l-2.58-2.57l-1.42 1.41l4 3.99z"'
+              +'/>'
+              +'</svg>';
+        }else{
+          button_element.innerHTML =
+              '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
+              +'<path fill="currentColor" d="M3 21V3h18v18zm2-2h14V5H5zm0 0V5z" />'
+              +'</svg>';
+        }
+        td_element.appendChild(button_element);
+        tr_element.appendChild(td_element);
+//月
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        let month;
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.date.substring(5,7);
+        }else
+        {
+          td_element.textContent = data.income_record.date.substring(5,7);
+        }
+        tr_element.appendChild(td_element);
+
+//日
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.date.substring(8,10);
+        }else
+        {
+          td_element.textContent = data.income_record.date.substring(8,10);
+        }
+        tr_element.appendChild(td_element);
+//項
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.subject_spending.acronym;
+        }else
+        {
+          td_element.textContent = data.income_record.subject_income.acronym;
+        }
+        tr_element.appendChild(td_element);
+//節
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.section_spending.acronym;
+        }else
+        {
+          td_element.textContent = data.income_record.section_income.acronym;
+        }
+        tr_element.appendChild(td_element);
+//債権者・納入者
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.creditor.name;
+        }else
+        {
+          td_element.textContent = data.income_record.supplier.name;
+        }
+        tr_element.appendChild(td_element);
+//概要
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.description;
+        }else
+        {
+          td_element.textContent = data.income_record.description;
+        }
+        tr_element.appendChild(td_element);
+//収入番号
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+        }else
+        {
+          td_element.textContent = data.income_record.number;
+        }
+        tr_element.appendChild(td_element);
+//支出番号
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.number;
+        }else
+        {
+        }
+        tr_element.appendChild(td_element);
+//収入金額
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-right pr-1 text-xs";
+        if( data.income_select.value=="支出命令")
+        {
+        }else
+        {
+          td_element.textContent = data.income_record.amount.toLocaleString('ja-JP', {style:'currency', currency: 'JPY'});
+          income_amount_total += data.income_record.amount;
+        }
+        tr_element.appendChild(td_element);
+//支出金額
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-right pr-1 text-xs";
+        if( data.income_select.value=="支出命令")
+        {
+          td_element.textContent = data.spending_record.amount.toLocaleString('ja-JP', {style:'currency', currency: 'JPY'});
+          spending_amount_total += data.spending_record.amount;
+        }else
+        {
+        }
+        tr_element.appendChild(td_element);
+//差引残高
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-right pr-1 text-xs";
+        td_element.textContent = (income_amount_total-spending_amount_total).toLocaleString('ja-JP', {style:'currency', currency: 'JPY'});
+        tr_element.appendChild(td_element);
+//見積もり
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          if(data.spending_record.estimate != null){
+            button_element = document.createElement("button");
+            button_element.type="button";
+            button_element.className = "font-medium text-gray-500 mx-auto";
+            href_element = document.createElement("a");
+            href_element.href = data.spending_record.estimate;
+            href_element.innerHTML=
+                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
+                +'<path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"/>'
+                +'</svg>';
+            button_element.appendChild(href_element);
+            td_element.appendChild(button_element);
+          }
+        }else
+        {
+          if(data.income_record.notice1 != null){
+            button_element = document.createElement("button");
+            button_element.type="button";
+            button_element.className = "font-medium text-gray-500 mx-auto";
+            href_element = document.createElement("a");
+            href_element.href = data.income_record.notice1;
+            href_element.innerHTML=
+                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
+                +'<path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"/>'
+                +'</svg>';
+            button_element.appendChild(href_element);
+            td_element.appendChild(button_element);
+          }
+        }
+        tr_element.appendChild(td_element);
+//領収
+        td_element = document.createElement("td");
+        td_element.className ="border-gray-500 border-x border-solid text-center";
+        if( data.income_select.value=="支出命令")
+        {
+          if(data.spending_record.receipt != null){
+            button_element = document.createElement("button");
+            button_element.type="button";
+            button_element.className = "font-medium text-gray-500 mx-auto";
+            href_element = document.createElement("a");
+            href_element.href = data.spending_record.receipt;
+            href_element.innerHTML=
+                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
+                +'<path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"/>'
+                +'</svg>';
+            button_element.appendChild(href_element);
+            td_element.appendChild(button_element);
+          }
+        }else
+        {
+          if(data.income_record.notice2 != null){
+            button_element = document.createElement("button");
+            button_element.type="button";
+            button_element.className = "font-medium text-gray-500 mx-auto";
+            href_element = document.createElement("a");
+            href_element.href = data.income_record.notice2;
+            href_element.innerHTML=
+                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
+                +'<path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"/>'
+                +'</svg>';
+            button_element.appendChild(href_element);
+            td_element.appendChild(button_element);
+          }
+        }
+        tr_element.appendChild(td_element);
+// tr（1行）書き込み
+        element_tbody.appendChild(tr_element);
+      }
+    })
+    .catch(error => {
+      console.error('通信に失敗しました', error);
+    });
+  };
+
+
+
   const onStartEvent = (event) => {
     console.log("onStart!!");
   };
@@ -485,6 +759,7 @@
     }else{
       element_warning_message.textContent ="";
       element_warning_message.classList.add("hidden");
+      PageManagerList(fiscal_terms_value,accounting_book_value);
     }
   }
 
@@ -508,6 +783,7 @@
     return ((fiscal_terms_value=='none')|| (accounting_book_value=='none'));
   }
   SetPreCheckCallBack(CheckAccountingBook);
+
 
 </script>
 
