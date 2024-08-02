@@ -10,8 +10,11 @@ from .serializer import CreditorSerializer,SupplierSerializer,FiscalTermsSeriali
 from .models import Creditor,Supplier,PageManager,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome,IncomeRecord,PageManager,SpendingRecord,IncomeRecord
 from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm,FiscalTermsForm,FiscalTermsUpdateForm,FiscalTermsDeleteForm, \
     AccountingBookForm,AccountingBookUpdateForm,AccountingBookDeleteForm,SubjectSpendingForm,SubjectSpendingUpdateForm,SubjectSpendingDeleteForm,SectionSpendingForm,SectionSpendingUpdateForm,SectionSpendingDeleteForm, \
-    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm,IncomeRecordForm,SpendingRecordForm,PageManagerForm, \
+    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm,IncomeRecordForm,SpendingRecordForm,PageManagerForm,IncomeFormset,SpedingFormset, \
     PageManagerUpdateForm,IncomeRecordUpdateForm,SpendingRecordUpdateForm
+
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 
 # 現金出納帳
 class IndexView(LoginRequiredMixin,ListView):
@@ -25,12 +28,14 @@ class IndexView(LoginRequiredMixin,ListView):
         context['page_title'] = '現金出納帳'
         context['fiscal_term_objects'] = FiscalTerms.objects.all()
         context['accounting_book_objects'] = AccountingBook.objects.all()
-        context['form_page_create'] = PageManagerForm()                 # Create Modal画面
         context['form_income_create'] = IncomeRecordForm()              # Create Modal画面
         context['form_spending_create'] = SpendingRecordForm()          # Create Modal画面
         context['form_page_update'] = PageManagerUpdateForm()           # Update Modal画面
         context['form_income_update'] = IncomeRecordUpdateForm()        # Update Modal画面
         context['form_spending_update'] = SpendingRecordUpdateForm()    # Update Modal画面
+        context['formset_income_page_create'] = IncomeFormset()         # Create Modal画面
+        context['formset_spending_page_create'] = SpedingFormset()      # Create Modal画面
+
 
         return context
 
@@ -38,34 +43,51 @@ class IndexView(LoginRequiredMixin,ListView):
         return
 
 def ModalIncomeRecordCreateView(request):
-    model = IncomeRecord
-    form_class = IncomeRecordForm
+    form = IncomeRecordForm(request.POST or None)
+    context = {'form': form}
     success_url = reverse_lazy('accounting:index')
-
-    def post(self, request, *args, **kwargs):
-        form_income_create = IncomeRecordForm(**self.get_form_kwargs())
-        form_page_create = PageManagerForm(**self.get_form_kwargs())
-        form_income_create.save(commit=False)
-        # form_page_create.save(commit=False)
-
-        form_income_create.save()
-        return self.form_valid(form_income_create)
-
-    def form_valid(self, form):
-        return HttpResponseRedirect(self.success_url)
-
-    def form_invalid(self, form):
-        messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(self.success_url)
+    if request.method == 'POST' and form.is_valid():
+        post =  form.save(commit=False)
+        formset_income_page_create = IncomeFormset(request.POST,instance=post)
+        print("formset")
+        if formset_income_page_create.is_valid():
+            print("formset is_valid")
+            post.save()
+            formset_income_page_create.save()
+        else:
+            print("formset is_invalid")
+            for ele in formset_income_page_create:
+                print(ele)
+    return HttpResponseRedirect(success_url)
 
 
 class ModalSpendingRecordApiView(viewsets.ModelViewSet):
     queryset = SpendingRecord.objects.all()
     serializer_class = SpendingRecordSerializer
 
+    def patch(self, request, pk, *args, **kwargs):
+        # instanceの取得
+        instance = get_object_or_404(SpendingRecord, pk=pk)
+        serializer = SpendingRecordSerializer(instance=instance, data=request.data, partial=True)
+        # バリデーション
+        serializer.is_valid(raise_exception=True)
+        # DB更新
+        serializer.save()
+        return Response({'result':True})
+
 class ModalIncomeRecordApiView(viewsets.ModelViewSet):
     queryset = IncomeRecord.objects.all()
     serializer_class = IncomeRecordSerializer
+
+    def patch(self, request, pk, *args, **kwargs):
+        # instanceの取得
+        instance = get_object_or_404(IncomeRecord, pk=pk)
+        serializer = IncomeRecordSerializer(instance=instance, data=request.data, partial=True)
+        # バリデーション
+        serializer.is_valid(raise_exception=True)
+        # DB更新
+        serializer.save()
+        return Response({'result':True})
 
 class PageManagerApiView(viewsets.ModelViewSet):
     serializer_class = PageManagerSerializer
@@ -85,6 +107,15 @@ class PageManagerApiView(viewsets.ModelViewSet):
 
         return queryset
 
+    def patch(self, request, pk, *args, **kwargs):
+        # instanceの取得
+        instance = get_object_or_404(PageManager, pk=pk)
+        serializer = PageManagerSerializer(instance=instance, data=request.data, partial=True)
+        # バリデーション
+        serializer.is_valid(raise_exception=True)
+        # DB更新
+        serializer.save()
+        return Response({'result':True})
 
 # 債権者情報
 class CreditorListView(LoginRequiredMixin,ListView):

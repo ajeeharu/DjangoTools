@@ -98,7 +98,7 @@ class SectionIncome(models.Model):
 
 # 支出詳細
 class SpendingRecord(models.Model):
-	number = models.IntegerField('支出番号')
+	number = models.IntegerField('支出番号',null=True, default=0)
 	date = models.DateField('日付')
 	subject_spending = models.ForeignKey(SubjectSpending, on_delete=models.CASCADE,null=False)	# 支出科目
 	section_spending = models.ForeignKey(SectionSpending, on_delete=models.CASCADE,null=False)	# 支出節

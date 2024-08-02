@@ -41,15 +41,20 @@
       <div class="p-4 md:p-5">
         <form class="space-y-4 grid grid-cols-2 gap-4" method="post" id="form" enctype="multipart/form-data">
           {% csrf_token %}
+          {{ formset_income_page_create.management_form }}
+            {% for result_form in formset_income_page_create %}
+                {{ result_form.as_p }}
+            {% endfor %}
+<!--
           <div>
             <label
               for="fixed_number"
               class="block mb-2 text-xl font-medium text-gray-900"
               >番号を固定する</label
             >
-            {{ form_page_create.fixed_number }}
-            {{ form_page_create.fixed_number.errors }}
+              <input type="checkbox" class="h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center" name="pagemanager_set-0-fixed_number" id="id_pagemanager_set-0-fixed_number">
           </div>
+-->
           <div>
             <label
               for="number"
@@ -137,8 +142,8 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >納入者</label
             >
-            {{ form_income_create.creditor }}
-            {{ form_income_create.creditor.errors }}
+            {{ form_income_create.supplier }}
+            {{ form_income_create.supplier.errors }}
           </div>
 
           {% if form.non_field_errors %}
@@ -152,6 +157,18 @@
           >
             新規作成
           </button>
+          <!-- PageManager Parameter -->
+<!--
+          <input type="hidden" name="pagemanager_set-0-number" id="id_pagemanager_set-0-number" value="1">>
+          <input type="hidden" name="pagemanager_set-0-income_record" id="id_pagemanager_set-0-income_record">
+          <input type="hidden" name="pagemanager_set-0-id" id="id_pagemanager_set-0-id">
+
+          <input type="hidden" name="pagemanager_set-0-income_select" id="id_pagemanager_set-0-income_select" value="1">
+          <input type="hidden" name="pagemanager_set-0-accountig_book" id="id_pagemanager_set-0-accountig_book" value="3">
+          <input type="hidden" name="pagemanager_set-0-fiscal_terms" id="id_pagemanager_set-0-fiscal_terms" value="2">
+          <input type="hidden" name="pagemanager_set-0-spending_record" id="id_pagemanager_set-0-spending_record" value=null>
+          <input type="hidden" name="pagemanager_set-0-public_hall" id="id_pagemanager_set-0-public_hall" value="34">
+-->
         </form>
       </div>
     </div>

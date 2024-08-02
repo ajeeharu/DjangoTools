@@ -290,11 +290,15 @@ class PageManagerForm(forms.ModelForm):
         model = PageManager
         fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        super(PageManagerForm, self).__init__(*args, **kwargs)
-        for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"
-        self.fields[ 'fixed_number' ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right h-6"
+IncomeFormset = forms.inlineformset_factory(
+    IncomeRecord,PageManager, fields='__all__',
+    extra=1,can_delete=False
+)
+
+SpedingFormset = forms.inlineformset_factory(
+    SpendingRecord,PageManager, fields='__all__',
+    extra=1,can_delete=False
+)
 
 
 class PageManagerUpdateForm(PageManagerForm):
