@@ -292,6 +292,8 @@
 
 //  Description ： 表示初期化
   const InitPage =() =>{
+    spending_amount_total = 0;        // 支出合計
+    income_amount_total = 0;          // 収入合計
     while(element_tbody.firstChild){
       element_tbody.removeChild(element_tbody.firstChild);
     }
@@ -342,7 +344,8 @@
       button_element = document.createElement("button");
       button_element.type="button";
       button_element.className = "font-medium text-gray-500 mx-auto";
-      if( data.fixed_number ){
+      if((( data.income_select.value=="支出命令")&&( data.spending_record.fixed_number ))
+        ||(( data.income_select.value!="支出命令")&&( data.income_record.fixed_number ))){
         button_element.innerHTML =
             '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
             +'<path fill="currentColor"'
@@ -641,16 +644,14 @@
     for(let i=0; i<result.length; i++){
       let data=result[i];
       // 番号固定でなければ支出番号、収入番号をチェック
-      if(!data.fixed_number){
-        if( data.income_select.value !="支出命令")
+      if(( data.income_select.value!="支出命令")&&( !data.income_record.fixed_number ))
+      {
+        if( income_counter != data.income_record.number )
         {
-          if( income_counter != data.income_record.number )
-          {
-            await IncomeRecordPatchNumber(data.income_record.id, income_counter);
-            retry = true;
-          }
-          income_counter++;
+          await IncomeRecordPatchNumber(data.income_record.id, income_counter);
+          retry = true;
         }
+        income_counter++;
       }
     }
     return retry;
@@ -664,16 +665,14 @@
 
     for(let i=0; i<result.length; i++){
       let data=result[i];
-      if(!data.fixed_number){
-        if( data.income_select.value=="支出命令")
+      if(( data.income_select.value=="支出命令")&&( !data.spending_record.fixed_number ))
+      {
+        if( spending_counter != data.spending_record.number )
         {
-          if( spending_counter != data.spending_record.number )
-          {
-            await SpendingRecordPatchNumber(data.spending_record.id, spending_counter);
-            retry = true;
-          }
-          spending_counter++;
+          await SpendingRecordPatchNumber(data.spending_record.id, spending_counter);
+          retry = true;
         }
+        spending_counter++;
       }
     }
     return retry;
@@ -770,22 +769,16 @@
     if (fiscal_terms_value=='none'){
       element_warning_message.textContent ="会計年度を選択してください！";
       element_warning_message.classList.remove("hidden");
-      spending_amount_total =0;
-      income_amount_total = 0;
       InitPage();
       SetTotalAmount();
     }else if(accounting_book_value=='none'){
       element_warning_message.textContent ="出納帳を選択してください！";
       element_warning_message.classList.remove("hidden");
-      spending_amount_total =0;
-      income_amount_total = 0;
       InitPage();
       SetTotalAmount();
     }else{
       element_warning_message.textContent ="";
       element_warning_message.classList.add("hidden");
-      spending_amount_total =0;
-      income_amount_total = 0;
       PageManagerList(fiscal_terms_value,accounting_book_value);
       // SetTotalAmount(); 非同期のためPageManagerList内で同期待ち合わせ
     }

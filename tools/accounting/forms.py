@@ -250,6 +250,8 @@ class IncomeRecordForm(forms.ModelForm):
         super(IncomeRecordForm, self).__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+        self.fields['fixed_number'].widget.attrs['class'] = "h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+
 
 
 class IncomeRecordUpdateForm(IncomeRecordForm):
@@ -276,6 +278,8 @@ class SpendingRecordForm(forms.ModelForm):
         super(SpendingRecordForm, self).__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"
+        self.fields['fixed_number'].widget.attrs['class'] = "h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+
 
 class SpendingRecordUpdateForm(SpendingRecordForm):
     def __init__(self, *args, **kwargs):
@@ -291,12 +295,16 @@ class PageManagerForm(forms.ModelForm):
         fields = '__all__'
 
 IncomeFormset = forms.inlineformset_factory(
-    IncomeRecord,PageManager, fields='__all__',
+    parent_model=IncomeRecord,
+    model=PageManager,
+    fields='__all__',
     extra=1,can_delete=False
 )
 
 SpedingFormset = forms.inlineformset_factory(
-    SpendingRecord,PageManager, fields='__all__',
+    parent_model=SpendingRecord,
+    model=PageManager,
+    fields='__all__',
     extra=1,can_delete=False
 )
 

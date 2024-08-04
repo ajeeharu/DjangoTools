@@ -43,9 +43,10 @@ class IndexView(LoginRequiredMixin,ListView):
         return
 
 def ModalIncomeRecordCreateView(request):
-    form = IncomeRecordForm(request.POST or None)
+    form = IncomeRecordForm(request.POST, request.FILES)
     context = {'form': form}
     success_url = reverse_lazy('accounting:index')
+
     if request.method == 'POST' and form.is_valid():
         post =  form.save(commit=False)
         formset_income_page_create = IncomeFormset(request.POST,instance=post)
@@ -59,6 +60,8 @@ def ModalIncomeRecordCreateView(request):
             for ele in formset_income_page_create:
                 print(ele)
     return HttpResponseRedirect(success_url)
+
+
 
 
 class ModalSpendingRecordApiView(viewsets.ModelViewSet):

@@ -98,12 +98,12 @@ class SectionIncome(models.Model):
 
 # 支出詳細
 class SpendingRecord(models.Model):
-	number = models.IntegerField('支出番号',null=True, default=0)
+	number = models.IntegerField('支出番号',null=True)
 	date = models.DateField('日付')
 	subject_spending = models.ForeignKey(SubjectSpending, on_delete=models.CASCADE,null=False)	# 支出科目
 	section_spending = models.ForeignKey(SectionSpending, on_delete=models.CASCADE,null=False)	# 支出節
 	description = models.CharField('摘要', max_length=64)
-	amount = models.IntegerField('金額', default=0)
+	amount = models.IntegerField('金額')
 	memo = models.CharField('メモ（印刷対象外)', max_length=64, blank=True)
 	receipt = models.FileField(upload_to ='receipt/%Y/%m/%d/',null=True,blank=True) 						# 領収書
 	estimate = models.FileField(upload_to ='estimate/%Y/%m/%d/',null=True,blank=True) 					# 見積書等
@@ -113,22 +113,24 @@ class SpendingRecord(models.Model):
 	tax_withholding = models.BooleanField('源泉',default=False)
 	back_side = models.BooleanField('裏面',default=False)
 	attachement = models.BooleanField('別紙',default=False)
+	fixed_number = models.BooleanField('番号固定',default=False)
 
 	def __str__(self):
 			return self.description
 
 # 収入詳細
 class IncomeRecord(models.Model):
-	number = models.IntegerField('収入番号',null=True, default=0)
+	number = models.IntegerField('収入番号',null=True)
 	date = models.DateField('日付')
 	subject_income = models.ForeignKey(SubjectIncome, on_delete=models.CASCADE,null=False)			# 収入科目
 	section_income = models.ForeignKey(SectionIncome, on_delete=models.CASCADE,null=False)			# 収入節
 	description = models.CharField('摘要', max_length=64)
-	amount = models.IntegerField('金額', default=0)
+	amount = models.IntegerField('金額')
 	memo = models.CharField('メモ（印刷対象外)', max_length=64, blank=True)
 	notice1 = models.FileField(upload_to ='notice/%Y/%m/%d/' ,null=True,blank=True)							# 通知書１
 	notice2 = models.FileField(upload_to ='notice/%Y/%m/%d/' ,null=True,blank=True)							# 通知書２
 	supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)														# 納入者
+	fixed_number = models.BooleanField('番号固定',default=False)
 
 	def __str__(self):
 			return self.description
@@ -140,7 +142,6 @@ class PageManager(models.Model):
 			('1', '収入命令'),
 	)
 	number = models.IntegerField('シリアル番号')
-	fixed_number = models.BooleanField('番号固定',default=False)
 	income_select = models.CharField('収支指定',max_length=2,choices=SELECT_CHOICES,default='0')
 	accountig_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)							# 出納帳
 	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)									# 会計年度
