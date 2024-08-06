@@ -15,6 +15,8 @@ from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierFo
 
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from urllib.parse import urlencode
+from django.shortcuts import redirect
 
 # 現金出納帳
 class IndexView(LoginRequiredMixin,ListView):
@@ -48,19 +50,18 @@ def ModalIncomeRecordCreateView(request):
     success_url = reverse_lazy('accounting:index')
 
     if request.method == 'POST' and form.is_valid():
-        post =  form.save(commit=False)
-        formset_income_page_create = IncomeFormset(request.POST,instance=post)
-        print("formset")
+        fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
+        accounting_book = request.POST['pagemanager_set-0-accountig_book']
+        income_record =  form.save(commit=False)
+        formset_income_page_create = IncomeFormset(request.POST,instance=income_record)
         if formset_income_page_create.is_valid():
-            print("formset is_valid")
-            post.save()
+            income_record.save()
             formset_income_page_create.save()
         else:
             print("formset is_invalid")
             for ele in formset_income_page_create:
                 print(ele)
-    return HttpResponseRedirect(success_url)
-
+        return HttpResponseRedirect(f'{success_url}?fiscal_terms={fiscal_terms}&accounting_book={accounting_book}')
 
 
 

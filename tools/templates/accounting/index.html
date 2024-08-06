@@ -787,6 +787,19 @@
   document.addEventListener("DOMContentLoaded", () => {
     fiscal_terms_value = 'none';
     accounting_book_value = 'none';
+    // URLを取得
+    let url = new URL(window.location.href);
+    // URLSearchParamsオブジェクトを取得
+    let params = url.searchParams;
+
+    if( params.get('fiscal_terms') != '' )
+    {
+      fiscal_terms_value = params.get('fiscal_terms');
+    }
+    if( params.get('accounting_book') != '' )
+    {
+      accounting_book_value = params.get('accounting_book');
+    }
     SetPageListAndWarning();
     element_fiscal_terms.addEventListener("change", (event) => {
       fiscal_terms_value = event.target.value;
