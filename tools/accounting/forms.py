@@ -1,5 +1,6 @@
 from .models import Creditor,Supplier,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome,IncomeRecord,SpendingRecord,PageManager
 from django import forms
+from django import forms
 
 # 債権者情報
 class CreditorForm(forms.ModelForm):
@@ -257,16 +258,16 @@ class IncomeRecordForm(forms.ModelForm):
 class IncomeRecordUpdateForm(IncomeRecordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['number'].widget.attrs['id'] = "id_update_number"
-        self.fields['date'].widget.attrs['id'] = "id_update_date"
-        self.fields['subject_income'].widget.attrs['id'] = "id_update_subject_income"
-        self.fields['section_income'].widget.attrs['id'] = "id_update_section_income"
-        self.fields['description'].widget.attrs['id'] = "id_update_description"
-        self.fields['amount'].widget.attrs['id'] = "id_update_amount"
-        self.fields['memo'].widget.attrs['id'] = "id_update_memo"
-        self.fields['notice1'].widget.attrs['id'] = "id_update_notice1"
-        self.fields['notice2'].widget.attrs['id'] = "id_update_notice2"
-        self.fields['supplier'].widget.attrs['id'] = "id_update_supplier"
+        self.fields['number'].widget.attrs['id'] = "id_income_update_number"
+        self.fields['date'].widget.attrs['id'] = "id_income_update_date"
+        self.fields['subject_income'].widget.attrs['id'] = "id_income_update_subject_income"
+        self.fields['section_income'].widget.attrs['id'] = "id_income_update_section_income"
+        self.fields['description'].widget.attrs['id'] = "id_income_update_description"
+        self.fields['amount'].widget.attrs['id'] = "id_income_update_amount"
+        self.fields['memo'].widget.attrs['id'] = "id_income_update_memo"
+        self.fields['notice1'].widget.attrs['id'] = "id_income_update_notice1"
+        self.fields['notice2'].widget.attrs['id'] = "id_income_update_notice2"
+        self.fields['supplier'].widget.attrs['id'] = "id_income_update_supplier"
 
 # 支出詳細
 class SpendingRecordForm(forms.ModelForm):
@@ -277,16 +278,30 @@ class SpendingRecordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SpendingRecordForm, self).__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
-            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"
+            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
         self.fields['fixed_number'].widget.attrs['class'] = "h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
 
 
 class SpendingRecordUpdateForm(SpendingRecordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.fields['name'].widget.attrs['id'] = "id_update_name"
-        # self.fields['print_format'].widget.attrs['id'] = "id_update_print_format"
-        # self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
+        self.fields['number'].widget.attrs['id'] = "id_spending_update_number"
+        self.fields['date'].widget.attrs['id'] = "id_spending_update_date"
+        self.fields['subject_spending'].widget.attrs['id'] = "id_spending_update_subject_spending"
+        self.fields['section_spending'].widget.attrs['id'] = "id_spending_update_section_spending"
+        self.fields['description'].widget.attrs['id'] = "id_spending_update_description"
+        self.fields['amount'].widget.attrs['id'] = "id_spending_update_amount"
+        self.fields['memo'].widget.attrs['id'] = "id_spending_update_memo"
+        self.fields['receipt'].widget.attrs['id'] = "id_spending_update_receipt"
+        self.fields['estimate'].widget.attrs['id'] = "id_spending_update_estimate"
+        self.fields['creditor'].widget.attrs['id'] = "id_spending_update_creditor"
+        self.fields['behalf_pay'].widget.attrs['id'] = "id_spending_update_behalf_pay"
+        self.fields['rebersal_monies'].widget.attrs['id'] = "id_spending_update_rebersal_monies"
+        self.fields['tax_withholding'].widget.attrs['id'] = "id_spending_update_tax_withholding"
+        self.fields['back_side'].widget.attrs['id'] = "id_spending_update_back_side"
+        self.fields['attachement'].widget.attrs['id'] = "id_spending_update_attachement"
+        self.fields['fixed_number'].widget.attrs['id'] = "id_spending_update_fixed_number"
+
 
 # 一覧画面制御用
 class PageManagerForm(forms.ModelForm):
@@ -294,17 +309,41 @@ class PageManagerForm(forms.ModelForm):
         model = PageManager
         fields = '__all__'
 
-IncomeFormset = forms.inlineformset_factory(
+class PageManagerIncomeCreateForm(PageManagerForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['number'].widget.attrs['id'] = "id_pagemanager_income_cretate_number"
+        self.fields['income_select'].widget.attrs['id'] = "id_pagemanager_income_cretate_income_select"
+        self.fields['accountig_book'].widget.attrs['id'] = "id_pagemanager_income_cretate_accountig_book"
+        self.fields['fiscal_terms'].widget.attrs['id'] = "id_pagemanager_income_cretate_fiscal_terms"
+        self.fields['spending_record'].widget.attrs['id'] = "id_pagemanager_income_cretate_spending_record"
+        self.fields['income_record'].widget.attrs['id'] = "id_pagemanager_income_cretate_income_record"
+        self.fields['public_hall'].widget.attrs['id'] = "id_pagemanager_income_cretate_public_hall"
+
+class PageManagerSpendingCreateForm(PageManagerForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['number'].widget.attrs['id'] = "id_pagemanager_spending_cretate_number"
+        self.fields['income_select'].widget.attrs['id'] = "id_pagemanager_spending_cretate_income_select"
+        self.fields['accountig_book'].widget.attrs['id'] = "id_pagemanager_spending_cretate_accountig_book"
+        self.fields['fiscal_terms'].widget.attrs['id'] = "id_pagemanager_spending_cretate_fiscal_terms"
+        self.fields['spending_record'].widget.attrs['id'] = "id_pagemanager_spending_cretate_spending_record"
+        self.fields['income_record'].widget.attrs['id'] = "id_pagemanager_spending_cretate_income_record"
+        self.fields['public_hall'].widget.attrs['id'] = "id_pagemanager_spending_cretate_public_hall"
+
+IncomeCreateFormset = forms.inlineformset_factory(
     parent_model=IncomeRecord,
     model=PageManager,
     fields='__all__',
-    extra=1,can_delete=False
+    form=PageManagerIncomeCreateForm,
+    extra=1,can_delete=False,
 )
 
-SpedingFormset = forms.inlineformset_factory(
+SpedingCreateFormset = forms.inlineformset_factory(
     parent_model=SpendingRecord,
     model=PageManager,
     fields='__all__',
+    form=PageManagerSpendingCreateForm,
     extra=1,can_delete=False
 )
 

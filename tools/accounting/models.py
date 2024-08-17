@@ -98,7 +98,7 @@ class SectionIncome(models.Model):
 
 # 支出詳細
 class SpendingRecord(models.Model):
-	number = models.IntegerField('支出番号',null=True)
+	number = models.IntegerField('支出番号',null=True,blank=True)
 	date = models.DateField('日付')
 	subject_spending = models.ForeignKey(SubjectSpending, on_delete=models.CASCADE,null=False)	# 支出科目
 	section_spending = models.ForeignKey(SectionSpending, on_delete=models.CASCADE,null=False)	# 支出節
@@ -120,7 +120,7 @@ class SpendingRecord(models.Model):
 
 # 収入詳細
 class IncomeRecord(models.Model):
-	number = models.IntegerField('収入番号',null=True)
+	number = models.IntegerField('収入番号',null=True,blank=True)
 	date = models.DateField('日付')
 	subject_income = models.ForeignKey(SubjectIncome, on_delete=models.CASCADE,null=False)			# 収入科目
 	section_income = models.ForeignKey(SectionIncome, on_delete=models.CASCADE,null=False)			# 収入節

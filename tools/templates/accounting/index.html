@@ -744,7 +744,7 @@
   });
 
   //  モーダル制御用CallBack登録
-  SetCallback( IncomeSlipCreate, ExpenditureSlipCreate, CashBookUpdate);
+  SetCallback( IncomeSlipCreate, CashBookUpdate, SpendingSlipCreate);
   // 本来は支出伝票作成はCreate処理なのだが、今回はDelete用のCallBack関数登録を行い、MoalOpen時にCallBack処理を行う。
 
 
@@ -792,11 +792,11 @@
     // URLSearchParamsオブジェクトを取得
     let params = url.searchParams;
 
-    if( params.get('fiscal_terms') != '' )
+    if( params.get('fiscal_terms') != null )
     {
       fiscal_terms_value = params.get('fiscal_terms');
     }
-    if( params.get('accounting_book') != '' )
+    if( params.get('accounting_book') != null )
     {
       accounting_book_value = params.get('accounting_book');
     }

@@ -1,8 +1,7 @@
-<div class="hidden h-6">Dummy for tailwindcss JIT</div>
 <div
   id="create-modal"
   tabindex="-1"
-  aria-hidden="true"
+
   class="js-modal hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-[calc(100%-1rem)] max-h-full bg-gray-500/50"
 >
   <div class="relative p-4 w-full max-w-4xl max-h-full">
@@ -21,7 +20,7 @@
         >
           <svg
             class="w-3 h-3"
-            aria-hidden="true"
+
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 14 14"
@@ -137,7 +136,7 @@
           </div>
           <div>
             <label
-              for="creditor"
+              for="supplier"
               class="block mb-2 text-xl font-medium text-gray-900"
               >納入者</label
             >
@@ -166,10 +165,10 @@
   {
 
     let element_form = document.querySelector("#form-income-create");
-    let element_public_hall = document.querySelector("#id_pagemanager_set-0-public_hall");
-    let element_accounting_book = document.querySelector("#id_pagemanager_set-0-accountig_book");
-    let element_fiscal_terms = document.querySelector("#id_pagemanager_set-0-fiscal_terms");
-    let element_income_select = document.querySelector("#id_pagemanager_set-0-income_select");
+    let element_public_hall = document.querySelector("#id_pagemanager_income_cretate_public_hall");
+    let element_accounting_book = document.querySelector("#id_pagemanager_income_cretate_accountig_book");
+    let element_fiscal_terms = document.querySelector("#id_pagemanager_income_cretate_fiscal_terms");
+    let element_income_select = document.querySelector("#id_pagemanager_income_cretate_income_select");
 
     // Create処理パラメーター追加（form文）
     element_form.setAttribute("action","{% url 'accounting:modal_create_incomerecord' %}");
@@ -177,6 +176,6 @@
     SetSelect(element_accounting_book.options, accounting_book_value);
     SetSelect(element_income_select.options, '1');
     SetSelect(element_public_hall.options, {{ user.public_hall.number }});
-    document.querySelector("#id_pagemanager_set-0-number").value = pagedata_json.length+1;
+    document.querySelector("#id_pagemanager_income_cretate_number").value = pagedata_json.length + 1;
   };
 </script>

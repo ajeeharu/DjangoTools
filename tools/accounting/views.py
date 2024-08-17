@@ -10,7 +10,7 @@ from .serializer import CreditorSerializer,SupplierSerializer,FiscalTermsSeriali
 from .models import Creditor,Supplier,PageManager,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome,IncomeRecord,PageManager,SpendingRecord,IncomeRecord
 from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm,FiscalTermsForm,FiscalTermsUpdateForm,FiscalTermsDeleteForm, \
     AccountingBookForm,AccountingBookUpdateForm,AccountingBookDeleteForm,SubjectSpendingForm,SubjectSpendingUpdateForm,SubjectSpendingDeleteForm,SectionSpendingForm,SectionSpendingUpdateForm,SectionSpendingDeleteForm, \
-    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm,IncomeRecordForm,SpendingRecordForm,PageManagerForm,IncomeFormset,SpedingFormset, \
+    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm,IncomeRecordForm,SpendingRecordForm,PageManagerForm,IncomeCreateFormset,SpedingCreateFormset, \
     PageManagerUpdateForm,IncomeRecordUpdateForm,SpendingRecordUpdateForm
 
 from django.shortcuts import get_object_or_404
@@ -35,8 +35,8 @@ class IndexView(LoginRequiredMixin,ListView):
         context['form_page_update'] = PageManagerUpdateForm()           # Update Modal画面
         context['form_income_update'] = IncomeRecordUpdateForm()        # Update Modal画面
         context['form_spending_update'] = SpendingRecordUpdateForm()    # Update Modal画面
-        context['formset_income_page_create'] = IncomeFormset()         # Create Modal画面
-        context['formset_spending_page_create'] = SpedingFormset()      # Create Modal画面
+        context['formset_income_page_create'] = IncomeCreateFormset()         # Create Modal画面
+        context['formset_spending_page_create'] = SpedingCreateFormset()      # Create Modal画面
 
 
         return context
@@ -44,26 +44,79 @@ class IndexView(LoginRequiredMixin,ListView):
     def form_valid(self, form):
         return
 
-def ModalIncomeRecordCreateView(request):
-    form = IncomeRecordForm(request.POST, request.FILES)
-    context = {'form': form}
+class ModalIncomeRecordCreateView(LoginRequiredMixin,CreateView):
+    model = IncomeRecord
+    form_class = IncomeRecordForm
     success_url = reverse_lazy('accounting:index')
 
-    if request.method == 'POST' and form.is_valid():
-        fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
-        accounting_book = request.POST['pagemanager_set-0-accountig_book']
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
         income_record =  form.save(commit=False)
-        formset_income_page_create = IncomeFormset(request.POST,instance=income_record)
-        if formset_income_page_create.is_valid():
-            income_record.save()
-            formset_income_page_create.save()
+        formset = IncomeCreateFormset(self.request.POST,instance=income_record)
+        if form.is_valid() and formset .is_valid():
+            fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
+            accounting_book = request.POST['pagemanager_set-0-accountig_book']
+            return self.form_valid(form, formset, fiscal_terms, accounting_book )
         else:
-            print("formset is_invalid")
-            for ele in formset_income_page_create:
-                print(ele)
-        return HttpResponseRedirect(f'{success_url}?fiscal_terms={fiscal_terms}&accounting_book={accounting_book}')
+            return self.form_invalid(form, formset )
+
+    def form_valid(self, form, formset, fiscal_terms, accounting_book):
+        form.save()
+        formset.save()
+        return HttpResponseRedirect(f'{self.success_url}?fiscal_terms={fiscal_terms}&accounting_book={accounting_book}')
+
+    def form_invalid(self, form, formset):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
 
 
+class ModalSpendingRecordCreateView(LoginRequiredMixin,CreateView):
+    model = SpendingRecord
+    form_class = SpendingRecordForm
+    success_url = reverse_lazy('accounting:index')
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        spending_record =  form.save(commit=False)
+        formset = SpedingCreateFormset(self.request.POST,instance=spending_record)
+        if form.is_valid() and formset .is_valid():
+            fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
+            accounting_book = request.POST['pagemanager_set-0-accountig_book']
+            return self.form_valid(form, formset, fiscal_terms, accounting_book )
+        else:
+            return self.form_invalid(form, formset )
+
+    def form_valid(self, form, formset, fiscal_terms, accounting_book):
+        form.save()
+        formset.save()
+        return HttpResponseRedirect(f'{self.success_url}?fiscal_terms={fiscal_terms}&accounting_book={accounting_book}')
+
+    def form_invalid(self, form, formset):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
+
+
+
+# def ModalSpendingRecordCreateView(request):
+#     form = SpendingRecordForm(request.POST, request.FILES)
+#     success_url = reverse_lazy('accounting:index')
+
+#     if request.method == 'POST' and form.is_valid():
+#         fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
+#         accounting_book = request.POST['pagemanager_set-0-accountig_book']
+#         spending_record =  form.save(commit=False)
+#         formset_spending_page_create = SpedingCreateFormset(request.POST,instance=spending_record)
+#         if formset_spending_page_create.is_valid():
+#             spending_record.save()
+#             formset_spending_page_create.save()
+#         else:
+#             print("formset is_invalid")
+#             for ele in formset_spending_page_create:
+#                 print(ele)
+#         # return HttpResponseRedirect(f'{success_url}?fiscal_terms={fiscal_terms}&accounting_book={accounting_book}')
+#         return HttpResponseRedirect(success_url)
 
 class ModalSpendingRecordApiView(viewsets.ModelViewSet):
     queryset = SpendingRecord.objects.all()
