@@ -48,7 +48,7 @@ class SubjectSpending(models.Model):
 	acronym = models.CharField('略語',max_length=8)
 	budget = models.IntegerField('予算額')
 	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)
-	accountig_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)
+	accounting_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)
 	public_hall = models.ForeignKey(PublicHall, on_delete=models.CASCADE,null=False)
 
 	def __str__(self):
@@ -76,7 +76,7 @@ class SubjectIncome(models.Model):
 	acronym = models.CharField('略語',max_length=8)
 	budget = models.IntegerField('予算額')
 	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)
-	accountig_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)
+	accounting_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)
 	public_hall = models.ForeignKey(PublicHall, on_delete=models.CASCADE,null=False)
 
 	def __str__(self):
@@ -110,10 +110,11 @@ class SpendingRecord(models.Model):
 	creditor = models.ForeignKey(Creditor, on_delete=models.CASCADE)														# 債権者
 	behalf_pay = models.BooleanField('立替',default=False)
 	rebersal_monies = models.BooleanField('戻入',default=False)
-	tax_withholding = models.BooleanField('源泉',default=False)
 	back_side = models.BooleanField('裏面',default=False)
 	attachement = models.BooleanField('別紙',default=False)
 	fixed_number = models.BooleanField('番号固定',default=False)
+	calculate_amount = models.IntegerField('執行済み金額',default=0)
+	tax_withholding = models.IntegerField('源泉金額',default=0)
 
 	def __str__(self):
 			return self.description
@@ -131,6 +132,7 @@ class IncomeRecord(models.Model):
 	notice2 = models.FileField(upload_to ='notice/%Y/%m/%d/' ,null=True,blank=True)							# 通知書２
 	supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)														# 納入者
 	fixed_number = models.BooleanField('番号固定',default=False)
+	calculate_amount = models.IntegerField('納入済額',default=0)
 
 	def __str__(self):
 			return self.description

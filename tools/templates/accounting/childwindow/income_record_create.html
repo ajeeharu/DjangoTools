@@ -1,21 +1,20 @@
-<div
-  id="delete-modal"     // 共通LIBの定義上の対応（処理的にはCreate）
-  tabindex="-1"
-  class="js-modal hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-[calc(100%-1rem)] max-h-full bg-gray-500/50"
->
-  <div class="relative p-4 w-full max-w-4xl max-h-full">
+{% extends 'base_accounting_childwindow.html' %}
+{% block title %}公民館ツール：経理{%endblock %}
+{% block content %}
+
+  <div class="p-4 w-full max-w-4xl max-h-full">
     <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow">
+    <div class="bg-white rounded-lg shadow">
       <!-- Modal header -->
       <div
         class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
       >
-        <h3 class="text-xl font-semibold text-gray-900">支出伝票作成</h3>
+        <h3 class="text-xl font-semibold text-gray-900">収入伝票作成</h3>
         <button
           type="button"
           class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
           data-modal-hide="authentication-modal"
-          data-modal-target="#delete-modal"
+          data-modal-target="#create-modal"
         >
           <svg
             class="w-3 h-3"
@@ -37,29 +36,30 @@
       </div>
       <!-- Modal body -->
       <div class="p-4 md:p-5">
-        <form class="space-y-4 grid grid-cols-2 gap-4" method="post" id="form-spending-create" enctype="multipart/form-data">
+        <form class="space-y-4 grid grid-cols-2 gap-4" method="post" id="form-income-create" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="hidden">
-          {{ formset_spending_page_create.as_p }}
+          {{ formset_income_page_create.as_p }}
           </div>
           <div>
+            {{test}}
             <label
               for="fixed_number"
               class="block mb-2 text-xl font-medium text-gray-900"
               >番号を固定する</label
             >
-            {{ form_spending_create.fixed_number }}
-            {{ form_spending_create.fixed_number.errors }}
+            {{ form_income_create.fixed_number }}
+            {{ form_income_create.fixed_number.errors }}
           </div>
 
           <div>
             <label
               for="number"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >支出番号<span class="text-xs">(番号固定しない場合は記入不要）</span></label
+              >収入番号<span class="text-xs">(番号固定しない場合は記入不要）</span></label
             >
-            {{ form_spending_create.number }}
-            {{ form_spending_create.number.errors }}
+            {{ form_income_create.number }}
+            {{ form_income_create.number.errors }}
           </div>
           <div>
             <label
@@ -67,26 +67,26 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >日付</label
             >
-            {{ form_spending_create.date }}
-            {{ form_spending_create.date.errors }}
+            {{ form_income_create.date }}
+            {{ form_income_create.date.errors }}
           </div>
           <div>
             <label
-              for="subject_spending"
+              for="subject_income"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >支出科目</label
+              >収入科目</label
             >
-            {{ form_spending_create.subject_spending }}
-            {{ form_spending_create.subject_spending.errors }}
+            {{ form_income_create.subject_income }}
+            {{ form_income_create.subject_income.errors }}
           </div>
           <div>
             <label
-              for="section_spending"
+              for="section_income"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >支出節</label
+              >収入節</label
             >
-            {{ form_spending_create.section_spending }}
-            {{ form_spending_create.section_spending.errors }}
+            {{ form_income_create.section_income }}
+            {{ form_income_create.section_income.errors }}
           </div>
           <div>
             <label
@@ -94,8 +94,8 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >摘要</label
             >
-            {{ form_spending_create.description }}
-            {{ form_spending_create.description.errors }}
+            {{ form_income_create.description }}
+            {{ form_income_create.description.errors }}
           </div>
           <div>
             <label
@@ -103,8 +103,8 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >金額</label
             >
-            {{ form_spending_create.amount }}
-            {{ form_spending_create.amount.errors }}
+            {{ form_income_create.amount }}
+            {{ form_income_create.amount.errors }}
           </div>
           <div>
             <label
@@ -112,35 +112,35 @@
               class="block mb-2 text-xl font-medium text-gray-900"
               >メモ（印刷対象外)</label
             >
-            {{ form_spending_create.memo }}
-            {{ form_spending_create.memo.errors }}
+            {{ form_income_create.memo }}
+            {{ form_income_create.memo.errors }}
           </div>
           <div>
             <label
-              for="receipt"
+              for="notice1"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >領収書</label
+              >通知書１</label
             >
-            {{ form_spending_create.receipt }}
-            {{ form_spending_create.receipt.errors }}
+            {{ form_income_create.notice1 }}
+            {{ form_income_create.notice1.errors }}
           </div>
           <div>
             <label
-              for="estimate"
+              for="notice2"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >見積書</label
+              >通知書１</label
             >
-            {{ form_spending_create.estimate }}
-            {{ form_spending_create.estimate.errors }}
+            {{ form_income_create.notice2 }}
+            {{ form_income_create.notice2.errors }}
           </div>
           <div>
             <label
-              for="creditor"
+              for="supplier"
               class="block mb-2 text-xl font-medium text-gray-900"
-              >債権者</label
+              >納入者</label
             >
-            {{ form_spending_create.creditor }}
-            {{ form_spending_create.creditor.errors }}
+            {{ form_income_create.supplier }}
+            {{ form_income_create.supplier.errors }}
           </div>
 
           {% if form.non_field_errors %}
@@ -158,23 +158,23 @@
       </div>
     </div>
   </div>
-</div>
 <script type="text/javascript">
-  const SpendingSlipCreate = ( id=0 )=>
+  const IncomeSlipCreate = ( id=0 )=>
   {
 
-    let element_form = document.querySelector("#form-spending-create");
-    let element_public_hall = document.querySelector("#id_pagemanager_spending_cretate_public_hall");
-    let element_accounting_book = document.querySelector("#id_pagemanager_spending_cretate_accountig_book");
-    let element_fiscal_terms = document.querySelector("#id_pagemanager_spending_cretate_fiscal_terms");
-    let element_income_select = document.querySelector("#id_pagemanager_spending_cretate_income_select");
+    let element_form = document.querySelector("#form-income-create");
+    let element_public_hall = document.querySelector("#id_pagemanager_income_cretate_public_hall");
+    let element_accounting_book = document.querySelector("#id_pagemanager_income_cretate_accountig_book");
+    let element_fiscal_terms = document.querySelector("#id_pagemanager_income_cretate_fiscal_terms");
+    let element_income_select = document.querySelector("#id_pagemanager_income_cretate_income_select");
 
     // Create処理パラメーター追加（form文）
-    element_form.setAttribute("action","{% url 'accounting:modal_create_spendingrecord' %}");
+    element_form.setAttribute("action","{% url 'accounting:create_incomerecord' %}");
     SetSelect(element_fiscal_terms.options, fiscal_terms_value);
     SetSelect(element_accounting_book.options, accounting_book_value);
-    SetSelect(element_income_select.options, '0');
+    SetSelect(element_income_select.options, '1');
     SetSelect(element_public_hall.options, {{ user.public_hall.number }});
-    document.querySelector("#id_pagemanager_spending_cretate_number").value = pagedata_json.length + 1;
+    document.querySelector("#id_pagemanager_income_cretate_number").value = pagedata_json.length + 1;
   };
 </script>
+{% endblock %}

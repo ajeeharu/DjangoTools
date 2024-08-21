@@ -28,8 +28,10 @@
       <div class="space-y-2 flex items-center justify-items-center">
         <button
           type="button"
-          id="open-window-income-create"
-          class="inline-flex justify-center items-center p-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300"
+          data-modal-target="#create-modal"
+          data-modal-toggle="authentication-modal"
+          data-modal-id="0"
+          class="modal-open-button inline-flex justify-center items-center p-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300"
         >
           収入伝票作成
         </button>
@@ -275,7 +277,12 @@
     </div>
   </div>
 </div>
-
+<!-- Modal 収入伝票作成 -->
+{% include 'accounting/modals/modal_income_record_create.html' %}
+<!-- Modal 支出伝票作成 -->
+{% include 'accounting/modals/modal_spending_record_create.html' %}
+<!-- Modal 詳細変更 -->
+{% include 'accounting/modals/modal_cash_book_update.html' %}
 
 <script type="text/javascript">
   let spending_amount_total = 0;        // 支出合計
@@ -736,6 +743,10 @@
 //    onSort: onSortEvent,        // 2-4, 並び替え終了時
   });
 
+  //  モーダル制御用CallBack登録
+  SetCallback( IncomeSlipCreate, CashBookUpdate, SpendingSlipCreate);
+  // 本来は支出伝票作成はCreate処理なのだが、今回はDelete用のCallBack関数登録を行い、MoalOpen時にCallBack処理を行う。
+
 
    // Warning Message
   const element_warning_message = document.querySelector('#warning_message');
@@ -804,16 +815,8 @@
   const CheckAccountingBook =() =>{
     return ((fiscal_terms_value=='none')|| (accounting_book_value=='none'));
   }
+  SetPreCheckCallBack(CheckAccountingBook);
 
-  // 子Window制御
-  const element_open_window_incomecreate= document.querySelector('#open-window-income-create');
-  document.addEventListener("DOMContentLoaded", () => {
-      element_open_window_incomecreate.addEventListener("click", (event) => {
-        if(!CheckAccountingBook()){
-          const child = window.open("{% url 'accounting:create_incomerecord' %}"+"?fiscal_terms="+fiscal_terms_value+"&accounting_book="+accounting_book_value,"_blank", "popup");
-        }
-    });
-  });
 
 </script>
 

@@ -28,10 +28,6 @@ const SetCallback = ( func_create=null, func_update=null, func_delete=null ) => 
   updateCallback = func_update;
   deleteCallback = func_delete;
 }
-const SetPreCheckCallBack = (func_prechek = null ) => {
-  precheckCallback = func_prechek;
-};
-
 const modalOpen =(event)=> {
 // ModalOpen前の事前チェック
   if (precheckCallback != null) {

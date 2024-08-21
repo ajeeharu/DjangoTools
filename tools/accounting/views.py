@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from django.db.models.query import QuerySet
 from django.views.generic import CreateView,ListView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -37,17 +38,27 @@ class IndexView(LoginRequiredMixin,ListView):
         context['form_spending_update'] = SpendingRecordUpdateForm()    # Update Modal画面
         context['formset_income_page_create'] = IncomeCreateFormset()         # Create Modal画面
         context['formset_spending_page_create'] = SpedingCreateFormset()      # Create Modal画面
-
-
         return context
 
     def form_valid(self, form):
         return
 
-class ModalIncomeRecordCreateView(LoginRequiredMixin,CreateView):
-    model = IncomeRecord
+class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
+    # model = IncomeRecord
     form_class = IncomeRecordForm
     success_url = reverse_lazy('accounting:index')
+    template_name = "accounting/childwindow/income_record_create.html"
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        fiscal_terms = self.request.GET.get('fiscal_terms')
+        accounting_book = self.request.GET.get('accounting_book')
+        public_hall = self.request.user.public_hall
+        context['form_income_create'] = IncomeRecordForm()
+        context['form_income_create'].fields['subject_income'].queryset = SubjectIncome.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
+        context['formset_income_page_create'] = IncomeCreateFormset()
+        return context
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
