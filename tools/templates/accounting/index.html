@@ -1,6 +1,7 @@
 {% extends 'base_accounting.html' %}
 {% block title %}公民館ツール：経理{%endblock %}
 {% block content %}
+{% load static %}
 <div id="content">
   <section class="bg-white relative">
     <div class="grid grid-cols-4 py-2 px-4 mx-auto justify-items-center">
@@ -275,8 +276,7 @@
     </div>
   </div>
 </div>
-
-
+<script src="{% static 'js/Sortable.js' %}"></script>
 <script type="text/javascript">
   let spending_amount_total = 0;        // 支出合計
   let income_amount_total = 0;          // 収入合計
@@ -677,7 +677,7 @@
   {
     try {
     // API経由でData取得
-      const CreateEndPoint ="/api/accounting/pagemanager/?accountig_book="+accounting_book+"&fiscal_terms="+fiscal_terms;
+      const CreateEndPoint ="/api/accounting/pagemanager/?accounting_book="+accounting_book+"&fiscal_terms="+fiscal_terms;
       let response = await fetch(CreateEndPoint, {
         method: 'GET',
         headers: {
@@ -713,7 +713,7 @@
 
 
   const onEndEvent = (event) => {
-    console.log("onEnd!!");
+    // console.log("onEnd!!");
     let elements_serial = document.querySelectorAll('.data-serial-number');
     let result= new Array();
 
@@ -722,7 +722,7 @@
       result[i] = pagedata_json[elements_serial[i].textContent-1];
     }
     PageManagerRenumber(result);
-    console.log( result );
+    // console.log( result );
   };
 
   new Sortable(AccountingList, {
@@ -771,9 +771,12 @@
       PageManagerList(fiscal_terms_value,accounting_book_value);
       // SetTotalAmount(); 非同期のためPageManagerList内で同期待ち合わせ
     }
+    // URLを変更
+    history.pushState("", "", "?accounting_book="+accounting_book_value+"&fiscal_terms="+fiscal_terms_value);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    console.log("kita");
     fiscal_terms_value = 'none';
     accounting_book_value = 'none';
     // URLを取得
@@ -810,7 +813,7 @@
   document.addEventListener("DOMContentLoaded", () => {
       element_open_window_incomecreate.addEventListener("click", (event) => {
         if(!CheckAccountingBook()){
-          const child = window.open("{% url 'accounting:create_incomerecord' %}"+"?fiscal_terms="+fiscal_terms_value+"&accounting_book="+accounting_book_value,"_blank", "popup");
+          let child_window = window.open("{% url 'accounting:create_incomerecord' %}"+"?fiscal_terms="+fiscal_terms_value+"&accounting_book="+accounting_book_value+"&record_number="+(pagedata_json.length + 1),"income_create_record", "width=896px");
         }
     });
   });

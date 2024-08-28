@@ -47,8 +47,8 @@ urlpatterns = [
     path('sectionincome/modal/<int:pk>/update', views.ModalSectionIncomeUpdateView.as_view(), name="modal_update_sectionincome"),
     path('sectionincome/modal/<int:pk>/delete', views.ModalSectionIncomeDeleteView.as_view(), name="modal_delete_sectionincome"),
 
-    path('incomerecord/create', views.IncomeRecordCreateView.as_view(), name="create_incomerecord"),
-    path('spendingrecord/create', views.ModalSpendingRecordCreateView.as_view(), name="create_spendingrecord"),
+    path('incomerecord/create/', views.IncomeRecordCreateView.as_view(), name="create_incomerecord"),
+    path('spendingrecord/create/', views.SpendingRecordCreateView.as_view(), name="create_spendingrecord"),
 
 ]
 

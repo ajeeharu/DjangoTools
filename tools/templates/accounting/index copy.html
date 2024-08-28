@@ -684,7 +684,7 @@
   {
     try {
     // API経由でData取得
-      const CreateEndPoint ="/api/accounting/pagemanager/?accountig_book="+accounting_book+"&fiscal_terms="+fiscal_terms;
+      const CreateEndPoint ="/api/accounting/pagemanager/?accounting_book="+accounting_book+"&fiscal_terms="+fiscal_terms;
       let response = await fetch(CreateEndPoint, {
         method: 'GET',
         headers: {

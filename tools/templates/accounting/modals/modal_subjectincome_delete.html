@@ -80,12 +80,12 @@
         </div>
         <div>
           <label
-            for="accountig_book"
+            for="accounting_book"
             class="block mb-2 text-xl font-medium text-gray-900"
             >出納帳</label
           >
-          {{ form_delete.accountig_book }}
-          {{ form_delete.accountig_book.errors }}
+          {{ form_delete.accounting_book }}
+          {{ form_delete.accounting_book.errors }}
         </div>
         <div class="hidden">
           <label
@@ -117,7 +117,7 @@
     let element_acronym = document.querySelector("#id_delete_acronym");
     let element_budget = document.querySelector("#id_delete_budget");
     let element_fiscal_terms = document.querySelector("#id_delete_fiscal_terms");
-    let element_accountig_book = document.querySelector("#id_delete_accountig_book");
+    let element_accounting_book = document.querySelector("#id_delete_accounting_book");
     let element_public_hall = document.querySelector("#id_delete_public_hall");
 
 
@@ -143,7 +143,7 @@
       element_acronym.value = data["acronym"];
       element_budget.value = data["budget"];
       SetSelect(element_fiscal_terms.options, data["fiscal_terms"]);
-      SetSelect(element_accountig_book.options, data["accountig_book"]);
+      SetSelect(element_accounting_book.options, data["accounting_book"]);
       SetSelect(element_public_hall.options, data["public_hall"]["number"]);
       // select 他の項目(option)に変更できないようにする。
       document.querySelectorAll('select[readonly] option')

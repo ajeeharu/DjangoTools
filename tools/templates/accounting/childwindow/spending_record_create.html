@@ -164,10 +164,10 @@
   {
 
     let element_form = document.querySelector("#form-spending-create");
-    let element_public_hall = document.querySelector("#id_pagemanager_spending_cretate_public_hall");
-    let element_accounting_book = document.querySelector("#id_pagemanager_spending_cretate_accountig_book");
-    let element_fiscal_terms = document.querySelector("#id_pagemanager_spending_cretate_fiscal_terms");
-    let element_income_select = document.querySelector("#id_pagemanager_spending_cretate_income_select");
+    let element_public_hall = document.querySelector("#id_pagemanager_spending_create_public_hall");
+    let element_accounting_book = document.querySelector("#id_pagemanager_spending_create_accounting_book");
+    let element_fiscal_terms = document.querySelector("#id_pagemanager_spending_create_fiscal_terms");
+    let element_income_select = document.querySelector("#id_pagemanager_spending_create_income_select");
 
     // Create処理パラメーター追加（form文）
     element_form.setAttribute("action","{% url 'accounting:create_spendingrecord' %}");
@@ -175,6 +175,6 @@
     SetSelect(element_accounting_book.options, accounting_book_value);
     SetSelect(element_income_select.options, '0');
     SetSelect(element_public_hall.options, {{ user.public_hall.number }});
-    document.querySelector("#id_pagemanager_spending_cretate_number").value = pagedata_json.length + 1;
+    document.querySelector("#id_pagemanager_spending_create_number").value = pagedata_json.length + 1;
   };
 </script>

@@ -113,8 +113,8 @@ class SpendingRecord(models.Model):
 	back_side = models.BooleanField('裏面',default=False)
 	attachement = models.BooleanField('別紙',default=False)
 	fixed_number = models.BooleanField('番号固定',default=False)
-	calculate_amount = models.IntegerField('執行済み金額',default=0)
-	tax_withholding = models.IntegerField('源泉金額',default=0)
+	calculate_amount = models.IntegerField('執行済み金額',null=True,blank=True,default=0)
+	tax_withholding = models.IntegerField('源泉金額',null=True,blank=True,default=0)
 
 	def __str__(self):
 			return self.description
@@ -132,7 +132,7 @@ class IncomeRecord(models.Model):
 	notice2 = models.FileField(upload_to ='notice/%Y/%m/%d/' ,null=True,blank=True)							# 通知書２
 	supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)														# 納入者
 	fixed_number = models.BooleanField('番号固定',default=False)
-	calculate_amount = models.IntegerField('納入済額',default=0)
+	calculate_amount = models.IntegerField('納入済額',null=True,blank=True,default=0)
 
 	def __str__(self):
 			return self.description
@@ -145,7 +145,7 @@ class PageManager(models.Model):
 	)
 	number = models.IntegerField('シリアル番号')
 	income_select = models.CharField('収支指定',max_length=2,choices=SELECT_CHOICES,default='0')
-	accountig_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)							# 出納帳
+	accounting_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)							# 出納帳
 	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)									# 会計年度
 	spending_record = models.ForeignKey(SpendingRecord, on_delete=models.SET_NULL,null=True,blank=True)	# 支出レコード
 	income_record = models.ForeignKey(IncomeRecord, on_delete=models.SET_NULL,null=True,blank=True)			# 収入レコード

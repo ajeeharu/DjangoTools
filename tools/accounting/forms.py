@@ -132,7 +132,7 @@ class SubjectSpendingUpdateForm(SubjectSpendingForm):
         self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
         self.fields['budget'].widget.attrs['id'] = "id_update_budget"
         self.fields['fiscal_terms'].widget.attrs['id'] = "id_update_fiscal_terms"
-        self.fields['accountig_book'].widget.attrs['id'] = "id_update_accountig_book"
+        self.fields['accounting_book'].widget.attrs['id'] = "id_update_accounting_book"
         self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
 
 
@@ -145,7 +145,7 @@ class SubjectSpendingDeleteForm(SubjectSpendingForm):
         self.fields['acronym'].widget.attrs['id'] = "id_delete_acronym"
         self.fields['budget'].widget.attrs['id'] = "id_delete_budget"
         self.fields['fiscal_terms'].widget.attrs['id'] = "id_delete_fiscal_terms"
-        self.fields['accountig_book'].widget.attrs['id'] = "id_delete_accountig_book"
+        self.fields['accounting_book'].widget.attrs['id'] = "id_delete_accounting_book"
         self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"
 
 
@@ -196,7 +196,7 @@ class SubjectIncomeUpdateForm(SubjectIncomeForm):
         self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"
         self.fields['budget'].widget.attrs['id'] = "id_update_budget"
         self.fields['fiscal_terms'].widget.attrs['id'] = "id_update_fiscal_terms"
-        self.fields['accountig_book'].widget.attrs['id'] = "id_update_accountig_book"
+        self.fields['accounting_book'].widget.attrs['id'] = "id_update_accounting_book"
         self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
 
 
@@ -209,7 +209,7 @@ class SubjectIncomeDeleteForm(SubjectIncomeForm):
         self.fields['acronym'].widget.attrs['id'] = "id_delete_acronym"
         self.fields['budget'].widget.attrs['id'] = "id_delete_budget"
         self.fields['fiscal_terms'].widget.attrs['id'] = "id_delete_fiscal_terms"
-        self.fields['accountig_book'].widget.attrs['id'] = "id_delete_accountig_book"
+        self.fields['accounting_book'].widget.attrs['id'] = "id_delete_accounting_book"
         self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"
 
 
@@ -312,24 +312,24 @@ class PageManagerForm(forms.ModelForm):
 class PageManagerIncomeCreateForm(PageManagerForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['number'].widget.attrs['id'] = "id_pagemanager_income_cretate_number"
-        self.fields['income_select'].widget.attrs['id'] = "id_pagemanager_income_cretate_income_select"
-        self.fields['accountig_book'].widget.attrs['id'] = "id_pagemanager_income_cretate_accountig_book"
-        self.fields['fiscal_terms'].widget.attrs['id'] = "id_pagemanager_income_cretate_fiscal_terms"
-        self.fields['spending_record'].widget.attrs['id'] = "id_pagemanager_income_cretate_spending_record"
-        self.fields['income_record'].widget.attrs['id'] = "id_pagemanager_income_cretate_income_record"
-        self.fields['public_hall'].widget.attrs['id'] = "id_pagemanager_income_cretate_public_hall"
+        self.fields['number'].widget.attrs['id'] = "id_pagemanager_income_create_number"
+        self.fields['income_select'].widget.attrs['id'] = "id_pagemanager_income_create_income_select"
+        self.fields['accounting_book'].widget.attrs['id'] = "id_pagemanager_income_create_accounting_book"
+        self.fields['fiscal_terms'].widget.attrs['id'] = "id_pagemanager_income_create_fiscal_terms"
+        self.fields['spending_record'].widget.attrs['id'] = "id_pagemanager_income_create_spending_record"
+        self.fields['income_record'].widget.attrs['id'] = "id_pagemanager_income_create_income_record"
+        self.fields['public_hall'].widget.attrs['id'] = "id_pagemanager_income_create_public_hall"
 
 class PageManagerSpendingCreateForm(PageManagerForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['number'].widget.attrs['id'] = "id_pagemanager_spending_cretate_number"
-        self.fields['income_select'].widget.attrs['id'] = "id_pagemanager_spending_cretate_income_select"
-        self.fields['accountig_book'].widget.attrs['id'] = "id_pagemanager_spending_cretate_accountig_book"
-        self.fields['fiscal_terms'].widget.attrs['id'] = "id_pagemanager_spending_cretate_fiscal_terms"
-        self.fields['spending_record'].widget.attrs['id'] = "id_pagemanager_spending_cretate_spending_record"
-        self.fields['income_record'].widget.attrs['id'] = "id_pagemanager_spending_cretate_income_record"
-        self.fields['public_hall'].widget.attrs['id'] = "id_pagemanager_spending_cretate_public_hall"
+        self.fields['number'].widget.attrs['id'] = "id_pagemanager_spending_create_number"
+        self.fields['income_select'].widget.attrs['id'] = "id_pagemanager_spending_create_income_select"
+        self.fields['accounting_book'].widget.attrs['id'] = "id_pagemanager_spending_create_accounting_book"
+        self.fields['fiscal_terms'].widget.attrs['id'] = "id_pagemanager_spending_create_fiscal_terms"
+        self.fields['spending_record'].widget.attrs['id'] = "id_pagemanager_spending_create_spending_record"
+        self.fields['income_record'].widget.attrs['id'] = "id_pagemanager_spending_create_income_record"
+        self.fields['public_hall'].widget.attrs['id'] = "id_pagemanager_spending_create_public_hall"
 
 IncomeCreateFormset = forms.inlineformset_factory(
     parent_model=IncomeRecord,

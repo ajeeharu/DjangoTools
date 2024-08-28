@@ -46,7 +46,7 @@ class IndexView(LoginRequiredMixin,ListView):
 class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
     # model = IncomeRecord
     form_class = IncomeRecordForm
-    success_url = reverse_lazy('accounting:index')
+    success_url = reverse_lazy('accounting:create_incomerecord')
     template_name = "accounting/childwindow/income_record_create.html"
 
 
@@ -63,26 +63,27 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        income_record =  form.save(commit=False)
-        formset = IncomeCreateFormset(self.request.POST,instance=income_record)
-        if form.is_valid() and formset .is_valid():
-            fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
-            accounting_book = request.POST['pagemanager_set-0-accountig_book']
-            return self.form_valid(form, formset, fiscal_terms, accounting_book )
+        if form.is_valid():
+            income_record =  form.save(commit=False)
+            formset = IncomeCreateFormset(self.request.POST,instance=income_record)
+            if formset .is_valid():
+                fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
+                accounting_book = request.POST['pagemanager_set-0-accounting_book']
+                return self.form_valid(form, formset, fiscal_terms, accounting_book )
         else:
-            return self.form_invalid(form, formset )
+            return self.form_invalid(form)
 
     def form_valid(self, form, formset, fiscal_terms, accounting_book):
         form.save()
         formset.save()
-        return HttpResponseRedirect(f'{self.success_url}?fiscal_terms={fiscal_terms}&accounting_book={accounting_book}')
+        return HttpResponseRedirect(f'{self.success_url}?status=OK')
 
-    def form_invalid(self, form, formset):
+    def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(self.success_url)
+        return HttpResponseRedirect(f'{self.success_url}?status=NG')
 
 
-class ModalSpendingRecordCreateView(LoginRequiredMixin,CreateView):
+class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
     model = SpendingRecord
     form_class = SpendingRecordForm
     success_url = reverse_lazy('accounting:index')
@@ -94,7 +95,7 @@ class ModalSpendingRecordCreateView(LoginRequiredMixin,CreateView):
         formset = SpedingCreateFormset(self.request.POST,instance=spending_record)
         if form.is_valid() and formset .is_valid():
             fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
-            accounting_book = request.POST['pagemanager_set-0-accountig_book']
+            accounting_book = request.POST['pagemanager_set-0-accounting_book']
             return self.form_valid(form, formset, fiscal_terms, accounting_book )
         else:
             return self.form_invalid(form, formset )
@@ -116,7 +117,7 @@ class ModalSpendingRecordCreateView(LoginRequiredMixin,CreateView):
 
 #     if request.method == 'POST' and form.is_valid():
 #         fiscal_terms = request.POST['pagemanager_set-0-fiscal_terms']
-#         accounting_book = request.POST['pagemanager_set-0-accountig_book']
+#         accounting_book = request.POST['pagemanager_set-0-accounting_book']
 #         spending_record =  form.save(commit=False)
 #         formset_spending_page_create = SpedingCreateFormset(request.POST,instance=spending_record)
 #         if formset_spending_page_create.is_valid():
@@ -168,9 +169,9 @@ class PageManagerApiView(viewsets.ModelViewSet):
         current_fiscal_terms = self.request.query_params.get('fiscal_terms')
         if current_fiscal_terms is not None:
             queryset = queryset.filter(fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
-        current_accountig_book = self.request.query_params.get('accountig_book')
-        if current_accountig_book is not None:
-            queryset = queryset.filter(accountig_book=current_accountig_book)   # QuerySet（出納帳が一致）
+        current_accounting_book = self.request.query_params.get('accounting_book')
+        if current_accounting_book is not None:
+            queryset = queryset.filter(accounting_book=current_accounting_book)   # QuerySet（出納帳が一致）
         queryset = queryset.order_by('number')                                 # シリアル番号順
 
         return queryset

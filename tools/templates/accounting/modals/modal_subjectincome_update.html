@@ -80,12 +80,12 @@
         </div>
         <div>
           <label
-            for="accountig_book"
+            for="accounting_book"
             class="block mb-2 text-xl font-medium text-gray-900"
             >出納帳</label
           >
-          {{ form_update.accountig_book }}
-          {{ form_update.accountig_book.errors }}
+          {{ form_update.accounting_book }}
+          {{ form_update.accounting_book.errors }}
         </div>
         <div class="hidden">
           <label
@@ -119,7 +119,7 @@
     let element_acronym = document.querySelector("#id_update_acronym");
     let element_budget = document.querySelector("#id_update_budget");
     let element_fiscal_terms = document.querySelector("#id_update_fiscal_terms");
-    let element_accountig_book = document.querySelector("#id_update_accountig_book");
+    let element_accounting_book = document.querySelector("#id_update_accounting_book");
     let element_public_hall = document.querySelector("#id_update_public_hall");
 
 
@@ -148,7 +148,7 @@
       element_acronym.value = data["acronym"];
       element_budget.value = data["budget"];
       SetSelect(element_fiscal_terms.options, data["fiscal_terms"]);
-      SetSelect(element_accountig_book.options, data["accountig_book"]);
+      SetSelect(element_accounting_book.options, data["accounting_book"]);
       SetSelect(element_public_hall.options, data["public_hall"]["number"]);
     });
   };
