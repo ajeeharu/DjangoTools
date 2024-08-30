@@ -108,10 +108,10 @@ class SpendingRecord(models.Model):
 	receipt = models.FileField(upload_to ='receipt/%Y/%m/%d/',null=True,blank=True) 						# 領収書
 	estimate = models.FileField(upload_to ='estimate/%Y/%m/%d/',null=True,blank=True) 					# 見積書等
 	creditor = models.ForeignKey(Creditor, on_delete=models.CASCADE)														# 債権者
-	behalf_pay = models.BooleanField('立替',default=False)
-	rebersal_monies = models.BooleanField('戻入',default=False)
-	back_side = models.BooleanField('裏面',default=False)
-	attachement = models.BooleanField('別紙',default=False)
+	behalf_pay = models.BooleanField('立替',null=True,blank=True,default=False)
+	rebersal_monies = models.BooleanField('戻入',null=True,blank=True,default=False)
+	back_side = models.BooleanField('裏面',null=True,blank=True,default=False)
+	attachement = models.BooleanField('別紙',null=True,blank=True,default=False)
 	fixed_number = models.BooleanField('番号固定',default=False)
 	calculate_amount = models.IntegerField('執行済み金額',null=True,blank=True,default=0)
 	tax_withholding = models.IntegerField('源泉金額',null=True,blank=True,default=0)

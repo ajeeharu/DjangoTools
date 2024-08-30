@@ -339,7 +339,7 @@ IncomeCreateFormset = forms.inlineformset_factory(
     extra=1,can_delete=False,
 )
 
-SpedingCreateFormset = forms.inlineformset_factory(
+SpendingCreateFormset = forms.inlineformset_factory(
     parent_model=SpendingRecord,
     model=PageManager,
     fields='__all__',

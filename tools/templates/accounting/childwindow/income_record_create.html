@@ -29,7 +29,7 @@
             d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
           />
         </svg>
-        <span class="sr-only">Close modal</span>
+        <span class="sr-only">Close</span>
       </button>
     </div>
     <!-- Modal body -->
@@ -142,14 +142,6 @@
           {{ form_income_create.supplier }}
           {{ form_income_create.supplier.errors }}
         </div>
-
-        {% if form.non_field_errors %}
-        <div
-          class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg block w-full p-2.5"
-        >
-          {{ form.non_field_errors }}
-        </div>
-        {% endif %}
         <button
           type="submit"
           id="submit_button"
@@ -170,7 +162,7 @@
   // URLSearchParamsオブジェクトを取得
     let params = url.searchParams;
 
-    if( params.get('status') == 'OK' )
+    if(( params.get('status') == 'OK' )||( params.get('status') == 'NG' ))
     {
 //      window.opener.location.focus();
       window.opener.location.reload();
