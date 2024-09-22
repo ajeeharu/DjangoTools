@@ -108,10 +108,10 @@ class SpendingRecord(models.Model):
 	receipt = models.FileField(upload_to ='receipt/%Y/%m/%d/',null=True,blank=True) 						# 領収書
 	estimate = models.FileField(upload_to ='estimate/%Y/%m/%d/',null=True,blank=True) 					# 見積書等
 	creditor = models.ForeignKey(Creditor, on_delete=models.CASCADE)														# 債権者
-	behalf_pay = models.BooleanField('立替',null=True,blank=True,default=False)
-	rebersal_monies = models.BooleanField('戻入',null=True,blank=True,default=False)
-	back_side = models.BooleanField('裏面',null=True,blank=True,default=False)
-	attachement = models.BooleanField('別紙',null=True,blank=True,default=False)
+	behalf_pay = models.BooleanField('立替',default=False)
+	rebersal_monies = models.BooleanField('戻入',default=False)
+	back_side = models.BooleanField('裏面',default=False)
+	attachement = models.BooleanField('別紙',default=False)
 	fixed_number = models.BooleanField('番号固定',default=False)
 	calculate_amount = models.IntegerField('執行済み金額',null=True,blank=True,default=0)
 	tax_withholding = models.IntegerField('源泉金額',null=True,blank=True,default=0)
@@ -145,10 +145,10 @@ class PageManager(models.Model):
 	)
 	number = models.IntegerField('シリアル番号')
 	income_select = models.CharField('収支指定',max_length=2,choices=SELECT_CHOICES,default='0')
-	accounting_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)							# 出納帳
+	accounting_book = models.ForeignKey(AccountingBook, on_delete=models.CASCADE,null=False)						# 出納帳
 	fiscal_terms = models.ForeignKey(FiscalTerms, on_delete=models.CASCADE,null=False)									# 会計年度
-	spending_record = models.ForeignKey(SpendingRecord, on_delete=models.SET_NULL,null=True,blank=True)	# 支出レコード
-	income_record = models.ForeignKey(IncomeRecord, on_delete=models.SET_NULL,null=True,blank=True)			# 収入レコード
+	spending_record = models.ForeignKey(SpendingRecord, on_delete=models.CASCADE,null=True,blank=True)	# 支出レコード
+	income_record = models.ForeignKey(IncomeRecord, on_delete=models.CASCADE,null=True,blank=True)			# 収入レコード
 	public_hall = models.ForeignKey(PublicHall, on_delete=models.CASCADE,null=False)										# 公民館
 
 	def __str__(self):

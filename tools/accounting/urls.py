@@ -47,21 +47,27 @@ urlpatterns = [
     path('sectionincome/modal/<int:pk>/update', views.ModalSectionIncomeUpdateView.as_view(), name="modal_update_sectionincome"),
     path('sectionincome/modal/<int:pk>/delete', views.ModalSectionIncomeDeleteView.as_view(), name="modal_delete_sectionincome"),
 
-    path('incomerecord/create/', views.IncomeRecordCreateView.as_view(), name="create_incomerecord"),
-    path('spendingrecord/create/', views.SpendingRecordCreateView.as_view(), name="create_spendingrecord"),
+    path('incomerecord/create', views.IncomeRecordCreateView.as_view(), name="create_incomerecord"),
+	path('incomerecord/<int:pk>/update', views.IncomeRecordUpdateView.as_view(), name="update_incomerecord"),
+	path('incomerecord/<int:pk>/delete', views.IncomeRecordDeleteView.as_view(), name="delete_incomerecord"),
 
+    path('spendingrecord/create', views.SpendingRecordCreateView.as_view(), name="create_spendingrecord"),
+	path('spendingrecord/<int:pk>/update/<int:fiscal_terms>/<int:accounting_book>', views.SpendingRecordUpdateView.as_view(), name="update_spendingrecord"),
+	path('spendingrecord/<int:pk>/delete', views.SpendingRecordDeleteView.as_view(), name="delete_spendingrecord"),
+
+	path('response/<str:action>/<str:message>', views.ResponseMessage.as_view(), name="response_message"),
 ]
 
 router = DefaultRouter()
-router.register(r'creditor', views.ModalCreditorApiView,basename="creditor")
-router.register(r'supplier', views.ModalSupplierApiView,basename="supplier")
-router.register(r'fiscalterms', views.ModalFiscalTermsApiView,basename="fiscalterms")
-router.register(r'accountingbook', views.ModalAccountingBookApiView,basename="accountingbook")
-router.register(r'subjectspending', views.ModalSubjectSpendingApiView,basename="subjectspending")
-router.register(r'sectionspending', views.ModalSectionSpendingApiView,basename="sectionspending")
-router.register(r'subjectincome', views.ModalSubjectIncomeApiView,basename="subjectincome")
-router.register(r'sectionincome', views.ModalSectionIncomeApiView,basename="sectionincome")
+router.register(r'creditor', views.CreditorApiView,basename="creditor")
+router.register(r'supplier', views.SupplierApiView,basename="supplier")
+router.register(r'fiscalterms', views.FiscalTermsApiView,basename="fiscalterms")
+router.register(r'accountingbook', views.AccountingBookApiView,basename="accountingbook")
+router.register(r'subjectspending', views.SubjectSpendingApiView,basename="subjectspending")
+router.register(r'sectionspending', views.SectionSpendingApiView,basename="sectionspending")
+router.register(r'subjectincome', views.SubjectIncomeApiView,basename="subjectincome")
+router.register(r'sectionincome', views.SectionIncomeApiView,basename="sectionincome")
 
-router.register(r'spendingrecord', views.ModalSpendingRecordApiView,basename="spendingrecord")
-router.register(r'incomerecord', views.ModalIncomeRecordApiView,basename="incomerecord")
+router.register(r'spendingrecord', views.SpendingRecordApiView,basename="spendingrecord")
+router.register(r'incomerecord', views.IncomeRecordApiView,basename="incomerecord")
 router.register(r'pagemanager', views.PageManagerApiView,basename="pagemanager")

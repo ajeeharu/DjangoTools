@@ -1,0 +1,12 @@
+{% extends 'base_accounting_childwindow.html' %}
+{% block title %}公民館ツール：経理{%endblock %}
+{% block content %}
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+{% if action  == 'CloseChildWindow' %}
+      window.opener.location.reload();
+      window.close();
+{% endif %}
+  });
+</script>
+{% endblock %}

@@ -1,7 +1,6 @@
 # coding: utf-8
 
-from django.db.models.query import QuerySet
-from django.views.generic import CreateView,ListView,UpdateView,DeleteView
+from django.views.generic import CreateView,ListView,UpdateView,DeleteView,TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
@@ -68,6 +67,7 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
         else:
             return self.form_invalid(form)
 
+# データベースの処理終了後に元のURLに戻るときにstatusパラメータを付加して戻る
     def form_valid(self, form, formset):
         form.save()
         formset.save()
@@ -76,6 +76,41 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(f'{self.success_url}?status=NG')
+
+class IncomeRecordUpdateView(LoginRequiredMixin,UpdateView):
+    model = IncomeRecord
+    form_class = IncomeRecordUpdateForm
+    success_url = reverse_lazy('accounting:index')
+    template_name = "accounting/childwindow/income_record_update.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        fiscal_terms = self.request.GET.get('fiscal_terms')
+        accounting_book = self.request.GET.get('accounting_book')
+        public_hall = self.request.user.public_hall
+        context['form_income_update'] = IncomeRecordForm()
+        context['form_income_update'].fields['subject_income'].queryset = SubjectIncome.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
+        return context
+
+    def form_valid(self, form):
+        form.save() # formの情報を保存
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
+
+# ここではcontextのデータをセットするだけ
+# Delete処理はRestFul APIで行う。
+# 理由：Delete後に同じURLに戻ろうとすると、該当PKが削除されているので該当データなしのエラーとなる。
+class IncomeRecordDeleteView(LoginRequiredMixin,DeleteView):
+    model = IncomeRecord
+    template_name = "accounting/childwindow/income_record_delete.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context[object] = IncomeRecord.objects.get(pk=self.kwargs['pk'])
+        return context
 
 class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
     # model = SpendingRecord
@@ -104,6 +139,7 @@ class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
         else:
             return self.form_invalid(form )
 
+# データベースの処理終了後に元のURLに戻るときにstatusパラメータを付加して戻る
     def form_valid(self, form, formset):
         form.save()
         formset.save()
@@ -113,7 +149,42 @@ class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(f'{self.success_url}?status=NG')
 
-class ModalSpendingRecordApiView(viewsets.ModelViewSet):
+class SpendingRecordUpdateView(LoginRequiredMixin,UpdateView):
+    model = SpendingRecord
+    success_url = reverse_lazy('accounting:response_message',kwargs={'action':'CloseChildWindow','message':'OK'})
+    template_name = "accounting/childwindow/spending_record_update.html"
+    form_class = SpendingRecordForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        fiscal_terms = self.kwargs['fiscal_terms']
+        accounting_book = self.kwargs['accounting_book']
+        public_hall = self.request.user.public_hall
+        context['form'].fields['subject_spending'].queryset = SubjectSpending.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url,kwargs={'message':'NG'})
+
+# ここではcontextのデータをセットするだけ
+# Delete処理はRestFul APIで行う。
+# 理由：Delete後に同じURLに戻ろうとすると、該当PKが削除されているので該当データなしのエラーとなる。
+class SpendingRecordDeleteView(LoginRequiredMixin,DeleteView):
+    model = SpendingRecord
+    template_name = "accounting/childwindow/spending_record_delete.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context[object] = SpendingRecord.objects.get(pk=self.kwargs['pk'])
+        return context
+
+
+class SpendingRecordApiView(viewsets.ModelViewSet):
     queryset = SpendingRecord.objects.all()
     serializer_class = SpendingRecordSerializer
 
@@ -127,7 +198,7 @@ class ModalSpendingRecordApiView(viewsets.ModelViewSet):
         serializer.save()
         return Response({'result':True})
 
-class ModalIncomeRecordApiView(viewsets.ModelViewSet):
+class IncomeRecordApiView(viewsets.ModelViewSet):
     queryset = IncomeRecord.objects.all()
     serializer_class = IncomeRecordSerializer
 
@@ -220,7 +291,7 @@ class ModalCreditorDeleteView(LoginRequiredMixin,DeleteView):
     model = Creditor
     success_url = reverse_lazy('accounting:creditor')
 
-class ModalCreditorApiView(viewsets.ModelViewSet):
+class CreditorApiView(viewsets.ModelViewSet):
     queryset = Creditor.objects.all()
     serializer_class = CreditorSerializer
 
@@ -274,7 +345,7 @@ class ModalSupplierDeleteView(LoginRequiredMixin,DeleteView):
     model = Supplier
     success_url = reverse_lazy('accounting:supplier')
 
-class ModalSupplierApiView(viewsets.ModelViewSet):
+class SupplierApiView(viewsets.ModelViewSet):
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
 
@@ -323,7 +394,7 @@ class ModalFiscalTermsDeleteView(LoginRequiredMixin,DeleteView):
     model = FiscalTerms
     success_url = reverse_lazy('accounting:fiscalterms')
 
-class ModalFiscalTermsApiView(viewsets.ModelViewSet):
+class FiscalTermsApiView(viewsets.ModelViewSet):
     queryset = FiscalTerms.objects.all()
     serializer_class = FiscalTermsSerializer
 
@@ -371,7 +442,7 @@ class ModalAccountingBookDeleteView(LoginRequiredMixin,DeleteView):
     model = AccountingBook
     success_url = reverse_lazy('accounting:accountingbook')
 
-class ModalAccountingBookApiView(viewsets.ModelViewSet):
+class AccountingBookApiView(viewsets.ModelViewSet):
     queryset = AccountingBook.objects.all()
     serializer_class = AccountingBookSerializer
 
@@ -425,9 +496,21 @@ class ModalSubjectSpendingDeleteView(LoginRequiredMixin,DeleteView):
     model = SubjectSpending
     success_url = reverse_lazy('accounting:subjectspending')
 
-class ModalSubjectSpendingApiView(viewsets.ModelViewSet):
-    queryset = SubjectSpending.objects.all()
+class SubjectSpendingApiView(viewsets.ModelViewSet):
     serializer_class = SubjectSpendingSerializer
+
+    def get_queryset(self):
+        queryset = SubjectSpending.objects.all()
+        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        if current_public_hall:
+            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
+        current_fiscal_terms = self.request.query_params.get('fiscal_terms')
+        if current_fiscal_terms is not None:
+            queryset = queryset.filter(fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
+        current_accounting_book = self.request.query_params.get('accounting_book')
+        if current_accounting_book is not None:
+            queryset = queryset.filter(accounting_book=current_accounting_book)   # QuerySet（出納帳が一致）
+        return queryset
 
 # 節（支出）情報
 class SectionSpendingListView(LoginRequiredMixin,ListView):
@@ -473,7 +556,7 @@ class ModalSectionSpendingDeleteView(LoginRequiredMixin,DeleteView):
     model = SectionSpending
     success_url = reverse_lazy('accounting:sectionspending')
 
-class ModalSectionSpendingApiView(viewsets.ModelViewSet):
+class SectionSpendingApiView(viewsets.ModelViewSet):
     queryset = SectionSpending.objects.all()
     serializer_class = SectionSpendingSerializer
 
@@ -527,7 +610,7 @@ class ModalSubjectIncomeDeleteView(LoginRequiredMixin,DeleteView):
     model = SubjectIncome
     success_url = reverse_lazy('accounting:subjectincome')
 
-class ModalSubjectIncomeApiView(viewsets.ModelViewSet):
+class SubjectIncomeApiView(viewsets.ModelViewSet):
     queryset = SubjectIncome.objects.all()
     serializer_class = SubjectIncomeSerializer
 
@@ -573,9 +656,12 @@ class ModalSectionIncomeUpdateView(LoginRequiredMixin,UpdateView):
 
 class ModalSectionIncomeDeleteView(LoginRequiredMixin,DeleteView):
     model = SectionIncome
-    success_url = reverse_lazy('accounting:subjectincome')
+    success_url = reverse_lazy('accounting:sectionincome')
 
-class ModalSectionIncomeApiView(viewsets.ModelViewSet):
+class SectionIncomeApiView(viewsets.ModelViewSet):
     queryset = SectionIncome.objects.all()
     serializer_class = SectionIncomeSerializer
 
+# 債権者情報
+class ResponseMessage(LoginRequiredMixin,TemplateView):
+    template_name = "accounting/response.html"

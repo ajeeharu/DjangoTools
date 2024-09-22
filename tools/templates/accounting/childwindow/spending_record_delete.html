@@ -1,0 +1,274 @@
+
+{% extends 'base_accounting_childwindow.html' %}
+{% block title %}公民館ツール：経理{%endblock %}
+{% block content %}
+{% load static %}
+
+<div class="relative p-4 w-full max-w-4xl max-h-full">
+  <!--  content -->
+  <div class="relative bg-white rounded-lg shadow">
+    <!--  header -->
+    <div
+      class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
+    >
+      <h3 class="text-xl font-semibold text-gray-900">支出伝票　削除</h3>
+      <button
+        type="button"
+        class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+        onclick="window.close();"
+      >
+        <svg
+          class="w-3 h-3"
+
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 14 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+          />
+        </svg>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+    <!--  body -->
+    <div class="p-4 md:p-5">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label
+            for="fixed_number"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >番号を固定する</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {% if object.fixed_number %}
+            固定
+            {% else %}
+            固定しない
+            {% endif %}
+          </div>
+        </div>
+
+
+        <div>
+          <label
+            for="number"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >支出番号</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.number }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="date"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >日付</label
+          >
+                    <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.date }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="subject_spending"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >支出科目</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.subject_spending }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="section_spending"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >支出節</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.section_spending }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="description"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >摘要</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.description }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="amount"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >金額</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.amount }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="memo"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >メモ（印刷対象外)</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.memo }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="receipt"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >領収書</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+          {% if object.receipt  %}
+            <button type="button" class="font-medium text-gray-500 mx-auto">
+              <a href="{{ object.receipt.url }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"></path>
+                </svg>
+              </a>
+            </button>
+          {% endif %}
+          </div>
+        </div>
+        <div>
+          <label
+            for="estimate"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >見積書</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+          {% if object.estimate  %}
+            <button type="button" class="font-medium text-gray-500 mx-auto">
+              <a href="{{ object.estimate.url }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"></path>
+                </svg>
+              </a>
+            </button>
+          {% endif %}
+          </div>
+        </div>
+        <div>
+          <label
+            for="creditor"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >債権者</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.creditor }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="creditor"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >源泉金額(ない場合は０のまま)</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {{ object.tax_withholding }}
+          </div>
+        </div>
+        <div>
+          <label
+            for="creditor"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >立替</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {% if object.behalf_pay %}
+            立替
+            {% else %}
+            立替しない
+            {% endif %}
+          </div>
+        </div>
+        <div>
+          <label
+            for="creditor"
+            class="block mb-2 text-xl font-medium text-gray-900"
+            >戻入</label
+          >
+          <div
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
+          >
+            {% if object.rebersal_monies %}
+            戻入
+            {% else %}
+            戻入しない
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <button
+        type="submit"
+        id="delete_button"
+        class="w-full col-span-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
+      >
+        削除（上記内容が完全に削除されます。）
+      </button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+
+    element_delete_button = document.querySelector('#delete_button');
+
+    element_delete_button.addEventListener("click", (event) => {
+      // API経由でData取得
+      const CreateEndPoint ="/api/accounting/spendingrecord/"+{{ object.id }}+"/";
+
+      fetch(CreateEndPoint, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken'),
+          'Content-Type': 'application/json',
+        }
+      })
+      .then((response) => {
+        window.opener.location.reload();
+        window.close();
+      });
+    });
+  });
+</script>
+
+{% endblock %}
