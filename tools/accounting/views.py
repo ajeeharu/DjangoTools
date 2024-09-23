@@ -43,7 +43,7 @@ class IndexView(LoginRequiredMixin,ListView):
 class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
     # model = IncomeRecord
     form_class = IncomeRecordForm
-    success_url = reverse_lazy('accounting:create_incomerecord')
+    success_url = reverse_lazy('accounting:response_message',kwargs={'action':'CloseChildWindow','message':'OK'})
     template_name = "accounting/childwindow/income_record_create.html"
 
     def get_context_data(self, **kwargs):
@@ -67,15 +67,15 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
         else:
             return self.form_invalid(form)
 
-# データベースの処理終了後に元のURLに戻るときにstatusパラメータを付加して戻る
+# データベースの処理終了後に子WIndowをClose
     def form_valid(self, form, formset):
         form.save()
         formset.save()
-        return HttpResponseRedirect(f'{self.success_url}?status=OK')
+        return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(f'{self.success_url}?status=NG')
+        return HttpResponseRedirect(self.success_url,kwargs={'message':'NG'})
 
 class IncomeRecordUpdateView(LoginRequiredMixin,UpdateView):
     model = IncomeRecord
@@ -100,12 +100,10 @@ class IncomeRecordUpdateView(LoginRequiredMixin,UpdateView):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
-# ここではcontextのデータをセットするだけ
-# Delete処理はRestFul APIで行う。
-# 理由：Delete後に同じURLに戻ろうとすると、該当PKが削除されているので該当データなしのエラーとなる。
 class IncomeRecordDeleteView(LoginRequiredMixin,DeleteView):
     model = IncomeRecord
     template_name = "accounting/childwindow/income_record_delete.html"
+    success_url = reverse_lazy('accounting:response_message',kwargs={'action':'CloseChildWindow','message':'OK'})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -115,7 +113,7 @@ class IncomeRecordDeleteView(LoginRequiredMixin,DeleteView):
 class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
     # model = SpendingRecord
     form_class = SpendingRecordForm
-    success_url = reverse_lazy('accounting:create_spendingrecord')
+    success_url = reverse_lazy('accounting:response_message',kwargs={'action':'CloseChildWindow','message':'OK'})
     template_name = "accounting/childwindow/spending_record_create.html"
 
     def get_context_data(self, **kwargs):
@@ -139,15 +137,15 @@ class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
         else:
             return self.form_invalid(form )
 
-# データベースの処理終了後に元のURLに戻るときにstatusパラメータを付加して戻る
+# データベースの処理終了後に子Window閉じる
     def form_valid(self, form, formset):
         form.save()
         formset.save()
-        return HttpResponseRedirect(f'{self.success_url}?status=OK')
+        return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(f'{self.success_url}?status=NG')
+        return HttpResponseRedirect(self.success_url,kwargs={'message':'NG'})
 
 class SpendingRecordUpdateView(LoginRequiredMixin,UpdateView):
     model = SpendingRecord
@@ -177,6 +175,7 @@ class SpendingRecordUpdateView(LoginRequiredMixin,UpdateView):
 class SpendingRecordDeleteView(LoginRequiredMixin,DeleteView):
     model = SpendingRecord
     template_name = "accounting/childwindow/spending_record_delete.html"
+    success_url = reverse_lazy('accounting:response_message',kwargs={'action':'CloseChildWindow','message':'OK'})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

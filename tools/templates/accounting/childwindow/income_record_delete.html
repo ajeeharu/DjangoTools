@@ -1,5 +1,5 @@
 {% extends 'base_accounting_childwindow.html' %}
-{% block title%}公民館ツール：経理{%endblock %}
+{% block title %}公民館ツール：経理 {% endblock %}
 {% block content %}
 {% load static %}
 
@@ -35,7 +35,8 @@
     </div>
     <!--  body -->
     <div class="p-4 md:p-5">
-      <div class="grid grid-cols-2 gap-4">
+      <form method="post" class="grid grid-cols-2 gap-4">
+        {% csrf_token %}
         <div>
           <label
             for="fixed_number"
@@ -45,11 +46,7 @@
           <div
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
           >
-            {% if object.fixed_number %}
-            固定
-            {% else %}
-            固定しない
-            {% endif %}
+            {% if object.fixed_number %} 固定 {% else %} 固定しない {% endif %}
           </div>
         </div>
 
@@ -142,15 +139,23 @@
           <div
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
           >
-          {% if object.notice1  %}
+            {% if object.notice1 %}
             <button type="button" class="font-medium text-gray-500 mx-auto">
               <a href="{{ object.notice1.url }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"></path>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"
+                  ></path>
                 </svg>
               </a>
             </button>
-          {% endif %}
+            {% endif %}
           </div>
         </div>
         <div>
@@ -162,15 +167,23 @@
           <div
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
           >
-          {% if object.notice2  %}
+            {% if object.notice2 %}
             <button type="button" class="font-medium text-gray-500 mx-auto">
               <a href="{{ object.notice2.url }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"></path>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5z"
+                  ></path>
                 </svg>
               </a>
             </button>
-          {% endif %}
+            {% endif %}
           </div>
         </div>
         <div>
@@ -185,40 +198,15 @@
             {{ object.supplier }}
           </div>
         </div>
-      </div>
-      <button
-        type="submit"
-        id="delete_button"
-        class="w-full col-span-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
-      >
-        削除（上記内容が完全に削除されます。）
-      </button>
+        <button
+          type="submit"
+          class="w-full col-span-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
+        >
+          削除（上記内容が完全に削除されます。）
+        </button>
+      </form>
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", () => {
-
-    element_delete_button = document.querySelector('#delete_button');
-
-    element_delete_button.addEventListener("click", (event) => {
-      // API経由でData取得
-      const CreateEndPoint ="/api/accounting/incomerecord/"+{{ object.id }}+"/";
-
-      fetch(CreateEndPoint, {
-        method: 'DELETE',
-        headers: {
-          'X-CSRFToken': getCookie('csrftoken'),
-          'Content-Type': 'application/json',
-        }
-      })
-      .then((response) => {
-        window.opener.location.reload();
-        window.close();
-      });
-    });
-  });
-</script>
-
 
 {% endblock %}

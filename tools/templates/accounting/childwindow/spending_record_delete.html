@@ -37,7 +37,8 @@
     </div>
     <!--  body -->
     <div class="p-4 md:p-5">
-      <div class="grid grid-cols-2 gap-4">
+      <form method="post" class="grid grid-cols-2 gap-4">
+        {% csrf_token %}
         <div>
           <label
             for="fixed_number"
@@ -236,39 +237,15 @@
             {% endif %}
           </div>
         </div>
-      </div>
-      <button
-        type="submit"
-        id="delete_button"
-        class="w-full col-span-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
-      >
-        削除（上記内容が完全に削除されます。）
-      </button>
+        <button
+          type="submit"
+          class="w-full col-span-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
+        >
+          削除（上記内容が完全に削除されます。）
+        </button>
+      </form>
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", () => {
-
-    element_delete_button = document.querySelector('#delete_button');
-
-    element_delete_button.addEventListener("click", (event) => {
-      // API経由でData取得
-      const CreateEndPoint ="/api/accounting/spendingrecord/"+{{ object.id }}+"/";
-
-      fetch(CreateEndPoint, {
-        method: 'DELETE',
-        headers: {
-          'X-CSRFToken': getCookie('csrftoken'),
-          'Content-Type': 'application/json',
-        }
-      })
-      .then((response) => {
-        window.opener.location.reload();
-        window.close();
-      });
-    });
-  });
-</script>
 
 {% endblock %}

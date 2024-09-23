@@ -192,20 +192,6 @@
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", () => {
 
-  //   URLを取得
-    let url = new URL(window.location.href);
-
-  // URLSearchParamsオブジェクトを取得
-    let params = url.searchParams;
-
-    if(( params.get('status') == 'OK' )||( params.get('status') == 'NG' ))
-    {
-//      window.opener.location.focus();
-      window.opener.location.reload();
-      window.close();
-    }
-
-
     let element_form = document.querySelector("#form-spending-create");
     let element_public_hall = document.querySelector("#id_pagemanager_spending_create_public_hall");
     let element_accounting_book = document.querySelector("#id_pagemanager_spending_create_accounting_book");
