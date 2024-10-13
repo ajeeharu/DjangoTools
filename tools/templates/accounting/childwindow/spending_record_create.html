@@ -199,12 +199,15 @@
     let element_income_select = document.querySelector("#id_pagemanager_spending_create_income_select");
 
     // Create処理パラメーター追加（form文）
-    element_form.setAttribute("action","{% url 'accounting:create_spendingrecord' %}");
-    SetSelect(element_fiscal_terms.options, params.get('fiscal_terms'));
-    SetSelect(element_accounting_book.options, params.get('accounting_book'));
+    fiscal_terms = {{fiscal_terms}};
+    accounting_book = {{ accounting_book }};
+    record_number = {{ record_number }};
+    element_form.setAttribute("action","{% url 'accounting:create_spendingrecord' fiscal_terms, accounting_book, record_number %");
+    SetSelect(element_fiscal_terms.options, fiscal_terms );
+    SetSelect(element_accounting_book.options, accounting_book );
     SetSelect(element_income_select.options, '0');
     SetSelect(element_public_hall.options, {{ user.public_hall.number }});
-    document.querySelector("#id_pagemanager_spending_create_number").value =  params.get('record_number');
+    document.querySelector("#id_pagemanager_spending_create_number").value = record_number;
 
   });
 </script>

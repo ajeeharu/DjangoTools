@@ -5,7 +5,7 @@ from . import views
 app_name = "accounting"
 
 urlpatterns = [
-    path('', views.IndexView.as_view(), name="index"),
+    path('index/<int:fiscal_terms>/<int:accounting_book>', views.IndexView.as_view(), name="index"),
 
     path('creditor', views.CreditorListView.as_view(), name="creditor"),
     path('creditor/modal/create', views.ModalCreditorCreateView.as_view(), name="modal_create_creditor"),
@@ -47,11 +47,11 @@ urlpatterns = [
     path('sectionincome/modal/<int:pk>/update', views.ModalSectionIncomeUpdateView.as_view(), name="modal_update_sectionincome"),
     path('sectionincome/modal/<int:pk>/delete', views.ModalSectionIncomeDeleteView.as_view(), name="modal_delete_sectionincome"),
 
-    path('incomerecord/create', views.IncomeRecordCreateView.as_view(), name="create_incomerecord"),
-	path('incomerecord/<int:pk>/update', views.IncomeRecordUpdateView.as_view(), name="update_incomerecord"),
+    path('incomerecord/create/<int:fiscal_terms>/<int:accounting_book>/<int:record_number>', views.IncomeRecordCreateView.as_view(), name="create_incomerecord"),
+	path('incomerecord/<int:pk>/update/<int:fiscal_terms>/<int:accounting_book>', views.IncomeRecordUpdateView.as_view(), name="update_incomerecord"),
 	path('incomerecord/<int:pk>/delete', views.IncomeRecordDeleteView.as_view(), name="delete_incomerecord"),
 
-    path('spendingrecord/create', views.SpendingRecordCreateView.as_view(), name="create_spendingrecord"),
+    path('spendingrecord/create/<int:fiscal_terms>/<int:accounting_book>/<int:record_number>', views.SpendingRecordCreateView.as_view(), name="create_spendingrecord"),
 	path('spendingrecord/<int:pk>/update/<int:fiscal_terms>/<int:accounting_book>', views.SpendingRecordUpdateView.as_view(), name="update_spendingrecord"),
 	path('spendingrecord/<int:pk>/delete', views.SpendingRecordDeleteView.as_view(), name="delete_spendingrecord"),
 
@@ -59,15 +59,15 @@ urlpatterns = [
 ]
 
 router = DefaultRouter()
-router.register(r'creditor', views.CreditorApiView,basename="creditor")
-router.register(r'supplier', views.SupplierApiView,basename="supplier")
-router.register(r'fiscalterms', views.FiscalTermsApiView,basename="fiscalterms")
-router.register(r'accountingbook', views.AccountingBookApiView,basename="accountingbook")
-router.register(r'subjectspending', views.SubjectSpendingApiView,basename="subjectspending")
-router.register(r'sectionspending', views.SectionSpendingApiView,basename="sectionspending")
-router.register(r'subjectincome', views.SubjectIncomeApiView,basename="subjectincome")
-router.register(r'sectionincome', views.SectionIncomeApiView,basename="sectionincome")
+router.register('creditor', views.CreditorApiView,basename="creditor")
+router.register('supplier', views.SupplierApiView,basename="supplier")
+router.register('fiscalterms', views.FiscalTermsApiView,basename="fiscalterms")
+router.register('accountingbook', views.AccountingBookApiView,basename="accountingbook")
+router.register('subjectspending', views.SubjectSpendingApiView,basename="subjectspending")
+router.register('sectionspending', views.SectionSpendingApiView,basename="sectionspending")
+router.register('subjectincome', views.SubjectIncomeApiView,basename="subjectincome")
+router.register('sectionincome', views.SectionIncomeApiView,basename="sectionincome")
 
-router.register(r'spendingrecord', views.SpendingRecordApiView,basename="spendingrecord")
-router.register(r'incomerecord', views.IncomeRecordApiView,basename="incomerecord")
-router.register(r'pagemanager', views.PageManagerApiView,basename="pagemanager")
+router.register('spendingrecord', views.SpendingRecordApiView,basename="spendingrecord")
+router.register('incomerecord', views.IncomeRecordApiView,basename="incomerecord")
+router.register('pagemanager', views.PageManagerApiView,basename="pagemanager")

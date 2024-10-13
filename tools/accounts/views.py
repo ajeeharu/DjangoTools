@@ -20,7 +20,7 @@ class SignupView(CreateView):
     """ ユーザー登録用ビュー """
     form_class = SignUpForm # 作成した登録用フォームを設定
     template_name = "accounts/signup.html"
-    success_url = reverse_lazy('accounting:index') # ユーザー作成後のリダイレクト先ページ
+    success_url = reverse_lazy('accounting:index',kwargs={'fiscal_terms':0,'accounting_book':0}) # ユーザー作成後のリダイレクト先ページ
 
     def form_valid(self, form):
         user = form.save() # formの情報を保存

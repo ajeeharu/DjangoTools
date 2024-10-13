@@ -39,7 +39,7 @@ class IncomeRecordAdmin(VersionAdmin):
 admin.site.register(IncomeRecord, IncomeRecordAdmin)
 
 class PageManagerAdmin(VersionAdmin):
-	pass
+	list_display = ("id", "number")
 admin.site.register(PageManager, PageManagerAdmin)
 
 class FiscalTermsAdmin(VersionAdmin):

@@ -141,7 +141,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.User" # カスタムユーザーを認証用ユーザーとして登録
-LOGIN_REDIRECT_URL = "accounting:index"
+LOGIN_REDIRECT_URL = "common:index"
 LOGOUT_REDIRECT_URL = "accounts:login"
 
 # 何桁おきに区切るかという指定

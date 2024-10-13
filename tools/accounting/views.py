@@ -22,7 +22,7 @@ from django.shortcuts import redirect
 class IndexView(LoginRequiredMixin,ListView):
     template_name = "accounting/index.html"
     model = PageManager
-    success_url = reverse_lazy('accounting:index')
+    success_url = reverse_lazy('accounting:index',kwargs={'fiscal_terms':0,'accounting_book':0})
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -35,6 +35,9 @@ class IndexView(LoginRequiredMixin,ListView):
         context['form_page_update'] = PageManagerUpdateForm()           # Update Modal画面
         context['form_income_update'] = IncomeRecordUpdateForm()        # Update Modal画面
         context['form_spending_update'] = SpendingRecordUpdateForm()    # Update Modal画面
+        context['fiscal_terms'] = self.kwargs['fiscal_terms']
+        context['accounting_book'] = self.kwargs['accounting_book']
+
         return context
 
     def form_valid(self, form):
@@ -48,8 +51,8 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        fiscal_terms = self.request.GET.get('fiscal_terms')
-        accounting_book = self.request.GET.get('accounting_book')
+        fiscal_terms = self.kwargs['fiscal_terms']
+        accounting_book = self.kwargs['accounting_book']
         public_hall = self.request.user.public_hall
         context['form_income_create'] = IncomeRecordForm()
         context['form_income_create'].fields['subject_income'].queryset = SubjectIncome.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
@@ -75,18 +78,18 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(self.success_url,kwargs={'message':'NG'})
+        return HttpResponseRedirect(self.success_url)
 
 class IncomeRecordUpdateView(LoginRequiredMixin,UpdateView):
     model = IncomeRecord
     form_class = IncomeRecordUpdateForm
-    success_url = reverse_lazy('accounting:index')
+    success_url = reverse_lazy('accounting:index',kwargs={'fiscal_terms':0,'accounting_book':0})
     template_name = "accounting/childwindow/income_record_update.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        fiscal_terms = self.request.GET.get('fiscal_terms')
-        accounting_book = self.request.GET.get('accounting_book')
+        fiscal_terms = self.kwargs['fiscal_terms']
+        accounting_book = self.kwargs['accounting_book']
         public_hall = self.request.user.public_hall
         context['form_income_update'] = IncomeRecordForm()
         context['form_income_update'].fields['subject_income'].queryset = SubjectIncome.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
@@ -118,8 +121,8 @@ class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        fiscal_terms = self.request.GET.get('fiscal_terms')
-        accounting_book = self.request.GET.get('accounting_book')
+        fiscal_terms = self.kwargs['fiscal_terms']
+        accounting_book = self.kwargs['accounting_book']
         public_hall = self.request.user.public_hall
         context['form_spending_create'] = SpendingRecordForm()
         context['form_spending_create'].fields['subject_spending'].queryset = SubjectSpending.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
@@ -145,7 +148,7 @@ class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(self.success_url,kwargs={'message':'NG'})
+        return HttpResponseRedirect(self.success_url)
 
 class SpendingRecordUpdateView(LoginRequiredMixin,UpdateView):
     model = SpendingRecord
@@ -167,7 +170,7 @@ class SpendingRecordUpdateView(LoginRequiredMixin,UpdateView):
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(self.success_url,kwargs={'message':'NG'})
+        return HttpResponseRedirect(self.success_url)
 
 # ここではcontextのデータをセットするだけ
 # Delete処理はRestFul APIで行う。
@@ -219,12 +222,10 @@ class PageManagerApiView(viewsets.ModelViewSet):
         current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
         if current_public_hall:
             queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
-        current_fiscal_terms = self.request.query_params.get('fiscal_terms')
-        if current_fiscal_terms is not None:
-            queryset = queryset.filter(fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
-        current_accounting_book = self.request.query_params.get('accounting_book')
-        if current_accounting_book is not None:
-            queryset = queryset.filter(accounting_book=current_accounting_book)   # QuerySet（出納帳が一致）
+        if self.request.query_params.get('fiscal_terms'):
+            queryset = queryset.filter(fiscal_terms=self.request.query_params.get('fiscal_terms'))       # QuerySet（期間指定が一致）
+        if self.request.query_params.get('accounting_book'):
+            queryset = queryset.filter(accounting_book=self.request.query_params.get('accounting_book'))   # QuerySet（出納帳が一致）
         queryset = queryset.order_by('number')                                 # シリアル番号順
 
         return queryset
