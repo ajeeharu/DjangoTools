@@ -253,22 +253,6 @@ class IncomeRecordForm(forms.ModelForm):
             self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
         self.fields['fixed_number'].widget.attrs['class'] = "h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
 
-
-
-class IncomeRecordUpdateForm(IncomeRecordForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.fields['number'].widget.attrs['id'] = "id_income_update_number"
-        # self.fields['date'].widget.attrs['id'] = "id_income_update_date"
-        # self.fields['subject_income'].widget.attrs['id'] = "id_income_update_subject_income"
-        # self.fields['section_income'].widget.attrs['id'] = "id_income_update_section_income"
-        # self.fields['description'].widget.attrs['id'] = "id_income_update_description"
-        # self.fields['amount'].widget.attrs['id'] = "id_income_update_amount"
-        # self.fields['memo'].widget.attrs['id'] = "id_income_update_memo"
-        # self.fields['notice1'].widget.attrs['id'] = "id_income_update_notice1"
-        # self.fields['notice2'].widget.attrs['id'] = "id_income_update_notice2"
-        # self.fields['supplier'].widget.attrs['id'] = "id_income_update_supplier"
-
 # 支出詳細
 class SpendingRecordForm(forms.ModelForm):
     class Meta:
@@ -282,28 +266,6 @@ class SpendingRecordForm(forms.ModelForm):
         self.fields['fixed_number'].widget.attrs['class'] = "h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
         self.fields['rebersal_monies'].widget.attrs['class'] = "h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
         self.fields['behalf_pay'].widget.attrs['class'] = "h-6 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center"
-
-
-class SpendingRecordUpdateForm(SpendingRecordForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.fields['number'].widget.attrs['id'] = "id_spending_update_number"
-        # self.fields['date'].widget.attrs['id'] = "id_spending_update_date"
-        # self.fields['subject_spending'].widget.attrs['id'] = "id_spending_update_subject_spending"
-        # self.fields['section_spending'].widget.attrs['id'] = "id_spending_update_section_spending"
-        # self.fields['description'].widget.attrs['id'] = "id_spending_update_description"
-        # self.fields['amount'].widget.attrs['id'] = "id_spending_update_amount"
-        # self.fields['memo'].widget.attrs['id'] = "id_spending_update_memo"
-        # self.fields['receipt'].widget.attrs['id'] = "id_spending_update_receipt"
-        # self.fields['estimate'].widget.attrs['id'] = "id_spending_update_estimate"
-        # self.fields['creditor'].widget.attrs['id'] = "id_spending_update_creditor"
-        # self.fields['behalf_pay'].widget.attrs['id'] = "id_spending_update_behalf_pay"
-        # self.fields['rebersal_monies'].widget.attrs['id'] = "id_spending_update_rebersal_monies"
-        # self.fields['tax_withholding'].widget.attrs['id'] = "id_spending_update_tax_withholding"
-        # self.fields['back_side'].widget.attrs['id'] = "id_spending_update_back_side"
-        # self.fields['attachement'].widget.attrs['id'] = "id_spending_update_attachement"
-        # self.fields['fixed_number'].widget.attrs['id'] = "id_spending_update_fixed_number"
-
 
 # 一覧画面制御用
 class PageManagerForm(forms.ModelForm):
@@ -348,11 +310,3 @@ SpendingCreateFormset = forms.inlineformset_factory(
     form=PageManagerSpendingCreateForm,
     extra=1,can_delete=False
 )
-
-
-class PageManagerUpdateForm(PageManagerForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.fields['name'].widget.attrs['id'] = "id_update_name"
-        # self.fields['print_format'].widget.attrs['id'] = "id_update_print_format"
-        # self.fields['acronym'].widget.attrs['id'] = "id_update_acronym"

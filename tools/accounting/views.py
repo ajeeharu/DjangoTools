@@ -10,8 +10,7 @@ from .serializer import CreditorSerializer,SupplierSerializer,FiscalTermsSeriali
 from .models import Creditor,Supplier,PageManager,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome,IncomeRecord,PageManager,SpendingRecord,IncomeRecord
 from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm,FiscalTermsForm,FiscalTermsUpdateForm,FiscalTermsDeleteForm, \
     AccountingBookForm,AccountingBookUpdateForm,AccountingBookDeleteForm,SubjectSpendingForm,SubjectSpendingUpdateForm,SubjectSpendingDeleteForm,SectionSpendingForm,SectionSpendingUpdateForm,SectionSpendingDeleteForm, \
-    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm,IncomeRecordForm,SpendingRecordForm,PageManagerForm,IncomeCreateFormset,SpendingCreateFormset, \
-    PageManagerUpdateForm,IncomeRecordUpdateForm,SpendingRecordUpdateForm
+    SubjectIncomeForm,SubjectIncomeUpdateForm,SubjectIncomeDeleteForm,SectionIncomeForm,SectionIncomeUpdateForm,SectionIncomeDeleteForm,IncomeRecordForm,SpendingRecordForm,IncomeCreateFormset,SpendingCreateFormset
 
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -30,11 +29,6 @@ class IndexView(LoginRequiredMixin,ListView):
         context['page_title'] = '現金出納帳'
         context['fiscal_term_objects'] = FiscalTerms.objects.all()
         context['accounting_book_objects'] = AccountingBook.objects.all()
-        context['form_income_create'] = IncomeRecordForm()              # Create Modal画面
-        context['form_spending_create'] = SpendingRecordForm()          # Create Modal画面
-        context['form_page_update'] = PageManagerUpdateForm()           # Update Modal画面
-        context['form_income_update'] = IncomeRecordUpdateForm()        # Update Modal画面
-        context['form_spending_update'] = SpendingRecordUpdateForm()    # Update Modal画面
         context['fiscal_terms'] = self.kwargs['fiscal_terms']
         context['accounting_book'] = self.kwargs['accounting_book']
 
@@ -82,17 +76,16 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
 
 class IncomeRecordUpdateView(LoginRequiredMixin,UpdateView):
     model = IncomeRecord
-    form_class = IncomeRecordUpdateForm
-    success_url = reverse_lazy('accounting:index',kwargs={'fiscal_terms':0,'accounting_book':0})
+    success_url = reverse_lazy('accounting:response_message',kwargs={'action':'CloseChildWindow','message':'OK'})
     template_name = "accounting/childwindow/income_record_update.html"
+    form_class = IncomeRecordForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         fiscal_terms = self.kwargs['fiscal_terms']
         accounting_book = self.kwargs['accounting_book']
         public_hall = self.request.user.public_hall
-        context['form_income_update'] = IncomeRecordForm()
-        context['form_income_update'].fields['subject_income'].queryset = SubjectIncome.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
+        context['form'].fields['subject_income'].queryset = SubjectIncome.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
         return context
 
     def form_valid(self, form):

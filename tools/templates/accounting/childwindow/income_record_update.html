@@ -9,7 +9,7 @@
     <div
       class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
     >
-      <h3 class="text-xl font-semibold text-gray-900">収入伝票作成</h3>
+      <h3 class="text-xl font-semibold text-gray-900">収入伝票　変更</h3>
       <button
         type="button"
         class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
@@ -47,8 +47,8 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >番号を固定する</label
           >
-          {{ form_income_update.fixed_number }}
-          {{ form_income_update.fixed_number.errors }}
+          {{ form.fixed_number }}
+          {{ form.fixed_number.errors }}
         </div>
 
         <div>
@@ -59,15 +59,15 @@
               >(番号固定しない場合は記入不要）</span
             ></label
           >
-          {{ form_income_update.number }}
-          {{ form_income_update.number.errors }}
+          {{ form.number }}
+          {{ form.number.errors }}
         </div>
         <div>
           <label for="date" class="block mb-2 text-xl font-medium text-gray-900"
             >日付</label
           >
-          {{ form_income_update.date }}
-          {{ form_income_update.date.errors }}
+          {{ form.date }}
+          {{ form.date.errors }}
         </div>
         <div>
           <label
@@ -75,8 +75,8 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >収入科目</label
           >
-          {{ form_income_update.subject_income }}
-          {{ form_income_update.subject_income.errors }}
+          {{ form.subject_income }}
+          {{ form.subject_income.errors }}
         </div>
         <div>
           <label
@@ -84,8 +84,8 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >収入節</label
           >
-          {{ form_income_update.section_income }}
-          {{ form_income_update.section_income.errors }}
+          {{ form.section_income }}
+          {{ form.section_income.errors }}
         </div>
         <div>
           <label
@@ -93,8 +93,8 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >摘要</label
           >
-          {{ form_income_update.description }}
-          {{ form_income_update.description.errors }}
+          {{ form.description }}
+          {{ form.description.errors }}
         </div>
         <div>
           <label
@@ -102,15 +102,15 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >金額</label
           >
-          {{ form_income_update.amount }}
-          {{ form_income_update.amount.errors }}
+          {{ form.amount }}
+          {{ form.amount.errors }}
         </div>
         <div>
           <label for="memo" class="block mb-2 text-xl font-medium text-gray-900"
             >メモ（印刷対象外)</label
           >
-          {{ form_income_update.memo }}
-          {{ form_income_update.memo.errors }}
+          {{ form.memo }}
+          {{ form.memo.errors }}
         </div>
         <div>
           <label
@@ -118,8 +118,8 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >通知書１</label
           >
-          {{ form_income_update.notice1 }}
-          {{ form_income_update.notice1.errors }}
+          {{ form.notice1 }}
+          {{ form.notice1.errors }}
         </div>
         <div>
           <label
@@ -127,8 +127,8 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >通知書１</label
           >
-          {{ form_income_update.notice2 }}
-          {{ form_income_update.notice2.errors }}
+          {{ form.notice2 }}
+          {{ form.notice2.errors }}
         </div>
         <div>
           <label
@@ -136,8 +136,8 @@
             class="block mb-2 text-xl font-medium text-gray-900"
             >納入者</label
           >
-          {{ form_income_update.supplier }}
-          {{ form_income_update.supplier.errors }}
+          {{ form.supplier }}
+          {{ form.supplier.errors }}
         </div>
         <button
           type="submit"
@@ -150,49 +150,4 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", () => {
-
-  //   URLを取得
-    let url = new URL(window.location.href);
-
-  // URLSearchParamsオブジェクトを取得
-    let params = url.searchParams;
-
-    let id=params.get('id');
-
-    let element_form = document.querySelector("#form-income-update");
-    let element_public_hall = document.querySelector("#id_pagemanager_income_create_public_hall");
-    let element_accounting_book = document.querySelector("#id_pagemanager_income_create_accounting_book");
-    let element_fiscal_terms = document.querySelector("#id_pagemanager_income_create_fiscal_terms");
-    let element_income_select = document.querySelector("#id_pagemanager_income_create_income_select");
-    let element_submit_button = document.querySelector("#submit_button");
-
-    // Delete処理パラメーター追加（form文）
-    element_form.setAttribute(
-      "action",
-      "/accounting/incomerecord/" + id + "/update"
-    );
-
-    // API経由でData取得
-    const CreateEndPoint = "/api/accounting/incomerecord/" + id + "/";
-
-    fetch(CreateEndPoint, {
-      method: "GET",
-      headers: {
-        "X-CSRFToken": getCookie("csrftoken"),
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-        return response.json(); // 読み込むデータをJSONに設定
-    })
-    .then((data) => {
-      element_name.value = data["name"];
-      element_address.value = data["address"];
-      SetSelect(element_public_hall.options, data["public_hall"]["number"])
-    });
-
-  });
-</script>
 {% endblock %}
