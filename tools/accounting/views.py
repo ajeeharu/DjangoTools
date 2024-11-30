@@ -18,6 +18,7 @@ from urllib.parse import urlencode
 from django.shortcuts import redirect
 from django.conf import settings
 import openpyxl
+import json
 
 # 現金出納帳
 class IndexView(LoginRequiredMixin,ListView):
@@ -662,6 +663,8 @@ class ResponseMessage(LoginRequiredMixin,TemplateView):
     template_name = "accounting/response.html"
 
 def DownloadExcel(request):
+    data = json.loads(request.body)
+    print(data)
     wb =openpyxl.load_workbook(settings.MEDIA_ROOT + '/excel/template_accounting.xlsx')
     ws = wb.active
     response = HttpResponse(content_type='application/vnd.ms-excel')

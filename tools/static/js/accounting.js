@@ -816,11 +816,12 @@ const DownloadExcel =  async () => {
     // Djangoへデータを送信してExcelをダウンロードする。
     const CreateEndPoint = "/accounting/downloadexcel";
     let response = await fetch(CreateEndPoint, {
-      method: "GET",
+      method: "POST",
       headers: {
         "X-CSRFToken": getCookie("csrftoken"),
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(pagedata_json)
     });
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
