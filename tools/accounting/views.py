@@ -3,7 +3,7 @@
 from django.views.generic import CreateView,ListView,UpdateView,DeleteView,TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib import messages
 from rest_framework import viewsets
 from .serializer import CreditorSerializer,SupplierSerializer,FiscalTermsSerializer,AccountingBookSerializer,SubjectSpendingSerializer,SectionSpendingSerializer,SubjectIncomeSerializer,SectionIncomeSerializer,SpendingRecordSerializer,IncomeRecordSerializer,PageManagerSerializer
@@ -16,6 +16,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from urllib.parse import urlencode
 from django.shortcuts import redirect
+from django.conf import settings
+import openpyxl
 
 # 現金出納帳
 class IndexView(LoginRequiredMixin,ListView):
@@ -658,3 +660,11 @@ class SectionIncomeApiView(viewsets.ModelViewSet):
 # 債権者情報
 class ResponseMessage(LoginRequiredMixin,TemplateView):
     template_name = "accounting/response.html"
+
+def DownloadExcel(request):
+    wb =openpyxl.load_workbook(settings.MEDIA_ROOT + '/excel/template_accounting.xlsx')
+    ws = wb.active
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=%s' % 'template.xlsx'
+    wb.save(response)
+    return response

@@ -23,10 +23,10 @@ const RenderingPage = (result) => {
 
     let tr_element = document.createElement("tr");
     tr_element.className = "border-gray-500 border-y border-solid";
-    // データ（シリアルNo.）
     let debug_element = document.createElement("td");
+    // データ（シリアルNo.）
     debug_element.className =
-      "border-gray-500 border-x border-solid text-center data-serial-number";
+      "border-gray-500 border-x border-solid text-center data-serial-number hidden";
     debug_element.textContent = data.number;
     tr_element.appendChild(debug_element);
     // Update用のボタン
@@ -417,7 +417,9 @@ const CheckIncomeNumber = async (result) => {
         await IncomeRecordPatchNumber(data.income_record.id, income_counter);
         retry = true;
       }
-      income_counter++;
+      if(!data.income_record.fixed_number){
+        income_counter++;
+      }
     }
   }
   return retry;
@@ -442,7 +444,9 @@ const CheckSpendingNumber = async (result) => {
         );
         retry = true;
       }
-      spending_counter++;
+      if (!data.spending_record.fixed_number) {
+         spending_counter++;
+      }
     }
   }
   return retry;
@@ -805,3 +809,27 @@ const CallBackFunction_afterRedering = () => {
   SetDeleteEvent();
 };
 SetCallBack_afterRendering(CallBackFunction_afterRedering);
+
+// Description: データをExcelにexport
+const DownloadExcel =  async () => {
+    try {
+    // Djangoへデータを送信してExcelをダウンロードする。
+    const CreateEndPoint = "/accounting/downloadexcel";
+    let response = await fetch(CreateEndPoint, {
+      method: "GET",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+    });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sample.xlsx";
+      a.click();
+  } catch (error) {
+    console.error("GET API通信エラーが発生しました,error");
+  }
+
+}

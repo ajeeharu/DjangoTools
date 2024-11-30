@@ -56,6 +56,8 @@ urlpatterns = [
 	path('spendingrecord/<int:pk>/delete', views.SpendingRecordDeleteView.as_view(), name="delete_spendingrecord"),
 
 	path('response/<str:action>/<str:message>', views.ResponseMessage.as_view(), name="response_message"),
+
+	path('downloadexcel', views.DownloadExcel, name="download_excel"),
 ]
 
 router = DefaultRouter()
