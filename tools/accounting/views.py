@@ -50,10 +50,14 @@ class IncomeRecordCreateView(LoginRequiredMixin,CreateView):
         context = super().get_context_data(**kwargs)
         fiscal_terms = self.kwargs['fiscal_terms']
         accounting_book = self.kwargs['accounting_book']
+        record_number = self.kwargs['record_number']
         public_hall = self.request.user.public_hall
         context['form_income_create'] = IncomeRecordForm()
         context['form_income_create'].fields['subject_income'].queryset = SubjectIncome.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
         context['formset_income_page_create'] = IncomeCreateFormset()
+        context['fiscal_terms'] = fiscal_terms
+        context['accounting_book'] = accounting_book
+        context['record_number'] = record_number
         return context
 
     def post(self, request, *args, **kwargs):
@@ -119,10 +123,14 @@ class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
         context = super().get_context_data(**kwargs)
         fiscal_terms = self.kwargs['fiscal_terms']
         accounting_book = self.kwargs['accounting_book']
+        record_number = self.kwargs['record_number']
         public_hall = self.request.user.public_hall
         context['form_spending_create'] = SpendingRecordForm()
         context['form_spending_create'].fields['subject_spending'].queryset = SubjectSpending.objects.filter(fiscal_terms=fiscal_terms, accounting_book=accounting_book,public_hall=public_hall)
         context['formset_spending_page_create'] = SpendingCreateFormset()
+        context['fiscal_terms'] = fiscal_terms
+        context['accounting_book'] = accounting_book
+        context['record_number'] = record_number
         return context
 
     def post(self, request, *args, **kwargs):
@@ -138,11 +146,13 @@ class SpendingRecordCreateView(LoginRequiredMixin,CreateView):
 
 # データベースの処理終了後に子Window閉じる
     def form_valid(self, form, formset):
+        print("forms_valid")
         form.save()
         formset.save()
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
+        print("form_invalid")
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
@@ -658,13 +668,15 @@ class SectionIncomeApiView(viewsets.ModelViewSet):
     queryset = SectionIncome.objects.all()
     serializer_class = SectionIncomeSerializer
 
-# 債権者情報
+# メッセージ通知用（例：
 class ResponseMessage(LoginRequiredMixin,TemplateView):
     template_name = "accounting/response.html"
 
+# 現金出納帳、支出伝票、収入伝票をEXCELでダウンロード
 def DownloadExcel(request):
     data = json.loads(request.body)
-    print(data)
+    for row in data:
+        print(row)
     wb =openpyxl.load_workbook(settings.MEDIA_ROOT + '/excel/template_accounting.xlsx')
     ws = wb.active
     response = HttpResponse(content_type='application/vnd.ms-excel')
