@@ -811,26 +811,7 @@ const CallBackFunction_afterRedering = () => {
 SetCallBack_afterRendering(CallBackFunction_afterRedering);
 
 // Description: データをExcelにexport
-const DownloadExcel =  async () => {
-    try {
-    // Djangoへデータを送信してExcelをダウンロードする。
-    const CreateEndPoint = "/accounting/downloadexcel";
-    let response = await fetch(CreateEndPoint, {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": getCookie("csrftoken"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(pagedata_json)
-    });
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "sample.xlsx";
-      a.click();
-  } catch (error) {
-    console.error("GET API通信エラーが発生しました,error");
-  }
-
-}
+const ExportSetting = () => {
+  window.location.href =
+    "/accounting/export/" + fiscal_terms_value + "/" + accounting_book_value;
+};

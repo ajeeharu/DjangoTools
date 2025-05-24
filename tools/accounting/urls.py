@@ -57,6 +57,7 @@ urlpatterns = [
 
 	path('response/<str:action>/<str:message>', views.ResponseMessage.as_view(), name="response_message"),
 
+    path('export/<int:fiscal_terms>/<int:accounting_book>', views.ExportView.as_view(), name="export"),
 	path('downloadexcel', views.DownloadExcel, name="download_excel"),
 ]
 

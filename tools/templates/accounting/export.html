@@ -1,0 +1,125 @@
+{% extends 'base_accounting.html' %}
+{% block title%}公民館ツール：EXPORT{%endblock %}
+{% block content %}
+{% load static %}
+<div id="content">
+  <section class="bg-blue-200 relative">
+    <div class="flex flex-row py-2 px-16 mx-auto justify-items-center">
+      <div
+        class="text-2xl font-extrabold tracking-tight leading-none text-gray-600 py-2"
+      >
+        {{ user.public_hall.name }}公民館
+      </div>
+      <div
+        class="text-xl font-bold tracking-tight leading-none text-gray-400 py-2 ml-4"
+      >
+        EXPORT(EXCEL出力)
+      </div>
+
+      <!--会計年度-->
+      <div
+        class="ml-16 py-2 px-4 rounded-full bg-white w-200 h-10 text-gray-600"
+      >
+        会計年度：{{fiscal_terms_name}}
+      </div>
+      <!--現金出納帳-->
+      <div class="ml-4 p-2 rounded-full bg-white w-200 h-10 text-gray-600">
+        現金出納帳：{{accounting_book_name}}
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-6xl relative overflow-x-auto mx-auto mt-2">
+    <table
+      class="w-full text-xs text-center rtl:text-right text-gray-500 border-gray-500 border-x border-solid"
+    >
+      <thead class="text-gray-700">
+        <tr class="border-gray-500 border-y border-solid bg-white">
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid p-1 w-16 hidden"
+          >
+            No.
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid  w-16 justify-items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="text-blue-600">
+              <path fill="currentColor" d="m10.6 16.2l7.05-7.05l-1.4-1.4l-5.65 5.65l-2.85-2.85l-1.4 1.4zM5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm0-2h14V5H5zM5 5v14z"/>
+            </svg>
+          </th>
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
+            月
+          </th>
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
+            日
+          </th>
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
+            項<br />(目)
+          </th>
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
+            目<br />(節)
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid p-1 w-40"
+          >
+            債権者<br />納入者
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid px-6 py-2"
+          >
+            概　要
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid p-1 w-16"
+          >
+            収入<br />番号
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid p-1 w-16"
+          >
+            支出<br />番号
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid px-6 py-2 w-32"
+          >
+            収入金額
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid px-6 py-2 w-32"
+          >
+            支出金額
+          </th>
+          <th
+            scope="col"
+            class="border-gray-500 border-x border-solid px-6 py-2 w-32"
+          >
+            差引残高
+          </th>
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
+            見<br />積
+          </th>
+          <th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">
+            領<br />収
+          </th>
+        </tr>
+      </thead>
+      <tbody id="AccountingList" class="text-xs"></tbody>
+    </table>
+
+  </div>
+</div>
+<script src="{% static 'js/export.js' %}"></script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    ExportAccountingParameter({{fiscal_terms}}, {{accounting_book}});
+  });
+</script>
+{% endblock %}

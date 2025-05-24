@@ -672,6 +672,25 @@ class SectionIncomeApiView(viewsets.ModelViewSet):
 class ResponseMessage(LoginRequiredMixin,TemplateView):
     template_name = "accounting/response.html"
 
+
+class ExportView(LoginRequiredMixin,ListView):
+    template_name = "accounting/export.html"
+    model = PageManager
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        # page_title を追加する
+        context['page_title'] = 'EXPORT'
+        fiscal_terms = self.kwargs['fiscal_terms']
+        accounting_book = self.kwargs['accounting_book']
+        context['fiscal_terms'] = fiscal_terms
+        context['accounting_book'] = accounting_book
+        context['fiscal_terms_name'] = FiscalTerms.objects.get(pk=fiscal_terms).name
+        context['accounting_book_name'] = AccountingBook.objects.get(pk=accounting_book).name
+
+        return context
+
+
 # 現金出納帳、支出伝票、収入伝票をEXCELでダウンロード
 def DownloadExcel(request):
     data = json.loads(request.body)
