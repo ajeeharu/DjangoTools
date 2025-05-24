@@ -1,5 +1,4 @@
 django
-mysqlclient
 djangorestframework
 django-filter
 openpyxl

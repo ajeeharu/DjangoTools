@@ -1,6 +1,2 @@
-uer:fukui-publichall
-password:ai3mZMJnDRdK
-uer:admin_fukui
-password:admin_password
-user:test
-password:Pecha0123
+uer:admin-user
+password:shimizu-minami

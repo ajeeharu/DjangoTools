@@ -84,12 +84,8 @@ WSGI_APPLICATION = 'setting.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'fukuicity',
-        'USER':'root',
-        'PASSWORD':'X02DlttW3cBbnV9Z',
-        'HOST':'localhost',
-		'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'database/db.sqlite3',
     }
 }
 
@@ -149,7 +145,7 @@ LOGOUT_REDIRECT_URL = "accounts:login"
 NUMBER_GROUPING = 3
 
 # 秘匿性の高い情報は gitignore 対象ファイルに格納
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass
