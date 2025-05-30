@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounting',
     'accounts',
     'common',
+    'event_manager',
     'openpyxl',
 ]
 
