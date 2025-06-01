@@ -28,7 +28,8 @@ urlpatterns = [
 	# apli
 	path('',include("common.urls")),
 	path('accounts/', include("accounts.urls")),
-	path('accounting/',include("accounting.urls")),
+	path('accounting/',include("accounting.urls")),	
+ 	path('event_manager/',include("event_manager.urls")),
     # api
     path('api/account/', include(accounts_router.urls)),
     path('api/accounting/', include(accounting_router.urls)),

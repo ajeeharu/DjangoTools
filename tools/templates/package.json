@@ -4,5 +4,8 @@
   },
   "scripts": {
     "watch": "tailwindcss -i ./input/styles.css -o ../static/css/styles.css --watch"
+  },
+  "dependencies": {
+    "fullcalendar": "^6.1.17"
   }
 }
