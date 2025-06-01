@@ -108,12 +108,50 @@
     max-width: 1100px;
     margin: 0 auto;
   }
-
+  .fc .fc-button-primary {
+	background-color: #fff;
+	color : #666;
+	border :0px;
+  }
+  .fc .fc-button-primary:hover  {
+	background-color: #eee;
+	color : #666;
+	border :0px;
+  }
+  .fc .fc-button-primary:visited  {
+	background-color: #fff;
+	color : #666;
+	border :0px;
+  }
+  .fc .fc-button-primary:focus  {
+	box-shadow: none !important;
+  } 
+  .fc-today-button {
+	background-color: #fff !important;
+	color : #666 !important;
+	border :1px solid #ccc !important;
+	text-align: center !important;
+  }
+  .fc-today-button:hover {
+	background-color: #eee !important;
+  }
+  .fc-today-button::before {
+	content: "";
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-image: url("{% static 'img/calendar.svg' %}");
+	background-size: contain; /* 要素に収まるように画像を調整 */
+	background-repeat: no-repeat; /* 繰り返しなし */
+	background-position: center; /* 中央に配置 */
+	margin-right: 4px;
+	color :#666;
+  }
 </style>
  <div id='wrap'>
 
     <div id='external-events'>
-      <h4>Draggable Events</h4>
+      <h4>追加EVENT</h4>
 
       <div id='external-events-list'>
         <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
@@ -132,11 +170,6 @@
           <div class='fc-event-main'>My Event 5</div>
         </div>
       </div>
-
-      <p>
-        <input type='checkbox' id='drop-remove' />
-        <label for='drop-remove'>remove after drop</label>
-      </p>
     </div>
 
     <div id='calendar-wrap'>
