@@ -4,256 +4,299 @@
 {% block content %}
 <script>
 
-  document.addEventListener('DOMContentLoaded', function() {
+	document.addEventListener('DOMContentLoaded', function () {
 
-    /* initialize the external events
-    -----------------------------------------------------------------*/
+		/* initialize the external events
+		-----------------------------------------------------------------*/
 
-    var containerEl = document.getElementById('external-events-list');
-    new FullCalendar.Draggable(containerEl, {
-      itemSelector: '.fc-event',
-      eventData: function(eventEl) {
-        return {
-          title: eventEl.innerText.trim()
-        }
-      }
-    });
+		var containerEl = document.getElementById('external-events-list');
+		new FullCalendar.Draggable(containerEl, {
+			itemSelector: '.fc-event',
+			eventData: function (eventEl) {
+				return {
+					title: eventEl.innerText.trim()
+				}
+			}
+		});
 
-    //// the individual way to do it
-    // var containerEl = document.getElementById('external-events-list');
-    // var eventEls = Array.prototype.slice.call(
-    //   containerEl.querySelectorAll('.fc-event')
-    // );
-    // eventEls.forEach(function(eventEl) {
-    //   new FullCalendar.Draggable(eventEl, {
-    //     eventData: {
-    //       title: eventEl.innerText.trim(),
-    //     }
-    //   });
-    // });
+		//// the individual way to do it
+		// var containerEl = document.getElementById('external-events-list');
+		// var eventEls = Array.prototype.slice.call(
+		//   containerEl.querySelectorAll('.fc-event')
+		// );
+		// eventEls.forEach(function(eventEl) {
+		//   new FullCalendar.Draggable(eventEl, {
+		//     eventData: {
+		//       title: eventEl.innerText.trim(),
+		//     }
+		//   });
+		// });
 
-    /* initialize the calendar
-    -----------------------------------------------------------------*/
+		/* initialize the calendar
+		-----------------------------------------------------------------*/
 
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-	   customButtons: {// ①カスタムボタンの追加
-        Event: {
-            text: 'EVENT',
-            click: function () {
-                date.setMonth(date.getMonth() - 1);
-                calendar.gotoDate(date); // ②前月へ飛ばす
-            }
-        },
-        Setting: {
-            text: '設定',
-            click: function () {
-                date.setMonth(date.getMonth() + 1);
-                calendar.gotoDate(date); // ②次月へ飛ばす
-            }
-        },
-	  },
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'Event,Setting,multiMonthYear,dayGridMonth,timeGridWeek,listWeek'
-      },
-	  initialView: 'dayGridMonth',
-      locale: 'ja',
-      editable: true,
-      droppable: true, // this allows things to be dropped onto the calendar
-      drop: function(arg) {
-        // is the "remove after drop" checkbox checked?
-        if (document.getElementById('drop-remove').checked) {
-          // if so, remove the element from the "Draggable Events" list
-          arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-        }
-      },
-    });
-    calendar.render();
-  });
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			customButtons: {// ①カスタムボタンの追加
+				Event: {
+					text: 'EVENT',
+					click: function () {
+						date.setMonth(date.getMonth() - 1);
+						calendar.gotoDate(date); // ②前月へ飛ばす
+					}
+				},
+				Setting: {
+					text: '設定',
+					click: function () {
+						window.location.href = 'https://google.com';
+					}
+				},
+			},
+			headerToolbar: {
+				left: ' today,prev,next',
+				center: 'title',
+				right: 'Event,Setting,multiMonthYear,dayGridMonth,timeGridWeek,listWeek'
+			},
+			initialView: 'dayGridMonth',
+			timezone: 'UTC',
+			locale: 'ja',
+			editable: true,
+			droppable: true, // this allows things to be dropped onto the calendar
+			drop: function (arg) {
+				// is the "remove after drop" checkbox checked?
+				if (document.getElementById('drop-remove').checked) {
+					// if so, remove the element from the "Draggable Events" list
+					arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+				}
+			},
+			// https://fullcalendar.io/docs/event-object
+			events: [
+				{
+					classNames: ['event-holiday'],
+					title: '休館日',
+					start: '2025-06-02',
+					allDay: true,
+				}
+			]
+		});
+		calendar.render();
+	});
 
 </script>
 <style>
+	body {
+		margin-top: 40px;
+		font-size: 14px;
+		font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+	}
 
-  body {
-    margin-top: 40px;
-    font-size: 14px;
-    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-  }
+	#external-events {
+		position: fixed;
+		left: 20px;
+		top: 20px;
+		width: 150px;
+		padding: 0 10px;
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: left;
+		display: none;
+	}
 
-  #external-events {
-    position: fixed;
-    left: 20px;
-    top: 20px;
-    width: 150px;
-    padding: 0 10px;
-    border: 1px solid #ccc;
-    background: #eee;
-    text-align: left;
-	display: none;
-  }
+	#external-events h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+	}
 
-  #external-events h4 {
-    font-size: 16px;
-    margin-top: 0;
-    padding-top: 1em;
-  }
+	#external-events .fc-event {
+		margin: 3px 0;
+		cursor: move;
+	}
 
-  #external-events .fc-event {
-    margin: 3px 0;
-    cursor: move;
-  }
+	#external-events p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+	}
 
-  #external-events p {
-    margin: 1.5em 0;
-    font-size: 11px;
-    color: #666;
-  }
+	#external-events p input {
+		margin: 0;
+		vertical-align: middle;
+	}
 
-  #external-events p input {
-    margin: 0;
-    vertical-align: middle;
-  }
-/* 
+	/* 
   #calendar-wrap {
     margin-left: 200px;
   } */
 
-  #calendar {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .fc .fc-toolbar-chunk {
-	display: flex;
-	flex-direction: row;
-  }
-  .fc-toolbar-chunk:first-child{
+	#calendar {
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+
+	.fc .fc-toolbar-chunk {
+		display: flex;
+		flex-direction: row;
+	}
+
+	/* .fc-toolbar-chunk:first-child{
 	flex-direction: row-reverse;
-  }
-  /* .fc-toolbar-chunk:last-child{
+  } */
+	/* .fc-toolbar-chunk:last-child{
 	background-color: #eee;
 	padding: 4px;
 	border-radius: 0.375rem;
   } */
-  .fc .fc-button-primary {
-	background-color: #fff;
-	color : #666;
-	border :0px;
-  }
-  .fc .fc-button-primary:hover  {
-	background-color: #eee;
-	color : #666;
-	border :0px;
-  }
-  .fc .fc-button-primary:visited  {
-	background-color: #fff;
-	color : #666;
-	border :0px;
-  }
-  .fc .fc-button-primary:focus  {
-	box-shadow: none !important;
-  } 
-  .fc-today-button {
-	background-color: #fff !important;
-	color : #666 !important;
-	border :1px solid #ccc !important;
-	text-align: center !important;
-  }
-  .fc-today-button:hover {
-	background-color: #eee !important;
-  }
-  .fc-today-button::before {
-	content: "";
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	background-image: url("{% static 'img/calendar.svg' %}");
-	background-size: contain; /* 要素に収まるように画像を調整 */
-	background-repeat: no-repeat; /* 繰り返しなし */
-	background-position: center; /* 中央に配置 */
-	margin-right: 8px;
-	color :#666;
-  }
-    .fc-Event-button::before {
-	content: "";
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	background-image: url("{% static 'img/event.svg' %}");
-	background-size: contain; /* 要素に収まるように画像を調整 */
-	background-repeat: no-repeat; /* 繰り返しなし */
-	background-position: center; /* 中央に配置 */
-	margin-right: 8px;
-	color :#ccc;
-  }
-  .fc-Setting-button::before {
-	content: "";
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	background-image: url("{% static 'img/setting.svg' %}");
-	background-size: contain; /* 要素に収まるように画像を調整 */
-	background-repeat: no-repeat; /* 繰り返しなし */
-	background-position: center; /* 中央に配置 */
-	margin-right: 4px;
-	color :#ccc;
-  }
-  .fc-multiMonthYear-button, .fc-dayGridMonth-button, .fc-timeGridWeek-button, .fc-listWeek-button {
-	background-color: #eee !important;
-	/* margin: 0px 8px !important; */
-	padding: 8px 16px !important;
-  }
-  .fc-multiMonthYear-button, .fc-dayGridMonth-button, .fc-timeGridWeek-button, .fc-listWeek-button {
-	border-left: 4px #eee solid !important;
-	border-right: 4px #eee solid !important;
-  }
-  .fc .fc-button-primary:not(:disabled).fc-button-active {
-	background-color: #fff !important;
-	color:#222 !important;
-	font-weight: 500;
-	border-top: 4px #eee solid;
-  }
-   /* 月曜日 */
-.fc-day-mon {
-    background-color:oklch(93.6% 0.032 17.717);
-	/* opacity: 0.6 */
-}
-.fc-toolbar-title {
-	/* margin-left: 200px !important; */
-	color :#888;
-	font-weight: 600;	
-}
+	.fc .fc-button-primary {
+		background-color: #fff;
+		color: #666;
+		border: 0px;
+	}
+
+	.fc .fc-button-primary:hover {
+		background-color: #eee;
+		color: #666;
+		border: 0px;
+	}
+
+	.fc .fc-button-primary:visited {
+		background-color: #fff;
+		color: #666;
+		border: 0px;
+	}
+
+	.fc .fc-button-primary:focus {
+		box-shadow: none !important;
+	}
+
+	.fc-today-button {
+		background-color: #fff !important;
+		color: #666 !important;
+		border: 1px solid #ccc !important;
+		text-align: center !important;
+	}
+
+	.fc-today-button:hover {
+		background-color: #eee !important;
+	}
+
+	.fc-today-button::before {
+		content: "";
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		background-image: url("{% static 'img/calendar.svg' %}");
+		background-size: contain;
+		/* 要素に収まるように画像を調整 */
+		background-repeat: no-repeat;
+		/* 繰り返しなし */
+		background-position: center;
+		/* 中央に配置 */
+		margin-right: 8px;
+		color: #666;
+	}
+
+	.fc-Event-button::before {
+		content: "";
+		display: inline-block;
+		width: 24px;
+		height: 24px;
+		background-image: url("{% static 'img/event.svg' %}");
+		background-size: contain;
+		/* 要素に収まるように画像を調整 */
+		background-repeat: no-repeat;
+		/* 繰り返しなし */
+		background-position: center;
+		/* 中央に配置 */
+		margin-right: 8px;
+		color: #ccc;
+	}
+
+	.fc-Setting-button::before {
+		content: "";
+		display: inline-block;
+		width: 24px;
+		height: 24px;
+		background-image: url("{% static 'img/setting.svg' %}");
+		background-size: contain;
+		/* 要素に収まるように画像を調整 */
+		background-repeat: no-repeat;
+		/* 繰り返しなし */
+		background-position: center;
+		/* 中央に配置 */
+		margin-right: 4px;
+		color: #ccc;
+	}
+
+	.fc-multiMonthYear-button,
+	.fc-dayGridMonth-button,
+	.fc-timeGridWeek-button,
+	.fc-listWeek-button {
+		background-color: #eee !important;
+		/* margin: 0px 8px !important; */
+		padding: 8px 16px !important;
+	}
+
+	.fc-multiMonthYear-button,
+	.fc-dayGridMonth-button,
+	.fc-timeGridWeek-button,
+	.fc-listWeek-button {
+		border-left: 4px #eee solid !important;
+		border-right: 4px #eee solid !important;
+	}
+
+	.fc .fc-button-primary:not(:disabled).fc-button-active {
+		background-color: #fff !important;
+		color: #222 !important;
+		font-weight: 500;
+		border-top: 4px #eee solid;
+	}
+
+	/* 月曜日 */
+	.fc-col-header-cell.fc-day-mon {
+		background-color: oklch(93.6% 0.032 17.717);
+		/* opacity: 0.6 */
+	}
+
+	.fc-toolbar-title {
+		/* margin-left: 200px !important; */
+		color: #888;
+		font-weight: 600;
+	}
+
+	.fc-day-today {
+		background-color: oklch(92% 0.004 286.32) !important;
+	}
 </style>
- <div id='wrap'>
-    <div id='external-events'>
-      <h4>追加EVENT</h4>
-      <div id='external-events-list'>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 1</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 2</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 3</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 4</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 5</div>
-        </div>
-      </div>
-      <p>
-        <input type='checkbox' id='drop-remove' />
-        <label for='drop-remove'>remove after drop</label>
-      </p>
-    </div>
+<div id='wrap'>
+	<div id='external-events'>
+		<h4>追加EVENT</h4>
+		<div id='external-events-list'>
+			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+				<div class='fc-event-main'>My Event 1</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+				<div class='fc-event-main'>My Event 2</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+				<div class='fc-event-main'>My Event 3</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+				<div class='fc-event-main'>My Event 4</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+				<div class='fc-event-main'>My Event 5</div>
+			</div>
+		</div>
+		<p>
+			<input type='checkbox' id='drop-remove' />
+			<label for='drop-remove'>remove after drop</label>
+		</p>
+	</div>
 
-    <div id='calendar-wrap'>
-      <div id='calendar'></div>
-    </div>
+	<div id='calendar-wrap'>
+		<div id='calendar'></div>
+	</div>
 
-  </div>
+</div>
 {% endblock %}
