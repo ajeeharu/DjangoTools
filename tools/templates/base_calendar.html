@@ -28,27 +28,7 @@
 			border: 1px solid #ccc;
 			background: #eee;
 			text-align: left;
-			display: none;
-		}
-
-		#external-events h4 {
-			font-size: 16px;
-			margin-top: 0;
-			padding-top: 1em;
-		}
-
-		#external-events .fc-event {
-			margin: 3px 0;
-			cursor: move;
-		}
-		#external-events p {
-			margin: 1.5em 0;
-			font-size: 11px;
-			color: #666;
-		}
-		#external-events p input {
-			margin: 0;
-			vertical-align: middle;
+			/* display: none; */
 		}
 		.fc .fc-toolbar-chunk {
 			display: flex;
@@ -190,9 +170,9 @@
 			<!-- Dropdown menu -->
 			<div id="dropdownAccounting"
 				class="dropdownmenu z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute mt-2">
-				<ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformationButton">
-					<li>
-						<a href="{% url 'accounting:fiscalterms' %}" class="block px-4 py-2 hover:bg-green-100">会計年度</a>
+				<ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformationButton" id='external-events-list'>
+					<li class='fc-event fc-daygrid-event fc-daygrid-block-event'>
+						<a href="{% url 'accounting:fiscalterms' %}" class="block px-4 py-2 hover:bg-green-100 fc-event-main">会計年度</a>
 					</li>
 					<li>
 						<a href="{% url 'accounting:accountingbook' %}"

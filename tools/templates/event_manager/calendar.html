@@ -6,11 +6,11 @@
 	<!-- <div class="text-2xl font-extrabold tracking-tight leading-none text-gray-400">
 		{{ user.public_hall.name }}公民館 日程管理
 	</div> -->
-	<div id='external-events'>
+	<!-- <div id='external-events2'>
 		<h4>追加EVENT</h4>
-		<div id='external-events-list'>
+		<div id='external-events-list2'>
 			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				<div class='fc-event-main'>My Event 1</div>
+				<div class='fc-event-main' GroupId="123">My Event 1</div>
 			</div>
 			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
 				<div class='fc-event-main'>My Event 2</div>
@@ -29,106 +29,114 @@
 			<input type='checkbox' id='drop-remove' />
 			<label for='drop-remove'>remove after drop</label>
 		</p>
-	</div>
+	</div> -->
 
 	<div id='calendar-wrap'>
 		<div id='calendar'></div>
 	</div>
 </div>
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
+	/* initialize the external events
+-----------------------------------------------------------------*/
 
-		/* initialize the external events
-		-----------------------------------------------------------------*/
-
-		var containerEl = document.getElementById('external-events-list');
-		new FullCalendar.Draggable(containerEl, {
-			itemSelector: '.fc-event',
-			eventData: function (eventEl) {
-				return {
-					title: eventEl.innerText.trim()
-				}
+	const containerEl = document.querySelector('#external-events-list');
+	new FullCalendar.Draggable(containerEl, {
+		itemSelector: '.fc-event',
+		eventData: (eventEl) => {
+			return {
+				title: eventEl.innerText.trim()
 			}
+		}
+	});
+	/* initialize the calendar
+	-----------------------------------------------------------------*/
+
+	const calendarEl = document.querySelector('#calendar');
+	const calendar = new FullCalendar.Calendar(calendarEl, {
+		timeZone: 'UTC',
+		headerToolbar: {
+			left: ' today,prev,next',
+			center: 'title',
+			// right: 'Event,Setting,multiMonthYear,dayGridMonth,timeGridWeek,listWeek'
+			right: 'multiMonthYear,dayGridMonth,timeGridWeek,listWeek'
+		},
+		initialView: 'dayGridMonth',
+		locale: 'ja',
+		editable: true,
+		droppable: true, // this allows things to be dropped onto the calendar
+		// イベント追加
+		drop: (arg) => {
+			// 対象項目のDBを追加⇒再表示
+			console.log("追加", arg);
+			AddEventRendar();
+		},
+		// イベント移動
+		eventDrop: (info) => {
+			// 対象項目のDBを変更⇒再表示
+			console.log("移動", info);
+		},
+		// イベント削除
+		eventClick: (event) => {
+			// 対象項目のDBを削除⇒再表示
+			console.log("削除", event);
+			RemoveEventRendar();
+		},
+		// 通常表示
+		//　DBの内容を表示
+		// Eventの項目
+		// https://fullcalendar.io/docs/event-object
+		events: [
+			{
+				classNames: ['event-holiday'],
+				title: '休館日',
+				start: '2025-06-02',
+				allDay: true,
+				id: "123",
+				groupId: "1234",
+				textColor: "WHITE",
+				backgroundColor: "RED",
+			}
+		]
+	});
+
+	const EventRendar = () => {
+		// Event 追加
+		calendar.addEvent({
+			title: 'テスト',
+			start: '2025-06-06',
+			allDay: true,
+			id:"1111",
 		});
-
-		//// the individual way to do it
-		// var containerEl = document.getElementById('external-events-list');
-		// var eventEls = Array.prototype.slice.call(
-		//   containerEl.querySelectorAll('.fc-event')
-		// );
-		// eventEls.forEach(function(eventEl) {
-		//   new FullCalendar.Draggable(eventEl, {
-		//     eventData: {
-		//       title: eventEl.innerText.trim(),
-		//     }
-		//   });
-		// });
-
-		/* initialize the calendar
-		-----------------------------------------------------------------*/
-
-		var calendarEl = document.getElementById('calendar');
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			customButtons: {// ①カスタムボタンの追加
-				// Event: {
-				// 	text: 'EVENT',
-				// 	click: function () {
-				// 		date.setMonth(date.getMonth() - 1);
-				// 		calendar.gotoDate(date); // ②前月へ飛ばす
-				// 	}
-				// },
-				// Setting: {
-				// 	text: '設定',
-				// 	click: function () {
-				// 		window.location.href = 'https://google.com';
-				// 	}
-				// },
-			},
-			headerToolbar: {
-				left: ' today,prev,next',
-				center: 'title',
-				// right: 'Event,Setting,multiMonthYear,dayGridMonth,timeGridWeek,listWeek'
-				right: 'multiMonthYear,dayGridMonth,timeGridWeek,listWeek'
-			},
-			// https://bloosh.jp/tips/5384/
-			// Google calendarとの同期
-			// googleCalendarApiKey: "GoogleCalendarのAPIKEY",
-			eventSources: [
-				{
-					googleCalendarId: "japanese__ja@holiday.calendar.google.com", //休日の予定を取得
-					rendering: "background",
-					color: "#FF6666",
-				},
-				{
-					googleCalendarId: "shimizu.minami.public.hall@gmail.com",
-				},
-			],
-			initialView: 'dayGridMonth',
-			timezone: 'UTC',
-			locale: 'ja',
-			editable: true,
-			droppable: true, // this allows things to be dropped onto the calendar
-			drop: function (arg) {
-				// is the "remove after drop" checkbox checked?
-				if (document.getElementById('drop-remove').checked) {
-					// if so, remove the element from the "Draggable Events" list
-					arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-				}
-			},
-			// Eventの項目
-			// https://fullcalendar.io/docs/event-object
-			events: [
-				{
-					classNames: ['event-holiday'],
-					title: '休館日',
-					start: '2025-06-02',
-					allDay: true,
-				}
-			]
-		});
+		// Event 削除
+		// calendar.getEventById("123").remove();
 		calendar.render();
 		// EventのDrag & Dropの挙動
 		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
+	}
+	const AddEventRendar = () => {
+		// Event 追加
+		calendar.addEvent({
+			title: 'テスト',
+			start: '2025-06-06',
+			allDay: true,
+		});
+		// Event 削除
+		// calendar.getEventById("123").remove();
+		calendar.render();
+		// EventのDrag & Dropの挙動
+		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
+	}	
+	const RemoveEventRendar = () => {
+
+		// Event 削除
+		calendar.getEventById("123").remove();
+		calendar.render();
+		// EventのDrag & Dropの挙動
+		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
+	}
+	// 読み込み時に表示
+	document.addEventListener('DOMContentLoaded', () => {
+		EventRendar();
 	});
 </script>
 {% endblock %}
