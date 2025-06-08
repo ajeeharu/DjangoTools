@@ -19,6 +19,7 @@
 			transform: rotate(180deg);
 			transition: 0.2s ease;
 		}
+
 		#external-events {
 			position: fixed;
 			left: 20px;
@@ -30,28 +31,34 @@
 			text-align: left;
 			/* display: none; */
 		}
+
 		.fc .fc-toolbar-chunk {
 			display: flex;
 			flex-direction: row;
 		}
+
 		.fc .fc-button-primary {
 			background-color: #fff;
 			color: #666;
 			border: 0px;
 		}
+
 		.fc .fc-button-primary:hover {
 			background-color: #eee;
 			color: #666;
 			border: 0px;
 		}
+
 		.fc .fc-button-primary:visited {
 			background-color: #fff;
 			color: #666;
 			border: 0px;
 		}
+
 		.fc .fc-button-primary:focus {
 			box-shadow: none !important;
 		}
+
 		.fc-today-button {
 			background-color: #fff !important;
 			color: #666 !important;
@@ -60,9 +67,11 @@
 			width: 100px;
 			margin-right: 2px !important;
 		}
+
 		.fc-today-button:hover {
 			background-color: #eee !important;
 		}
+
 		.fc-today-button::before {
 			content: "";
 			display: inline-block;
@@ -78,6 +87,7 @@
 			margin-right: 8px;
 			color: #666;
 		}
+
 		.fc-Event-button::before {
 			content: "";
 			display: inline-block;
@@ -93,6 +103,7 @@
 			margin-right: 8px;
 			color: #ccc;
 		}
+
 		.fc-Setting-button::before {
 			content: "";
 			display: inline-block;
@@ -108,6 +119,7 @@
 			margin-right: 4px;
 			color: #ccc;
 		}
+
 		.fc-multiMonthYear-button,
 		.fc-dayGridMonth-button,
 		.fc-timeGridWeek-button,
@@ -116,6 +128,7 @@
 			/* margin: 0px 8px !important; */
 			padding: 8px 16px !important;
 		}
+
 		.fc-multiMonthYear-button,
 		.fc-dayGridMonth-button,
 		.fc-timeGridWeek-button,
@@ -123,22 +136,26 @@
 			border-left: 4px #eee solid !important;
 			border-right: 4px #eee solid !important;
 		}
+
 		.fc .fc-button-primary:not(:disabled).fc-button-active {
 			background-color: #fff !important;
 			color: #222 !important;
 			font-weight: 500;
 			border-top: 4px #eee solid;
 		}
+
 		/* 月曜日 */
 		.fc-col-header-cell.fc-day-mon {
 			background-color: oklch(93.6% 0.032 17.717);
 			/* opacity: 0.6 */
 		}
+
 		.fc-toolbar-title {
 			/* margin-left: 200px !important; */
 			color: #888;
 			font-weight: 600;
 		}
+
 		.fc-day-today {
 			background-color: oklch(92% 0.004 286.32) !important;
 		}
@@ -170,29 +187,14 @@
 			<!-- Dropdown menu -->
 			<div id="dropdownAccounting"
 				class="dropdownmenu z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute mt-2">
-				<ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformationButton" id='external-events-list'>
-					<li class='fc-event fc-daygrid-event fc-daygrid-block-event'>
-						<a href="{% url 'accounting:fiscalterms' %}" class="block px-4 py-2 hover:bg-green-100 fc-event-main">会計年度</a>
-					</li>
-					<li>
+				<ul class="py-2 text-gray-100" aria-labelledby="dropdownInformationButton" id='external-events-list'>
+					<li class='fc-event fc-daygrid-event fc-daygrid-block-event m-2'>
 						<a href="{% url 'accounting:accountingbook' %}"
-							class="block px-4 py-2 hover:bg-green-100">休館日</a>
+							class="block px-8 py-2 bg-red-600 hover:opacity-60 text-xl">休館日</a>
 					</li>
-					<li>
+					<li class='fc-event fc-daygrid-event fc-daygrid-block-event m-2'>
 						<a href="{% url 'accounting:subjectspending' %}"
-							class="block px-4 py-2 hover:bg-green-100">配布日</a>
-					</li>
-					<li>
-						<a href="{% url 'accounting:sectionspending' %}"
-							class="block px-4 py-2 hover:bg-green-100">節（支出）</a>
-					</li>
-					<li>
-						<a href="{% url 'accounting:subjectincome' %}"
-							class="block px-4 py-2 hover:bg-green-100">科目（収入）</a>
-					</li>
-					<li>
-						<a href="{% url 'accounting:sectionincome' %}"
-							class="block px-4 py-2 hover:bg-green-100">節（収入）</a>
+							class="block px-8 py-2 bg-green-600 hover:opacity-60 text-xl">配布日</a>
 					</li>
 				</ul>
 			</div>
@@ -208,14 +210,18 @@
 			<div id="dropdownSupplier"
 				class="dropdownmenu z-10 hidden bg-green-50 divide-y divide-gray-100 rounded-lg shadow absolute mt-2">
 				<div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-					<ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformationButton">
+					<ul class="py-2 text-xl text-gray-700" aria-labelledby="dropdownInformationButton">
 						<li>
-							<a href="{% url 'accounting:supplier' %}"
-								class="block px-4 py-2 hover:bg-green-100">納入者情報</a>
+							<a href="{% url 'event_manager:holiday' %}"
+								class="block px-4 py-2 hover:bg-green-100">祝日取得</a>
 						</li>
 						<li>
 							<a href="{% url 'accounting:creditor' %}"
-								class="block px-4 py-2 hover:bg-green-100">債権者情報</a>
+								class="block px-4 py-2 hover:bg-green-100">イベント登録</a>
+						</li>
+						<li>
+							<a href="{% url 'accounting:creditor' %}"
+								class="block px-4 py-2 hover:bg-green-100">常駐イベント登録</a>
 						</li>
 					</ul>
 				</div>
@@ -256,4 +262,5 @@
 		lazyload();
 	</script>
 </body>
+
 </html>

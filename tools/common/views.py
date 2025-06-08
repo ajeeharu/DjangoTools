@@ -6,11 +6,6 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from rest_framework import viewsets
-# from .serializer import CreditorSerializer,SupplierSerializer
-# from .models import Creditor,Supplier
-# from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm
-
-
 
 class SettingsView(LoginRequiredMixin,TemplateView):
     template_name = "common/settings.html"
@@ -31,4 +26,3 @@ class IndexView(LoginRequiredMixin,TemplateView):
         # page_title を追加する
         context['page_title'] = '各種処理一覧'
         return context
-

@@ -17,13 +17,5 @@ class UsageFee(models.Model):
 	def __str__(self):
 		return self.type
 
-# 祝日カレンダー
-class HolidayCalendar(models.Model):
-    # https://holidays-jp.github.io/api/v1/2017/date.json から取得予定
-	name = models.CharField('祝日名', max_length=32,blank=False)
-	date = models.DateField('日付', null=False)
-
-	def __str__(self):
-		return self.name
 
 

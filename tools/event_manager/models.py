@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import PublicHall,User
-from common.models import UsageFee,HolidayCalendar
+from common.models import UsageFee
 
 # Create your models here.
 EDUCATION_PROGRAM_CHOICES = (
@@ -25,7 +25,9 @@ USAGE_CATEGORY_CHOICES = (
     ('2','自主グループ'),
     ('3','公民館が他の団体と共催する事業'),
     ('4','団体が開催する事業・会議'),
-    ('5','その他の事務事業'),    
+    ('5','その他の事務事業'), 
+    ('X','休館日'),
+    ('Z','配布日'),
 )
 DAY_OF_WEEK_CHOICES = (
     ('0','指定なし'),
@@ -71,7 +73,8 @@ class UserInformation(models.Model):
 	educational_category = models.CharField('教育事業区分',max_length=2,choices=EDUCATION_PROGRAM_CHOICES,default='0')
 	day_of_week = models.CharField('曜日指定',max_length=2,choices=DAY_OF_WEEK_CHOICES,default='0')
 	semiweekly = models.CharField('隔週指定',max_length=2,choices=SEMIWEEK_CHOICES,default='0')
-	address = models.CharField('住所', max_length=64,blank=False)
+	responsible_party = models.CharField('責任者', max_length=64,blank=True)
+	address = models.CharField('住所', max_length=64,blank=True)
 	tel = models.CharField('電話番号', max_length=16,blank=True)
 	default_start_time = models.TimeField('開始時間（初期値）', null=True)
 	default_end_time = models.TimeField('終了時間（初期値）', null=True)
@@ -106,6 +109,26 @@ class UsageRecord(models.Model):
 
 	def __str__(self):
 		return self.date_of_use+ '('+self.user+')'
+
+# 常駐Event
+class ParmanentEvent(models.Model):
+	event = models.ForeignKey(UserInformation,on_delete=models.CASCADE)
+	color = models.CharField('文字色', max_length=8, db_default="#ffffff")
+	background_color = models.CharField('背景色', max_length=8, db_default="#0000cc")
+
+	public_hall = models.ForeignKey(PublicHall,on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.event.organization_name
+
+# 祝日カレンダー
+class HolidayCalendar(models.Model):
+    # https://holidays-jp.github.io/api/v1/2017/date.json から取得予定
+	name = models.CharField('祝日名', max_length=32,blank=False)
+	date = models.DateField('日付', null=False)
+
+	def __str__(self):
+		return self.name
 
 
 # https://qiita.com/imp555sti/items/ee9809768f6dc9439ab5

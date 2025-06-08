@@ -1,11 +1,6 @@
 from django.contrib import admin
 from reversion.admin import VersionAdmin
-from .models import HolidayCalendar,UsageFee
-
-class HolidayCalendarAdmin(VersionAdmin):
-	pass
-
-admin.site.register(HolidayCalendar, HolidayCalendarAdmin)
+from .models import UsageFee
 
 class UsageFeeAdmin(VersionAdmin):
     pass
