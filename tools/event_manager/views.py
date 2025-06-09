@@ -9,6 +9,7 @@ from rest_framework import viewsets
 from .models import HolidayCalendar
 from .forms import HolidayCalendarForm,HolidayCalendarDeleteForm,HolidayCalendarUpdateForm
 import datetime
+import jpholiday
 # from .serializer import CreditorSerializer,SupplierSerializer
 # from .models import Creditor,Supplier
 # from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm
@@ -27,6 +28,7 @@ class CalendarView(LoginRequiredMixin,TemplateView):
 
 class HolidayCalendarListView(LoginRequiredMixin,ListView):
     template_name = "event_manager/HolidayCalendar.html"
+    success_url = reverse_lazy('event_manager:holiday')
     model = HolidayCalendar
 
     def get_context_data(self):
@@ -38,6 +40,11 @@ class HolidayCalendarListView(LoginRequiredMixin,ListView):
         context['form_update'] = HolidayCalendarUpdateForm()    # Update Modal画面
         context['form_delete'] = HolidayCalendarDeleteForm()    # Delete Modal画面
         return context
+
+    def post(self, request):
+        today = datetime.date.today()
+        print(jpholiday.year_holidays(today.year))
+        return HttpResponseRedirect(self.success_url)
 
 class ModalHolidayCalendarCreateView(LoginRequiredMixin,CreateView):
     model = HolidayCalendar

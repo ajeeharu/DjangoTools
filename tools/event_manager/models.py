@@ -127,6 +127,8 @@ class HolidayCalendar(models.Model):
 	name = models.CharField('祝日名', max_length=32,blank=False)
 	date = models.DateField('日付', null=False)
 
+	public_hall = models.ForeignKey(PublicHall,on_delete=models.CASCADE)
+
 	def __str__(self):
 		return self.name
 

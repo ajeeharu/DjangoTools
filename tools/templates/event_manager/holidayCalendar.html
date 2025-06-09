@@ -21,10 +21,13 @@
 					</button>
 				</div>
 				<div class="space-y-2 mr-4">
-					<button type="button"
-						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
-						祝日自動取得
-					</button>
+					<form method="post" id="form">
+						{% csrf_token %}
+						<button type="submit"
+							class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
+							祝日自動取得
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>
