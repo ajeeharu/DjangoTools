@@ -43,7 +43,16 @@ class HolidayCalendarListView(LoginRequiredMixin,ListView):
 
     def post(self, request):
         today = datetime.date.today()
-        print(jpholiday.year_holidays(today.year))
+        holidays = jpholiday.year_holidays(today.year)
+        public_hall = self.request.user.public_hall
+        for holiday in holidays:
+            HolidayCalendar.objects.update_or_create(
+				date = holiday[0],
+    			defaults={"name" : holiday[1],
+						"public_hall" : public_hall,
+                 },
+			)
+
         return HttpResponseRedirect(self.success_url)
 
 class ModalHolidayCalendarCreateView(LoginRequiredMixin,CreateView):
