@@ -7,9 +7,11 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from rest_framework import viewsets
 from .models import HolidayCalendar
+from common.models import RegularHoliday
 from .forms import HolidayCalendarForm,HolidayCalendarDeleteForm,HolidayCalendarUpdateForm
 import datetime
 import jpholiday
+import calendar
 # from .serializer import CreditorSerializer,SupplierSerializer
 # from .models import Creditor,Supplier
 # from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm
@@ -55,32 +57,21 @@ class HolidayCalendarListView(LoginRequiredMixin,ListView):
 
         return HttpResponseRedirect(self.success_url)
 
-class ModalHolidayCalendarCreateView(LoginRequiredMixin,CreateView):
+
+class WeeklyHolidayCreateView(LoginRequiredMixin,CreateView):
     model = HolidayCalendar
     form_class = HolidayCalendarForm
     success_url = reverse_lazy('event_manager:HolidayCalendar')
 
-    def form_valid(self, form):
-        form.save() # formの情報を保存
-        return HttpResponseRedirect(self.success_url)
-
-    def form_invalid(self, form):
-        messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(self.success_url)
-
-class ModalHolidayCalendarUpdateView(LoginRequiredMixin,UpdateView):
-    model = HolidayCalendar
-    form_class = HolidayCalendarUpdateForm
-    success_url = reverse_lazy('event_manager:HolidayCalendar')
-
-    def form_valid(self, form):
-        form.save() # formの情報を保存
-        return HttpResponseRedirect(self.success_url)
-
-    def form_invalid(self, form):
-        messages.add_message(self.request, messages.ERROR, form.errors)
-        return HttpResponseRedirect(self.success_url)
-
-class ModalHolidayCalendarDeleteView(LoginRequiredMixin,DeleteView):
-    model = HolidayCalendar
-    success_url = reverse_lazy('event_manager:HolidayCalendar')
+    def post(self, request):
+        today = datetime.date.today()
+        holidays = jpholiday.year_holidays(today.year)
+        public_hall = self.request.user.public_hall
+        for holiday in holidays:
+            HolidayCalendar.objects.update_or_create(
+				date = holiday[0],
+    			defaults={"name" : holiday[1],
+						"public_hall" : public_hall,
+                 },
+			)
+        RegularHoliday

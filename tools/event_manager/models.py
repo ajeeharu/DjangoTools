@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import PublicHall,User
-from common.models import UsageFee
+from common.models import UsageFee,SEMIWEEK_CHOICES,DAY_OF_WEEK_CHOICES
 
 # Create your models here.
 EDUCATION_PROGRAM_CHOICES = (
@@ -29,26 +29,7 @@ USAGE_CATEGORY_CHOICES = (
     ('X','休館日'),
     ('Z','配布日'),
 )
-DAY_OF_WEEK_CHOICES = (
-    ('0','指定なし'),
-    ('1','月曜日'),
-    ('2','火曜日'),
-    ('3','水曜日'),
-    ('4','木曜日'),
-    ('5','金曜日'),    
-    ('6','土曜日'),
-    ('7','日曜日'), 
-)
-SEMIWEEK_CHOICES = (
-    ('0','指定なし'),
-    ('1','毎週曜日'),
-    ('2','第１曜日・第３曜日'),
-    ('3','第２曜日・第４曜日'),
-    ('4','第１曜日'),
-    ('5','第２曜日'),    
-    ('6','第３曜日'),
-    ('7','第４曜日'),   
-)
+
 USAGE_FEE_CHOICES = (
     ('0','有'),
     ('1','無（社会教育）'),
