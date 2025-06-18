@@ -1,6 +1,5 @@
 from .models import Creditor,Supplier,FiscalTerms,AccountingBook,SubjectSpending,SectionSpending,SubjectIncome,SectionIncome,IncomeRecord,SpendingRecord,PageManager
 from django import forms
-from django import forms
 
 # 債権者情報
 class CreditorForm(forms.ModelForm):

@@ -22,6 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from accounts.urls import router as accounts_router
 from accounting.urls import router as accounting_router
+from common.urls import router as common_router
 
 
 urlpatterns = [
@@ -33,6 +34,7 @@ urlpatterns = [
     # api
     path('api/account/', include(accounts_router.urls)),
     path('api/accounting/', include(accounting_router.urls)),
+    path('api/common/', include(common_router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # admin
     path('admin/', admin.site.urls),
