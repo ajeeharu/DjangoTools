@@ -20,18 +20,19 @@
 						{% csrf_token %}
 						<button type="submit"
 							class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
-							祝日自動取得
+							休館日（祝日＋定期休館日）自動生成
 						</button>
 					</form>
 				</div>
-				<a class="space-y-2 mr-4" href="https://dot-blog.jp/news/django-template-date/">
+				<a class="space-y-2 mr-4" href="{% url 'common:regularholiday' %}">
 					<button type="button"
 						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
 						定期休館日設定
 					</button>
 				</a>
-				<a class="space-y-2 mr-4" href="">
-					<button type="button"
+				<a class="space-y-2 mr-4">
+					<button type="button" data-modal-target="#create-modal" data-modal-toggle="authentication-modal"
+					data-modal-id="0"
 						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
 						個別休館日設定
 					</button>
@@ -83,5 +84,15 @@
 		</table>
 	</div>
 </div>
+<!-- Modal Create -->
+{% include 'event_manager/modals/modal_holidaycalendar_create.html' %}
+<!-- Modal Update -->
+{% include 'event_manager/modals/modal_holidaycalendar_update.html' %}
+<!-- Modal Delete -->
+{% include 'event_manager/modals/modal_holidaycalendar_delete.html' %}
 
+<script type="text/javascript">
+	//  モーダル制御用CallBack登録
+	SetCallback(Create, Update, Delete);
+</script>
 {% endblock %}

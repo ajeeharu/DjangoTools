@@ -19,8 +19,6 @@ class SettingsView(LoginRequiredMixin,TemplateView):
         context['page_title'] = '各種設定'
         return context
 
-
-
 class IndexView(LoginRequiredMixin,TemplateView):
     template_name = "common/index.html"
 
@@ -31,7 +29,7 @@ class IndexView(LoginRequiredMixin,TemplateView):
         return context
 
 
-# 会計年度情報
+# 定期休館日
 class RegularHolidayListView(LoginRequiredMixin,ListView):
     template_name = "common/regularholiday.html"
     model = RegularHoliday
