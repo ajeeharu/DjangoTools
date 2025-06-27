@@ -2,35 +2,12 @@
 {% load static %}
 {% block title %}{{page_title }}{% endblock %}
 {% block content %}
+<style>
+	.event-holiday {
+		background-color: #CC0000 !important;
+	}
+</style>
 <div id='content'>
-	<!-- <div class="text-2xl font-extrabold tracking-tight leading-none text-gray-400">
-		{{ user.public_hall.name }}公民館 日程管理
-	</div> -->
-	<!-- <div id='external-events2'>
-		<h4>追加EVENT</h4>
-		<div id='external-events-list2'>
-			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				<div class='fc-event-main' GroupId="123">My Event 1</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				<div class='fc-event-main'>My Event 2</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				<div class='fc-event-main'>My Event 3</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				<div class='fc-event-main'>My Event 4</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				<div class='fc-event-main'>My Event 5</div>
-			</div>
-		</div>
-		<p>
-			<input type='checkbox' id='drop-remove' />
-			<label for='drop-remove'>remove after drop</label>
-		</p>
-	</div> -->
-
 	<div id='calendar-wrap'>
 		<div id='calendar'></div>
 	</div>
@@ -85,31 +62,42 @@
 		//　DBの内容を表示
 		// Eventの項目
 		// https://fullcalendar.io/docs/event-object
-		events: [
-			{
-				classNames: ['event-holiday'],
-				title: '休館日',
-				start: '2025-06-02',
-				allDay: true,
-				id: "123",
-				groupId: "1234",
-				textColor: "WHITE",
-				backgroundColor: "RED",
-			}
-		]
+		events: []
 	});
 
-	const EventRendar = () => {
-		// Event 追加
-		calendar.addEvent({
-			title: 'テスト',
-			start: '2025-06-06',
-			allDay: true,
-			id:"1111",
-		});
+	const EventRendar = async (year) => {
+		// 休日データの取得
+		try {
+			// API経由でData取得
+			const CreateEndPoint =
+				"/api/event_manager/holidaycalendar/?year=" + year;
+			let response = await fetch(CreateEndPoint, {
+				method: "GET",
+				headers: {
+					"X-CSRFToken": getCookie("csrftoken"),
+					"Content-Type": "application/json",
+				},
+			});
+			let result = await response.json(); // 読み込むのはJSON部分（ヘッダー等は削除）
+
+			for (let i = 0; i < result.length; i++) {
+				let data = result[i];
+				calendar.addEvent({
+					title: data.name,
+					start: data.date,
+					allDay: true,
+					id: data.id,
+					classNames: "event-holiday",
+				});
+			}
+			calendar.render();
+		} catch (error) {
+			console.error("GET API通信エラーが発生しました,error");
+		}
+
 		// Event 削除
 		// calendar.getEventById("123").remove();
-		calendar.render();
+
 		// EventのDrag & Dropの挙動
 		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
 	}
@@ -125,7 +113,7 @@
 		calendar.render();
 		// EventのDrag & Dropの挙動
 		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
-	}	
+	}
 	const RemoveEventRendar = () => {
 
 		// Event 削除
@@ -136,7 +124,9 @@
 	}
 	// 読み込み時に表示
 	document.addEventListener('DOMContentLoaded', () => {
-		EventRendar();
+		let today = new Date();
+		const year = today.getFullYear();
+		EventRendar(year);
 	});
 </script>
 {% endblock %}

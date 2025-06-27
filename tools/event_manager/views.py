@@ -138,5 +138,14 @@ class ModalHolidayCalendarDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class HolidayCalendarApiView(viewsets.ModelViewSet):
-    queryset = HolidayCalendar.objects.all()
     serializer_class = HolidayCalendarSerializer
+    
+    def get_queryset(self):
+        queryset = HolidayCalendar.objects.all()
+        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        if current_public_hall:
+            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
+        current_year = self.request.query_params.get('year')
+        if current_year is not None:
+            queryset = queryset.filter(date__year=current_year)       # QuerySet（期間指定が一致）
+        return queryset
