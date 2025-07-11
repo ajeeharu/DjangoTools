@@ -59,8 +59,15 @@ class UsageRecordDeleteForm(UsageRecordForm):
         super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
-        self.fields['name'].widget.attrs['id'] = "id_delete_name"
-        self.fields['date'].widget.attrs['id'] = "id_delete_date"
+        self.fields['number'].widget.attrs['id'] = "id_delete_number"
+        self.fields['user'].widget.attrs['id'] = "id_delete_user"
+        self.fields['details'].widget.attrs['id'] = "id_delete_details"
+        self.fields['application_date'].widget.attrs['id'] = "id_delete_application_date"
+        self.fields['date_of_use'].widget.attrs['id'] = "id_delete_date_of_use"
+        self.fields['start_time'].widget.attrs['id'] = "id_delete_start_time"
+        self.fields['end_time'].widget.attrs['id'] = "id_delete_end_time"
+        self.fields['number_of_users'].widget.attrs['id'] = "id_delete_number_of_users"
+
         self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"
 
 # 利用者情報
