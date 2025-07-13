@@ -1,0 +1,98 @@
+{% extends 'base_calendar.html' %}
+{% block title %} {{ page_title }}{% endblock %}
+{%block content %}
+<div id="content">
+	<section class="bg-white">
+		<div class="flex flex-row py-4 px-4 mx-auto items-center justify-between">
+			<h1 class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900">
+				{{ page_title }}
+			</h1>
+			<!-- メッセージ -->
+			{% if messages %} {% for message in messages %}
+			<div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg block w-1/2 p-2.5">
+				{{ message }}
+			</div>
+			{% endfor %} {% endif %}
+			
+			<div class="flex flex-row">
+				<div class="space-y-2 mr-4">
+					<form method="post">
+						{% csrf_token %}
+						<button type="submit"
+							class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
+							休館日（祝日＋定期休館日）自動生成
+						</button>
+					</form>
+				</div>
+				<a class="space-y-2 mr-4" href="{% url 'common:regularholiday' %}">
+					<button type="button"
+						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
+						定期休館日設定
+					</button>
+				</a>
+				<a class="space-y-2 mr-4">
+					<button type="button" data-modal-target="#create-modal" data-modal-toggle="authentication-modal"
+					data-modal-id="0"
+						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
+						個別休館日設定
+					</button>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+		<table class="w-full text-xl text-left rtl:text-right text-gray-500">
+			<thead class="text-gray-700 uppercase bg-blue-50">
+				<tr>
+					<th scope="col" class="px-4 py-3">変更</th>
+					<th scope="col" class="px-4 py-3">祝日名</th>
+					<th scope="col" class="px-4 py-3">年月日</th>
+					<th scope="col" class="px-4 py-3">削除</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for object in object_list %}
+				<tr class="odd:bg-white even:bg-gray-50 border-b">
+					<td class="px-4 py-4">
+						<button type="button" class="modal-open-button font-medium text-blue-600"
+							data-modal-hide="authentication-modal" data-modal-target="#update-modal"
+							data-modal-id={{object.pk}}>
+
+							<a href="#" class=" hover:underline">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+									<path fill="currentColor"
+										d="M21 12a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1m-15 .76V17a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .71-.29l6.92-6.93L21.71 8a1 1 0 0 0 0-1.42l-4.24-4.29a1 1 0 0 0-1.42 0l-2.82 2.83l-6.94 6.93a1 1 0 0 0-.29.71m10.76-8.35l2.83 2.83l-1.42 1.42l-2.83-2.83ZM8 13.17l5.93-5.93l2.83 2.83L10.83 16H8Z" />
+								</svg>
+							</a>
+					</td>
+					<td class="px-4 py-4">{{ object.name }}</td>
+					<td class="px-4 py-4">{{ object.date|date:"Y年m月j日 （D）"}}</td>
+					<td class="px-4 py-4">
+						<button type="button" class="modal-open-button font-medium text-red-600"
+							data-modal-hide="authentication-modal" data-modal-target="#delete-modal"
+							data-modal-id={{object.pk}}>
+							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+								<path fill="currentColor"
+									d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4zm2 2h6V4H9zM6.074 8l.857 12H17.07l.857-12zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1" />
+							</svg>
+						</button>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- Modal Create -->
+{% include 'event_manager/modals/modal_usagerecord_create.html' %}
+<!-- Modal Update -->
+{% include 'event_manager/modals/modal_usagerecord_update.html' %}
+<!-- Modal Delete -->
+{% include 'event_manager/modals/modal_usagerecord_delete.html' %}
+
+<script type="text/javascript">
+	//  モーダル制御用CallBack登録
+	SetCallback(Create, Update, Delete);
+</script>
+{% endblock %}
