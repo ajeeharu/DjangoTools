@@ -84,8 +84,19 @@ class UserInformationForm(forms.ModelForm):
 class UserInformationUpdateForm(UserInformationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['id'] = "id_update_name"
-        self.fields['date'].widget.attrs['id'] = "id_update_date"
+        self.fields['organization_name'].widget.attrs['id'] = "id_update_organization_name"
+        self.fields['usage_category'].widget.attrs['id'] = "id_update_usage_category"
+        self.fields['educational_category'].widget.attrs['id'] = "id_update_educational_category"
+        self.fields['day_of_week'].widget.attrs['id'] = "id_update_day_of_week"
+        self.fields['semiweekly'].widget.attrs['id'] = "id_update_semiweekly"
+        self.fields['responsible_party'].widget.attrs['id'] = "id_update_responsible_party"
+        self.fields['address'].widget.attrs['id'] = "id_update_address"
+        self.fields['tel'].widget.attrs['id'] = "id_update_tel"
+        self.fields['default_start_time'].widget.attrs['id'] = "id_update_default_start_time"
+        self.fields['default_end_time'].widget.attrs['id'] = "id_update_default_end_time"
+        self.fields['default_room'].widget.attrs['id'] = "id_update_default_room"
+        self.fields['default_remarks'].widget.attrs['id'] = "id_update_default_remarks"
+        self.fields['default_details'].widget.attrs['id'] = "id_update_default_details"
         self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
 
 class UserInformationDeleteForm(UserInformationForm):
@@ -93,6 +104,17 @@ class UserInformationDeleteForm(UserInformationForm):
         super().__init__(*args, **kwargs)
         for i ,n in enumerate( self.fields ):
             self.fields[ n ].widget.attrs['readonly'] = "readonly"
-        self.fields['name'].widget.attrs['id'] = "id_delete_name"
-        self.fields['date'].widget.attrs['id'] = "id_delete_date"
+        self.fields['organization_name'].widget.attrs['id'] = "id_delete_organization_name"
+        self.fields['usage_category'].widget.attrs['id'] = "id_delete_usage_category"
+        self.fields['educational_category'].widget.attrs['id'] = "id_delete_educational_category"
+        self.fields['day_of_week'].widget.attrs['id'] = "id_delete_day_of_week"
+        self.fields['semiweekly'].widget.attrs['id'] = "id_delete_semiweekly"
+        self.fields['responsible_party'].widget.attrs['id'] = "id_delete_responsible_party"
+        self.fields['address'].widget.attrs['id'] = "id_delete_address"
+        self.fields['tel'].widget.attrs['id'] = "id_delete_tel"
+        self.fields['default_start_time'].widget.attrs['id'] = "id_delete_default_start_time"
+        self.fields['default_end_time'].widget.attrs['id'] = "id_delete_default_end_time"
+        self.fields['default_room'].widget.attrs['id'] = "id_delete_default_room"
+        self.fields['default_remarks'].widget.attrs['id'] = "id_delete_default_remarks"
+        self.fields['default_details'].widget.attrs['id'] = "id_delete_default_details"
         self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"

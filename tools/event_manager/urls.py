@@ -17,6 +17,11 @@ urlpatterns = [
     path('usagerecord/modal/create', views.ModalUsageRecordCreateView.as_view(), name="modal_create_usagerecord"),
     path('usagerecord/modal/<int:pk>/update', views.ModalUsageRecordUpdateView.as_view(), name="modal_update_usagerecord"),
     path('usagerecord/modal/<int:pk>/delete', views.ModalUsageRecordDeleteView.as_view(), name="modal_delete_usagerecord"),
+
+	path('userinformation', views.UserInformationListView.as_view(), name="userinformation"),
+    path('userinformation/modal/create', views.ModalUserInformationCreateView.as_view(), name="modal_create_userinformation"),
+    path('userinformation/modal/<int:pk>/update', views.ModalUserInformationUpdateView.as_view(), name="modal_update_userinformation"),
+    path('userinformation/modal/<int:pk>/delete', views.ModalUserInformationDeleteView.as_view(), name="modal_delete_userinformation"),
 ]
 
 router = DefaultRouter()

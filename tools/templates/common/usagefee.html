@@ -1,5 +1,6 @@
 {% extends 'base_common.html' %}
 {% block title %} {{ page_title }}{% endblock %}
+{% load humanize %}
 {%block content %}
 <div id="content">
 	<section class="bg-white">
@@ -13,13 +14,7 @@
 				{{ message }}
 			</div>
 			{% endfor %} {% endif %}
-			<div class="space-y-2 mr-4">
-				<button type="button" data-modal-target="#create-modal" data-modal-toggle="authentication-modal"
-					data-modal-id="0"
-					class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
-					新規登録
-				</button>
-			</div>
+
 		</div>
 	</section>
 
@@ -28,9 +23,13 @@
 			<thead class="text-gray-700 uppercase bg-blue-50">
 				<tr>
 					<th scope="col" class="px-4 py-3">変更</th>
-					<th scope="col" class="px-4 py-3">曜日指定</th>
-					<th scope="col" class="px-4 py-3">隔週指定</th>
-					<th scope="col" class="px-4 py-3">削除</th>
+					<th scope="col" class="px-4 py-3">施設種類</th>
+					<th scope="col" class="px-4 py-3">午前</th>
+					<th scope="col" class="px-4 py-3">午後</th>
+					<th scope="col" class="px-4 py-3">夜間</th>
+					<th scope="col" class="px-4 py-3">午前(冷暖房)</th>
+					<th scope="col" class="px-4 py-3">午後(冷暖房)</th>
+					<th scope="col" class="px-4 py-3">夜間(冷暖房)</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,33 +47,24 @@
 								</svg>
 							</a>
 					</td>
-					<td class="px-4 py-4">{{ object.get_day_of_week_display }}</td>
-					<td class="px-4 py-4">{{ object.get_semiweekly_display }}</td>
-					<td class="px-4 py-4">
-						<button type="button" class="modal-open-button font-medium text-red-600"
-							data-modal-hide="authentication-modal" data-modal-target="#delete-modal"
-							data-modal-id={{object.pk}}>
-							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-								<path fill="currentColor"
-									d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4zm2 2h6V4H9zM6.074 8l.857 12H17.07l.857-12zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1" />
-							</svg>
-						</button>
-					</td>
+					<td class="px-4 py-4">{{ object.type }}</td>
+					<td class="px-4 py-4">{{ object.time_fee_1 | intcomma }}円</td>
+					<td class="px-4 py-4">{{ object.time_fee_2 | intcomma }}円</td>
+					<td class="px-4 py-4">{{ object.time_fee_3 | intcomma }}円</td>
+					<td class="px-4 py-4">{{ object.time_fee_1_with_air | intcomma }}円</td>
+					<td class="px-4 py-4">{{ object.time_fee_2_with_air | intcomma }}円</td>
+					<td class="px-4 py-4">{{ object.time_fee_3_with_air | intcomma }}円</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 	</div>
 </div>
-<!-- Modal Create -->
-{% include 'common/modals/modal_regularholiday_create.html' %}
 <!-- Modal Update -->
-{% include 'common/modals/modal_regularholiday_update.html' %}
-<!-- Modal Delete -->
-{% include 'common/modals/modal_regularholiday_delete.html' %}
+{% include 'common/modals/modal_usagefee_update.html' %}
 
 <script type="text/javascript">
 	//  モーダル制御用CallBack登録
-	SetCallback(Create, Update, Delete);
+	SetCallback(null,Update);
 </script>
 {% endblock %}

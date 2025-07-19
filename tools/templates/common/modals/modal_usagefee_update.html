@@ -1,0 +1,115 @@
+<div id="update-modal" tabindex="-1"
+	class="js-modal hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-[calc(100%-1rem)] max-h-full bg-gray-500/50">
+	<div class="relative p-4 w-full max-w-md max-h-full">
+		<!-- Modal content -->
+		<div class="relative bg-white rounded-lg shadow">
+			<!-- Modal header -->
+			<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+				<h3 class="text-xl font-semibold text-gray-900">
+					{{ page_title }}更新
+				</h3>
+				<button type="button"
+					class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+					data-modal-hide="authentication-modal" data-modal-target="#update-modal">
+					<svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+					</svg>
+					<span class="sr-only">Close modal</span>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="p-4 md:p-5">
+				<form id="form-update" class="space-y-4" method="post">
+					{% csrf_token %}
+					<div>
+						<label for="name" class="block mb-2 text-xl font-medium text-gray-900">施設種類</label>
+						{{ form_update.type }}
+						{{ form_update.type.errors }}
+					</div>
+					<div>
+						<label for="start_date" class="block mb-2 text-xl font-medium text-gray-900">午前</label>
+						{{ form_update.time_fee_1 }}
+						{{ form_update.time_fee_1.errors }}
+					</div>
+					<div>
+						<label for="start_date" class="block mb-2 text-xl font-medium text-gray-900">午後</label>
+						{{ form_update.time_fee_2 }}
+						{{ form_update.time_fee_2.errors }}
+					</div>
+					<div>
+						<label for="start_date" class="block mb-2 text-xl font-medium text-gray-900">夜間</label>
+						{{ form_update.time_fee_3 }}
+						{{ form_update.time_fee_3.errors }}
+					</div>
+					<div>
+						<label for="start_date" class="block mb-2 text-xl font-medium text-gray-900">午前(冷暖房)</label>
+						{{ form_update.time_fee_1_with_air }}
+						{{ form_update.time_fee_1_with_air.errors }}
+					</div>
+					<div>
+						<label for="start_date" class="block mb-2 text-xl font-medium text-gray-900">午後(冷暖房)</label>
+						{{ form_update.time_fee_2_with_air }}
+						{{ form_update.time_fee_2_with_air.errors }}
+					</div>
+					<div>
+						<label for="start_date" class="block mb-2 text-xl font-medium text-gray-900">夜間(冷暖房)</label>
+						{{ form_update.time_fee_3_with_air }}
+						{{ form_update.time_fee_3_with_air.errors }}
+					</div>
+					{% if form.non_field_errors %}
+					<div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
+						{{ form_update.non_field_errors }}
+					</div>
+					{% endif %}
+					<button type="submit"
+						class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center">
+						更新
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	const Update = (id) => {
+		let element_form = document.querySelector("#form-update");
+		let element_type = document.querySelector("#id_update_type");
+		let element_time_fee_1 = document.querySelector("#id_update_time_fee_1");
+		let element_time_fee_2 = document.querySelector("#id_update_time_fee_2");
+		let element_time_fee_3 = document.querySelector("#id_update_time_fee_3");
+		let element_time_fee_1_with_air = document.querySelector("#id_update_time_fee_1_with_air");
+		let element_time_fee_2_with_air = document.querySelector("#id_update_time_fee_2_with_air");
+		let element_time_fee_3_with_air = document.querySelector("#id_update_time_fee_3_with_air");
+
+
+		// Delete処理パラメーター追加（form文）
+		element_form.setAttribute(
+			"action",
+			"/usagefee/modal/" + id + "/update"
+		);
+
+		// API経由でData取得
+		const CreateEndPoint = "/api/common/usagefee/" + id + "/";
+
+		fetch(CreateEndPoint, {
+			method: "GET",
+			headers: {
+				"X-CSRFToken": getCookie("csrftoken"),
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				return response.json(); // 読み込むデータをJSONに設定
+			})
+			.then((data) => {
+				element_type.value = data["type"];
+				element_time_fee_1.value = data["time_fee_1"];
+				element_time_fee_2.value = data["time_fee_2"];
+				element_time_fee_3.value = data["time_fee_3"];
+				element_time_fee_1_with_air.value = data["time_fee_1_with_air"];
+				element_time_fee_2_with_air.value = data["time_fee_2_with_air"];
+				element_time_fee_3_with_air.value = data["time_fee_3_with_air"];
+			});
+	};
+</script>

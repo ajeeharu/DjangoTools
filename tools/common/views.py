@@ -6,9 +6,9 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from rest_framework import viewsets
-from .models import RegularHoliday
-from .serializer import RegularHolidaySerializer
-from .forms import RegularHolidayForm,RegularHolidayDeleteForm,RegularHolidayUpdateForm
+from .models import RegularHoliday,UsageFee
+from .serializer import RegularHolidaySerializer,UsageFeeSerializer
+from .forms import RegularHolidayForm,RegularHolidayDeleteForm,RegularHolidayUpdateForm,UsageFeeForm
 
 class SettingsView(LoginRequiredMixin,TemplateView):
     template_name = "common/settings.html"
@@ -76,3 +76,32 @@ class ModalRegularHolidayDeleteView(LoginRequiredMixin,DeleteView):
 class RegularHolidayApiView(viewsets.ModelViewSet):
     queryset = RegularHoliday.objects.all()
     serializer_class = RegularHolidaySerializer
+
+# 使用料設定
+class UsageFeeListView(LoginRequiredMixin,ListView):
+    template_name = "common/usagefee.html"
+    model = UsageFee
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        # page_title を追加する
+        context['page_title'] = '使用料設定'
+        context['form_update'] = UsageFeeForm()    # Update Modal画面
+        return context
+
+class ModalUsageFeeUpdateView(LoginRequiredMixin,UpdateView):
+    model = UsageFee
+    form_class = UsageFeeForm
+    success_url = reverse_lazy('common:usagefee')
+
+    def form_valid(self, form):
+        form.save() # formの情報を保存
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
+
+class UsageFeeApiView(viewsets.ModelViewSet):
+    queryset = UsageFee.objects.all()
+    serializer_class = UsageFeeSerializer

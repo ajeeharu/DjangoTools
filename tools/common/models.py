@@ -31,7 +31,6 @@ class UsageFee(models.Model):
 	time_fee_2_with_air = models.DecimalField('使用料金（午後）冷暖房',max_digits=8,decimal_places=0,null=False)
 	time_fee_3_with_air = models.DecimalField('使用料金（夜間）冷暖房',max_digits=8,decimal_places=0,null=False)
 
-
 	def __str__(self):
 		return self.type
 

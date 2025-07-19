@@ -163,7 +163,7 @@ class UsageRecordListView(LoginRequiredMixin,ListView):
     def get_context_data(self):
         context = super().get_context_data()
         # page_title を追加する
-        context['page_title'] = '科目(支出）情報'
+        context['page_title'] = 'イベント登録'
         context['form'] = UsageRecordForm()    # Create Modal画面
         context['form_update'] = UsageRecordUpdateForm()    # Update Modal画面
         context['form_delete'] = UsageRecordDeleteForm()    # Delete Modal画面
@@ -229,7 +229,7 @@ class UserInformationListView(LoginRequiredMixin,ListView):
     def get_context_data(self):
         context = super().get_context_data()
         # page_title を追加する
-        context['page_title'] = '科目(支出）情報'
+        context['page_title'] = '利用者情報'
         context['form'] = UserInformationForm()    # Create Modal画面
         context['form_update'] = UserInformationUpdateForm()    # Update Modal画面
         context['form_delete'] = UserInformationDeleteForm()    # Delete Modal画面

@@ -4,6 +4,7 @@ from common.models import UsageFee,SEMIWEEK_CHOICES,DAY_OF_WEEK_CHOICES
 
 # Create your models here.
 EDUCATION_PROGRAM_CHOICES = (
+    ('X','指定なし'),
     ('0','家庭教育事業'),
     ('1','少年教育事業'),
     ('2','青年教育事業'),
@@ -51,9 +52,9 @@ class Room(models.Model):
 class UserInformation(models.Model):
 	organization_name = models.CharField('使用団体名', max_length=64, blank=False)
 	usage_category = models.CharField('使用区分',max_length=2,choices=USAGE_CATEGORY_CHOICES,blank=False)
-	educational_category = models.CharField('教育事業区分',max_length=2,choices=EDUCATION_PROGRAM_CHOICES,default='0')
-	day_of_week = models.CharField('曜日指定',max_length=2,choices=DAY_OF_WEEK_CHOICES,default='0')
-	semiweekly = models.CharField('隔週指定',max_length=2,choices=SEMIWEEK_CHOICES,default='0')
+	educational_category = models.CharField('教育事業区分',max_length=2,choices=EDUCATION_PROGRAM_CHOICES,blank=True,default='X')
+	day_of_week = models.CharField('曜日指定',max_length=2,choices=DAY_OF_WEEK_CHOICES,default='X')
+	semiweekly = models.CharField('隔週指定',max_length=2,choices=SEMIWEEK_CHOICES,default='X')
 	responsible_party = models.CharField('責任者', max_length=64,blank=True)
 	address = models.CharField('住所', max_length=64,blank=True)
 	tel = models.CharField('電話番号', max_length=16,blank=True)

@@ -178,7 +178,7 @@
 			</a>
 			<button type="button" data-dropdown-toggle="dropdownAccounting"
 				class="dropdownbutton text-xl text-teal-50 hover:text-white font-medium rounded-lg px-5 py-1 text-center inline-flex items-center">
-				常駐イベント
+				施設設定
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 					<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
 						stroke-width="1.5" d="m7 10l5 5l5-5" />
@@ -187,14 +187,10 @@
 			<!-- Dropdown menu -->
 			<div id="dropdownAccounting"
 				class="dropdownmenu z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute mt-2">
-				<ul class="py-2 text-gray-100" aria-labelledby="dropdownInformationButton" id='external-events-list'>
+				<ul class="py-2 text-gray-700" aria-labelledby="dropdownInformationButton" id='external-events-list'>
 					<li class='fc-event fc-daygrid-event fc-daygrid-block-event m-2'>
-						<a href="{% url 'accounting:accountingbook' %}"
-							class="block px-8 py-2 bg-red-600 hover:opacity-60 text-xl">休館日</a>
-					</li>
-					<li class='fc-event fc-daygrid-event fc-daygrid-block-event m-2'>
-						<a href="{% url 'accounting:subjectspending' %}"
-							class="block px-8 py-2 bg-green-600 hover:opacity-60 text-xl">配布日</a>
+						<a href="{% url 'accounting:subjectspending' %}">
+							<span class="text-xl  hover:bg-green-100 px-5 py-1">使用施設設定</span></a>
 					</li>
 				</ul>
 			</div>
@@ -212,12 +208,12 @@
 				<div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
 					<ul class="py-2 text-xl text-gray-700" aria-labelledby="dropdownInformationButton">
 						<li>
-							<a href="{% url 'accounting:creditor' %}"
-								class="block px-4 py-2 hover:bg-green-100">イベント登録</a>
+							<a href="{% url 'event_manager:userinformation' %}"
+								class="block px-4 py-2 hover:bg-green-100">利用者登録</a>
 						</li>
 						<li>
-							<a href="{% url 'accounting:creditor' %}"
-								class="block px-4 py-2 hover:bg-green-100">常駐イベント登録</a>
+							<a href="{% url 'event_manager:usagerecord' %}"
+								class="block px-4 py-2 hover:bg-green-100">イベント登録</a>
 						</li>
 						<li>
 							<a href="{% url 'event_manager:holiday' %}"

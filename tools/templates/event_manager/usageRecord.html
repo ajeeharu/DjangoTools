@@ -13,30 +13,13 @@
 				{{ message }}
 			</div>
 			{% endfor %} {% endif %}
-			
-			<div class="flex flex-row">
-				<div class="space-y-2 mr-4">
-					<form method="post">
-						{% csrf_token %}
-						<button type="submit"
-							class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
-							休館日（祝日＋定期休館日）自動生成
-						</button>
-					</form>
-				</div>
-				<a class="space-y-2 mr-4" href="{% url 'common:regularholiday' %}">
-					<button type="button"
-						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
-						定期休館日設定
-					</button>
-				</a>
-				<a class="space-y-2 mr-4">
-					<button type="button" data-modal-target="#create-modal" data-modal-toggle="authentication-modal"
+
+			<div class="space-y-2 mr-4">
+				<button type="button" data-modal-target="#create-modal" data-modal-toggle="authentication-modal"
 					data-modal-id="0"
-						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
-						個別休館日設定
-					</button>
-				</a>
+					class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
+					新規登録
+				</button>
 			</div>
 		</div>
 	</section>
@@ -46,8 +29,16 @@
 			<thead class="text-gray-700 uppercase bg-blue-50">
 				<tr>
 					<th scope="col" class="px-4 py-3">変更</th>
-					<th scope="col" class="px-4 py-3">祝日名</th>
-					<th scope="col" class="px-4 py-3">年月日</th>
+					<th scope="col" class="px-4 py-3">使用者</th>
+					<th scope="col" class="px-4 py-3">利用内容</th>
+					<th scope="col" class="px-4 py-3">申請日</th>
+					<th scope="col" class="px-4 py-3">利用日</th>
+					<th scope="col" class="px-4 py-3">開始時間</th>
+					<th scope="col" class="px-4 py-3">終了時間</th>
+					<th scope="col" class="px-4 py-3">施設１</th>
+					<th scope="col" class="px-4 py-3">施設２</th>
+					<th scope="col" class="px-4 py-3">冷暖房</th>
+					<th scope="col" class="px-4 py-3">使用料徴収</th>
 					<th scope="col" class="px-4 py-3">削除</th>
 				</tr>
 			</thead>

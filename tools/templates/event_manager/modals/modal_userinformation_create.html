@@ -1,0 +1,123 @@
+<div id="create-modal" tabindex="-1"
+	class="js-modal hidden overflow-y-scroll overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full  max-h-full bg-gray-500/50">
+	<div class="relative p-4 w-full max-w-5xl max-h-full">
+		<!-- Modal content -->
+		<div class="bg-white rounded-lg shadow">
+			<!-- Modal header -->
+			<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+				<h3 class="text-xl font-semibold text-gray-900">{{ page_title }}作成</h3>
+				<button type="button"
+					class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+					data-modal-hide="authentication-modal" data-modal-target="#create-modal">
+					<svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+					</svg>
+					<span class="sr-only">Close modal</span>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="p-4 md:p-5">
+				<form class="space-y-4 grid grid-cols-2 gap-4" method="post">
+					{% csrf_token %}
+					<div>
+						<label for="organization_name"
+							class="block mb-2 text-xl font-medium text-gray-900">使用団体名</label>
+						{{ form.organization_name }}
+						{{ form.organization_name.errors }}
+					</div>
+					<div>
+						<label for="usage_category" class="block mb-2 text-xl font-medium text-gray-900">使用区分</label>
+						{{ form.usage_category }}
+						{{ form.usage_category.errors }}
+					</div>
+					<div>
+						<label for="educational_category"
+							class="block mb-2 text-xl font-medium text-gray-900">教育事業区分</label>
+						{{ form.educational_category }}
+						{{ form.educational_category.errors }}
+					</div>
+					<div>
+						<label for="day_of_week" class="block mb-2 text-xl font-medium text-gray-900">曜日指定</label>
+						{{ form.day_of_week }}
+						{{ form.day_of_week.errors }}
+					</div>
+					<div>
+						<label for="semiweekly" class="block mb-2 text-xl font-medium text-gray-900">隔週指定</label>
+						{{ form.semiweekly }}
+						{{ form.semiweekly.errors }}
+					</div>
+					<div>
+						<label for="responsible_party" class="block mb-2 text-xl font-medium text-gray-900">責任者</label>
+						{{ form.responsible_party }}
+						{{ form.responsible_party.errors }}
+					</div>
+					<div>
+						<label for="address" class="block mb-2 text-xl font-medium text-gray-900">住所</label>
+						{{ form.address }}
+						{{ form.address.errors }}
+					</div>
+					<div>
+						<label for="tel" class="block mb-2 text-xl font-medium text-gray-900">電話番号</label>
+						{{ form.tel }}
+						{{ form.tel.errors }}
+					</div>
+					<div>
+						<label for="default_start_time"
+							class="block mb-2 text-xl font-medium text-gray-900">開始時間（初期値）</label>
+						{{ form.default_start_time }}
+						{{ form.default_start_time.errors }}
+					</div>
+					<div>
+						<label for="default_end_time"
+							class="block mb-2 text-xl font-medium text-gray-900">終了時間（初期値）</label>
+						{{ form.default_end_time }}
+						{{ form.default_end_time.errors }}
+					</div>
+					<div>
+						<label for="default_room" class="block mb-2 text-xl font-medium text-gray-900">使用施設（初期値）</label>
+						{{ form.default_room }}
+						{{ form.default_room.errors }}
+					</div>
+					<div>
+						<label for="default_remarks"
+							class="block mb-2 text-xl font-medium text-gray-900">備考（初期値）</label>
+						{{ form.default_remarks }}
+						{{ form.default_remarks.errors }}
+					</div>
+					<div>
+						<label for="default_details"
+							class="block mb-2 text-xl font-medium text-gray-900">利用内容（初期値）</label>
+						{{ form.default_details }}
+						{{ form.default_details.errors }}
+					</div>
+					<div class="hidden">
+						<label for="public_hall " class="block mb-2 text-xl font-medium text-gray-900">公民館</label>
+						{{ form.public_hall }}
+						{{ form.public_hall.errors }}
+					</div>
+					{% if form.non_field_errors %}
+					<div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
+						{{ form.non_field_errors }}
+					</div>
+					{% endif %}
+					<button type="submit"
+						class="w-full col-span-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center">
+						新規作成
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+	const Create = (id = 0) => {
+		let element_form = document.querySelector("#form");
+		let element_public_hall = document.querySelector('#id_public_hall');
+
+		// Create処理パラメーター追加（form文）
+		element_form.setAttribute("action", "{% url 'event_manager:modal_create_holidaycalendar' %}");
+		SetSelect(element_public_hall.options, {{ user.public_hall.number }})
+	};
+</script>

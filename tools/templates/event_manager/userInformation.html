@@ -1,11 +1,11 @@
-{% extends 'base_common.html' %}
+{% extends 'base_calendar.html' %}
 {% block title %} {{ page_title }}{% endblock %}
 {%block content %}
 <div id="content">
 	<section class="bg-white">
 		<div class="flex flex-row py-4 px-4 mx-auto items-center justify-between">
 			<h1 class="mb-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900">
-				{{ page_title }}一覧
+				{{ page_title }}
 			</h1>
 			<!-- メッセージ -->
 			{% if messages %} {% for message in messages %}
@@ -13,6 +13,7 @@
 				{{ message }}
 			</div>
 			{% endfor %} {% endif %}
+
 			<div class="space-y-2 mr-4">
 				<button type="button" data-modal-target="#create-modal" data-modal-toggle="authentication-modal"
 					data-modal-id="0"
@@ -22,15 +23,26 @@
 			</div>
 		</div>
 	</section>
-
-	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-		<table class="w-full text-xl text-left rtl:text-right text-gray-500">
-			<thead class="text-gray-700 uppercase bg-blue-50">
-				<tr>
-					<th scope="col" class="px-4 py-3">変更</th>
-					<th scope="col" class="px-4 py-3">曜日指定</th>
-					<th scope="col" class="px-4 py-3">隔週指定</th>
-					<th scope="col" class="px-4 py-3">削除</th>
+	<div class="max-w-6xl relative overflow-x-auto mx-auto">
+		<table class="w-full text-xs text-center rtl:text-right text-gray-500 border-gray-500 border-x border-solid">
+			<thead class="text-gray-700">
+				<tr class="border-gray-500 border-y border-solid bg-gray-200">
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">変更</th>
+					<th scope="col" class="hidden">No.</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">使用団体名</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">使用<br>区分</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">教育事業区分</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">曜日<br>指定</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">隔週<br>指定</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">責任者</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">住所</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">電話番号</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">開始時間<br>(初期値)</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">終了時間<br>(初期値)</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">部屋指定<br>(初期値)</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">備考<br>(初期値)</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">利用内容<br>(初期値)</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">削除</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,8 +60,8 @@
 								</svg>
 							</a>
 					</td>
-					<td class="px-4 py-4">{{ object.get_day_of_week_display }}</td>
-					<td class="px-4 py-4">{{ object.get_semiweekly_display }}</td>
+					<td class="px-4 py-4">{{ object.name }}</td>
+					<td class="px-4 py-4">{{ object.date|date:"Y年m月j日 （D）"}}</td>
 					<td class="px-4 py-4">
 						<button type="button" class="modal-open-button font-medium text-red-600"
 							data-modal-hide="authentication-modal" data-modal-target="#delete-modal"
@@ -67,11 +79,11 @@
 	</div>
 </div>
 <!-- Modal Create -->
-{% include 'common/modals/modal_regularholiday_create.html' %}
+{% include 'event_manager/modals/modal_userinformation_create.html' %}
 <!-- Modal Update -->
-{% include 'common/modals/modal_regularholiday_update.html' %}
+{% include 'event_manager/modals/modal_userinformation_update.html' %}
 <!-- Modal Delete -->
-{% include 'common/modals/modal_regularholiday_delete.html' %}
+{% include 'event_manager/modals/modal_userinformation_delete.html' %}
 
 <script type="text/javascript">
 	//  モーダル制御用CallBack登録
