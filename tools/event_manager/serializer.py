@@ -1,9 +1,10 @@
 # coding: utf-8
 
 from rest_framework import serializers
-from .models import HolidayCalendar,UsageRecord,UserInformation
+from .models import HolidayCalendar,UsageRecord,UserInformation,Room
 from accounts.serializer import PublicHallSerializer
 from common.serializer_lib import GetChoiceField
+from common.serializer import UsageFeeSerializer
 
 class HolidayCalendarSerializer(serializers.ModelSerializer):
 	serializer_choice_field = GetChoiceField
@@ -27,4 +28,13 @@ class UserInformationSerializer(serializers.ModelSerializer):
  
 	class Meta:
 		model = UserInformation
+		fields = '__all__'
+
+class RoomSerializer(serializers.ModelSerializer):
+	serializer_choice_field = GetChoiceField
+	public_hall = PublicHallSerializer()
+	type = UsageFeeSerializer()
+ 
+	class Meta:
+		model = Room
 		fields = '__all__'

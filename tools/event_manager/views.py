@@ -6,16 +6,13 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from rest_framework import viewsets
-from .models import HolidayCalendar,UsageRecord,UserInformation
-from common.models import RegularHoliday
-from .forms import HolidayCalendarForm, HolidayCalendarDeleteForm, HolidayCalendarUpdateForm, UsageRecordForm, UsageRecordUpdateForm, UsageRecordDeleteForm, UserInformationForm, UserInformationUpdateForm, UserInformationDeleteForm
+from .models import HolidayCalendar,UsageRecord,UserInformation,Room
+from common.models import RegularHoliday,UsageFee
+from .forms import HolidayCalendarForm, HolidayCalendarDeleteForm, HolidayCalendarUpdateForm, UsageRecordForm, UsageRecordUpdateForm, UsageRecordDeleteForm, UserInformationForm, UserInformationUpdateForm, UserInformationDeleteForm, RoomForm, RoomDeleteForm, RoomUpdateForm
 import datetime
 import jpholiday
 import calendar
-from .serializer import HolidayCalendarSerializer,UsageRecordSerializer,UserInformationSerializer
-# from .serializer import CreditorSerializer,SupplierSerializer
-# from .models import Creditor,Supplier
-# from .forms import CreditorForm,CreditorUpdateForm,CreditorDeleteForm,SupplierForm,SupplierUpdateForm,SupplierDeleteForm
+from .serializer import HolidayCalendarSerializer,UsageRecordSerializer,UserInformationSerializer,RoomSerializer
 
 
 class CalendarView(LoginRequiredMixin, TemplateView):
@@ -273,10 +270,64 @@ class UserInformationApiView(viewsets.ModelViewSet):
         current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
         if current_public_hall:
             queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
-        current_fiscal_terms = self.request.query_params.get('fiscal_terms')
-        if current_fiscal_terms is not None:
-            queryset = queryset.filter(fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
-        current_event_manager_book = self.request.query_params.get('event_manager_book')
-        if current_event_manager_book is not None:
-            queryset = queryset.filter(event_manager_book=current_event_manager_book)   # QuerySet（出納帳が一致）
+        return queryset
+
+#公民館の施設情報
+class RoomListView(LoginRequiredMixin,ListView):
+    template_name = "event_manager/room.html"
+    model = Room
+
+    def get_queryset(self):
+        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        if current_public_hall:
+            queryset = Room.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
+        return queryset
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        # page_title を追加する
+        context['page_title'] = '公民館施設登録'
+        context['form'] = RoomForm()    # Create Modal画面
+        context['form_update'] = RoomUpdateForm()    # Update Modal画面
+        context['form_delete'] = RoomDeleteForm()    # Delete Modal画面
+        return context
+
+class ModalRoomCreateView(LoginRequiredMixin,CreateView):
+    model = Room
+    form_class = RoomForm
+    success_url = reverse_lazy('event_manager:room')
+
+    def form_valid(self, form):
+        form.save() # formの情報を保存
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
+
+class ModalRoomUpdateView(LoginRequiredMixin,UpdateView):
+    model = Room
+    form_class = RoomUpdateForm
+    success_url = reverse_lazy('event_manager:room')
+
+    def form_valid(self, form):
+        form.save() # formの情報を保存
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return HttpResponseRedirect(self.success_url)
+
+class ModalRoomDeleteView(LoginRequiredMixin,DeleteView):
+    model = Room
+    success_url = reverse_lazy('event_manager:room')
+
+class RoomApiView(viewsets.ModelViewSet):
+    serializer_class = RoomSerializer
+
+    def get_queryset(self):
+        queryset = Room.objects.all()
+        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        if current_public_hall:
+            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
         return queryset

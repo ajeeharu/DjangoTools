@@ -1,4 +1,4 @@
-from .models import HolidayCalendar,UsageRecord,UserInformation
+from .models import HolidayCalendar,UsageRecord,UserInformation,Room
 from django import forms
 
 
@@ -117,4 +117,31 @@ class UserInformationDeleteForm(UserInformationForm):
         self.fields['default_room'].widget.attrs['id'] = "id_delete_default_room"
         self.fields['default_remarks'].widget.attrs['id'] = "id_delete_default_remarks"
         self.fields['default_details'].widget.attrs['id'] = "id_delete_default_details"
+        self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"
+
+# 公民館施設情報
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(RoomForm, self).__init__(*args, **kwargs)
+        for i ,n in enumerate( self.fields ):
+            self.fields[ n ].widget.attrs['class'] = "bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"
+
+class RoomUpdateForm(RoomForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['id'] = "id_update_name"
+        self.fields['type'].widget.attrs['id'] = "id_update_type"
+        self.fields['public_hall'].widget.attrs['id'] = "id_update_public_hall"
+
+class RoomDeleteForm(RoomForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i ,n in enumerate( self.fields ):
+            self.fields[ n ].widget.attrs['readonly'] = "readonly"
+        self.fields['name'].widget.attrs['id'] = "id_dalete_name"
+        self.fields['type'].widget.attrs['id'] = "id_delete_type"
         self.fields['public_hall'].widget.attrs['id'] = "id_delete_public_hall"
