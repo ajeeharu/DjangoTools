@@ -23,17 +23,87 @@
 					<strong class="font-bold">注意！</strong>
 					<span class="block">下記の内容が削除されます。</span>
 				</div>
+			</div>
+			<div class="p-4 grid grid-cols-2 gap-4">
 				<div>
-					<label for="name" class="block mb-2 text-xl font-medium text-gray-900">祝日名</label>
-					<input type="text" name="name"
+					<label for="organization_name" class="block mb-2 text-xl font-medium text-gray-900">使用団体名</label>
+					<input type="text" name="organization_name"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-						readonly="readonly" id="id_delete_name">
+						readonly="readonly" id="id_delete_organization_name">
 				</div>
 				<div>
-					<label for="date" class="block mb-2 text-xl font-medium text-gray-900">日付</label>
-					<input type="text" name="date"
+					<label for="usage_category" class="block mb-2 text-xl font-medium text-gray-900">使用区分</label>
+					<input type="text" name="usage_category"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-						readonly="readonly" id="id_delete_date">
+						readonly="readonly" id="id_delete_usage_category">
+				</div>
+				<div>
+					<label for="educational_category"
+						class="block mb-2 text-xl font-medium text-gray-900">教育事業区分</label>
+					<input type="text" name="educational_category"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_educational_category">
+				</div>
+				<div>
+					<label for="day_of_week" class="block mb-2 text-xl font-medium text-gray-900">曜日指定</label>
+					<input type="text" name="day_of_week"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_day_of_week">
+				</div>
+				<div>
+					<label for="semiweekly" class="block mb-2 text-xl font-medium text-gray-900">隔週指定</label>
+					<input type="text" name="semiweekly"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_semiweekly">
+				</div>
+				<div>
+					<label for="responsible_party" class="block mb-2 text-xl font-medium text-gray-900">責任者</label>
+					<input type="text" name="responsible_party"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_responsible_party">
+				</div>
+				<div>
+					<label for="address" class="block mb-2 text-xl font-medium text-gray-900">住所</label>
+					<input type="text" name="address"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_address">
+				</div>
+				<div>
+					<label for="tel" class="block mb-2 text-xl font-medium text-gray-900">電話番号</label>
+					<input type="text" name="tel"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_tel">
+				</div>
+				<div>
+					<label for="default_start_time"
+						class="block mb-2 text-xl font-medium text-gray-900">開始時間（初期値）</label>
+					<input type="text" name="default_start_time"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_default_start_time">
+				</div>
+				<div>
+					<label for="default_end_time" class="block mb-2 text-xl font-medium text-gray-900">終了時間（初期値）</label>
+					<input type="text" name="default_end_time"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_default_end_time">
+				</div>
+				<div>
+					<label for="default_room" class="block mb-2 text-xl font-medium text-gray-900">使用施設（初期値）</label>
+					<input type="text" name="default_room"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_default_room">
+				</div>
+				<div>
+					<label for="default_remarks" class="block mb-2 text-xl font-medium text-gray-900">備考（初期値）</label>
+					<input type="text" name="default_remarks"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_default_remarks">
+				</div>
+				<div>
+					<label for="default_details" class="block mb-2 text-xl font-medium text-gray-900">利用内容（初期値）</label>
+					<input type="text" name=""
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						readonly="readonly" id="id_delete_default_details">
 				</div>
 				<div class="hidden">
 					<label for="public_hall" class="block mb-2 text-xl font-medium text-gray-900">公民館名</label>
@@ -41,7 +111,7 @@
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 						readonly="readonly" id="id_delete_public_hall">
 				</div>
-				<form id="form-cancel" class="mt-4 space-y-4" method="post">
+				<form id="form-cancel" class="mt-4 space-y-4 col-span-2" method="post">
 					{% csrf_token %}
 					<button type="submit"
 						class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center">
@@ -55,19 +125,30 @@
 <script type="text/javascript">
 	const Delete = (id) => {
 		let element_form = document.querySelector('#form-cancel');
-		let element_name = document.querySelector('#id_delete_name');
-		let element_date = document.querySelector('#id_delete_date');
-		let element_public_hall = document.querySelector('#id_delete_public_hall');
+		let element_organization_name = document.querySelector("#id_delete_organization_name");
+		let element_usage_category = document.querySelector("#id_delete_usage_category");
+		let element_educational_category = document.querySelector("#id_delete_educational_category");
+		let element_day_of_week = document.querySelector("#id_delete_day_of_week");
+		let element_semiweekly = document.querySelector("#id_delete_semiweekly");
+		let element_responsible_party = document.querySelector("#id_delete_responsible_party");
+		let element_address = document.querySelector("#id_delete_address");
+		let element_tel = document.querySelector("#id_delete_tel");
+		let element_default_start_time = document.querySelector("#id_delete_default_start_time");
+		let element_default_end_time = document.querySelector("#id_delete_default_end_time");
+		let element_default_room = document.querySelector("#id_delete_default_room");
+		let element_default_remarks = document.querySelector("#id_delete_default_remarks");
+		let element_default_details = document.querySelector("#id_delete_default_details");
+		let element_public_hall = document.querySelector("#id_delete_public_hall");
 
 
 
 		// Delete処理パラメーター追加（form文）
 		element_form.setAttribute("action",
-			"/event_manager/holidaycalendar/modal/" + id + "/delete"
+			"/event_manager/userinformation/modal/" + id + "/delete"
 		);
 
 		// API経由でData取得
-		const CreateEndPoint = "/api/event_manager/holidaycalendar/" + id + "/";
+		const CreateEndPoint = "/api/event_manager/userinformation/" + id + "/";
 
 		fetch(CreateEndPoint, {
 			method: 'GET',
@@ -80,8 +161,19 @@
 				return response.json(); // 読み込むデータをJSONに設定
 			})
 			.then((data) => {
-				element_name.value = data["name"];
-				element_date.value = data["date"];
+				element_organization_name.value = data["organization_name"];
+				element_usage_category.value = data["usage_category"]["value"];
+				element_educational_category.value = data["educational_category"]["value"];
+				element_day_of_week.value = data["day_of_week"]["value"];
+				element_semiweekly.value = data["semiweekly"]["value"];
+				element_responsible_party.value = data["responsible_party"];
+				element_address.value = data["address"];
+				element_tel.value = data["tel"];
+				element_default_start_time.value = data["default_start_time"];
+				element_default_end_time.value = data["default_end_time"];
+				element_default_room.value = data["default_room"]["name"];
+				element_default_remarks.value = data["default_remarks"];
+				element_default_details.value = data["default_details"];
 				element_public_hall.value = data["public_hall"]["name"];
 			});
 

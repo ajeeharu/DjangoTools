@@ -1,120 +1,169 @@
-<div
-  id="update-modal"
-  tabindex="-1"
-
-  class="js-modal hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-[calc(100%-1rem)] max-h-full bg-gray-500/50"
->
-  <div class="relative p-4 w-full max-w-md max-h-full">
-    <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow">
-      <!-- Modal header -->
-      <div
-        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
-      >
-        <h3 class="text-xl font-semibold text-gray-900">
-          {{ page_title }}更新
-        </h3>
-        <button
-          type="button"
-          class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-          data-modal-hide="authentication-modal"
-          data-modal-target="#update-modal"
-        >
-          <svg
-            class="w-3 h-3"
-
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-          <span class="sr-only">Close modal</span>
-        </button>
-      </div>
-      <!-- Modal body -->
-      <div class="p-4 md:p-5">
-        <form id="form-update" class="space-y-4" method="post">
-          {% csrf_token %}
-          <div>
-            <label
-              for="name"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >祝日名</label
-            >
-            {{ form_update.name }}
-            {{ form_update.name.errors }}
-          </div>
-          <div>
-            <label
-              for="date"
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >日付</label
-            >
-            {{ form_update.date }}
-            {{ form_update.date.errors }}
-          </div>
-          <div class="hidden">
-            <label
-              for="public_hall "
-              class="block mb-2 text-xl font-medium text-gray-900"
-              >公民館</label
-            >
-            {{ form_update.public_hall  }}
-            {{ form_update.public_hall.errors }}
-          </div>
-          {% if form_update.non_field_errors %}
-          <div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
-            {{ form_update.non_field_errors }}
-          </div>
-          {% endif %}
-          <button
-            type="submit"
-            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center"
-          >
-            更新
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
+<div id="update-modal" tabindex="-1"
+	class="js-modal hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-[calc(100%-1rem)] max-h-full bg-gray-500/50">
+	<div class="relative p-4 w-full max-w-md max-h-full">
+		<!-- Modal content -->
+		<div class="relative bg-white rounded-lg shadow">
+			<!-- Modal header -->
+			<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+				<h3 class="text-xl font-semibold text-gray-900">
+					{{ page_title }}更新
+				</h3>
+				<button type="button"
+					class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+					data-modal-hide="authentication-modal" data-modal-target="#update-modal">
+					<svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+					</svg>
+					<span class="sr-only">Close modal</span>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="p-4 md:p-5">
+				<form class="space-y-4 grid grid-cols-2 gap-4" method="post" id="form-update">
+					{% csrf_token %}
+					<div>
+						<label for="organization_name"
+							class="block mb-2 text-xl font-medium text-gray-900">使用団体名</label>
+						{{ form_update.organization_name }}
+						{{ form_update.organization_name.errors }}
+					</div>
+					<div>
+						<label for="usage_category" class="block mb-2 text-xl font-medium text-gray-900">使用区分</label>
+						{{ form_update.usage_category }}
+						{{ form_update.usage_category.errors }}
+					</div>
+					<div>
+						<label for="educational_category"
+							class="block mb-2 text-xl font-medium text-gray-900">教育事業区分</label>
+						{{ form_update.educational_category }}
+						{{ form_update.educational_category.errors }}
+					</div>
+					<div>
+						<label for="day_of_week" class="block mb-2 text-xl font-medium text-gray-900">曜日指定</label>
+						{{ form_update.day_of_week }}
+						{{ form_update.day_of_week.errors }}
+					</div>
+					<div>
+						<label for="semiweekly" class="block mb-2 text-xl font-medium text-gray-900">隔週指定</label>
+						{{ form_update.semiweekly }}
+						{{ form_update.semiweekly.errors }}
+					</div>
+					<div>
+						<label for="responsible_party" class="block mb-2 text-xl font-medium text-gray-900">責任者</label>
+						{{ form_update.responsible_party }}
+						{{ form_update.responsible_party.errors }}
+					</div>
+					<div>
+						<label for="address" class="block mb-2 text-xl font-medium text-gray-900">住所</label>
+						{{ form_update.address }}
+						{{ form_update.address.errors }}
+					</div>
+					<div>
+						<label for="tel" class="block mb-2 text-xl font-medium text-gray-900">電話番号</label>
+						{{ form_update.tel }}
+						{{ form_update.tel.errors }}
+					</div>
+					<div>
+						<label for="default_start_time"
+							class="block mb-2 text-xl font-medium text-gray-900">開始時間（初期値）</label>
+						{{ form_update.default_start_time }}
+						{{ form_update.default_start_time.errors }}
+					</div>
+					<div>
+						<label for="default_end_time"
+							class="block mb-2 text-xl font-medium text-gray-900">終了時間（初期値）</label>
+						{{ form_update.default_end_time }}
+						{{ form_update.default_end_time.errors }}
+					</div>
+					<div>
+						<label for="default_room" class="block mb-2 text-xl font-medium text-gray-900">使用施設（初期値）</label>
+						{{ form_update.default_room }}
+						{{ form_update.default_room.errors }}
+					</div>
+					<div>
+						<label for="default_remarks"
+							class="block mb-2 text-xl font-medium text-gray-900">備考（初期値）</label>
+						{{ form_update.default_remarks }}
+						{{ form_update.default_remarks.errors }}
+					</div>
+					<div>
+						<label for="default_details"
+							class="block mb-2 text-xl font-medium text-gray-900">利用内容（初期値）</label>
+						{{ form_update.default_details }}
+						{{ form_update.default_details.errors }}
+					</div>
+					<div class="hidden">
+						<label for="public_hall " class="block mb-2 text-xl font-medium text-gray-900">公民館</label>
+						{{ form_update.public_hall }}
+						{{ form_update.public_hall.errors }}
+					</div>
+					{% if form_update.non_field_errors %}
+					<div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg  block w-full p-2.5">
+						{{ form_update.non_field_errors }}
+					</div>
+					{% endif %}
+					<button type="submit"
+						class="col-span-2 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center">
+						更新
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
-  const Update = (id) => {
-    let element_form = document.querySelector("#form-update");
-    let element_name = document.querySelector("#id_update_name");
-    let element_date = document.querySelector("#id_update_date");
-    let element_public_hall = document.querySelector("#id_update_public_hall");
+	const Update = (id) => {
+		let element_form_update = document.querySelector("#form-update");
+		let element_organization_name = document.querySelector("#id_update_organization_name");
+		let element_usage_category = document.querySelector("#id_update_usage_category");
+		let element_educational_category = document.querySelector("#id_update_educational_category");
+		let element_day_of_week = document.querySelector("#id_update_day_of_week");
+		let element_semiweekly = document.querySelector("#id_update_semiweekly");
+		let element_responsible_party = document.querySelector("#id_update_responsible_party");
+		let element_address = document.querySelector("#id_update_address");
+		let element_tel = document.querySelector("#id_update_tel");
+		let element_default_start_time = document.querySelector("#id_update_default_start_time");
+		let element_default_end_time = document.querySelector("#id_update_default_end_time");
+		let element_default_room = document.querySelector("#id_update_default_room");
+		let element_default_remarks = document.querySelector("#id_update_default_remarks");
+		let element_default_details = document.querySelector("#id_update_default_details");
+		let element_public_hall = document.querySelector("#id_update_public_hall");
 
-    // Delete処理パラメーター追加（form文）
-    element_form.setAttribute(
-      "action",
-      "/event_manager/holidaycalendar/modal/" + id + "/update"
-    );
+		// Delete処理パラメーター追加（form文）
+		element_form_update.setAttribute(
+			"action",
+			"/event_manager/userinformation/modal/" + id + "/update"
+		);
 
-    // API経由でData取得
-    const CreateEndPoint = "/api/event_manager/holidaycalendar/" + id + "/";
+		// API経由でData取得
+		const CreateEndPoint = "/api/event_manager/userinformation/" + id + "/";
 
-    fetch(CreateEndPoint, {
-      method: "GET",
-      headers: {
-        "X-CSRFToken": getCookie("csrftoken"),
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-        return response.json(); // 読み込むデータをJSONに設定
-    })
-    .then((data) => {
-      element_name.value = data["name"];
-      element_date.value = data["date"];
-      SetSelect(element_public_hall.options, data["public_hall"]["number"])
-    });
-  };
+		fetch(CreateEndPoint, {
+			method: "GET",
+			headers: {
+				"X-CSRFToken": getCookie("csrftoken"),
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				return response.json(); // 読み込むデータをJSONに設定
+			})
+			.then((data) => {
+				element_organization_name.value = data["organization_name"];
+				SetSelect(element_usage_category.options, data["usage_category"]["key"]);
+				SetSelect(element_educational_category.options, data["educational_category"]["key"]);
+				SetSelect(element_day_of_week.options, data["day_of_week"]["key"]);
+				SetSelect(element_semiweekly.options, data["semiweekly"]["key"]);
+				element_responsible_party.value = data["responsible_party"];
+				element_address.value = data["address"];
+				element_tel.value = data["tel"];
+				element_default_start_time.value = data["default_start_time"];
+				element_default_end_time.value = data["default_end_time"];
+				element_default_room.value = data["default_room"];
+				element_default_remarks.value = data["default_remarks"];
+				element_default_details.value = data["default_details"];
+				SetSelect(element_public_hall.options, data["public_hall"]["number"]);
+			});
+	};
 </script>

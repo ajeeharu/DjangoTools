@@ -78,7 +78,7 @@ class UsageRecord(models.Model):
 	date_of_use = models.DateField('利用日', null=False)
 	start_time = models.TimeField('開始時間', null=False)
 	end_time = models.TimeField('終了時間', null=False)
-	number_of_users = models.DecimalField('利用人数',max_digits=4,decimal_places=0)
+	number_of_users = models.DecimalField('利用人数',max_digits=4,decimal_places=0,default=1,null=False)
 	room1 = models.ForeignKey(Room,related_name='施設１',on_delete=models.CASCADE,null=False)
 	room2 = models.ForeignKey(Room,related_name='施設２',on_delete=models.CASCADE,null=True)
 	room3 = models.ForeignKey(Room,related_name='施設３',on_delete=models.CASCADE,null=True)

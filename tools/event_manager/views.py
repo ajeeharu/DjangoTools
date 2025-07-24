@@ -224,12 +224,14 @@ class UserInformationListView(LoginRequiredMixin,ListView):
         return queryset
 
     def get_context_data(self):
+        today = datetime.date.today()
         context = super().get_context_data()
         # page_title を追加する
         context['page_title'] = '利用者情報'
         context['form'] = UserInformationForm()    # Create Modal画面
         context['form_update'] = UserInformationUpdateForm()    # Update Modal画面
         context['form_delete'] = UserInformationDeleteForm()    # Delete Modal画面
+        context['target_year'] = today.strftime('%Y')+'年'
         return context
 
 class ModalUserInformationCreateView(LoginRequiredMixin,CreateView):
@@ -238,10 +240,12 @@ class ModalUserInformationCreateView(LoginRequiredMixin,CreateView):
     success_url = reverse_lazy('event_manager:userinformation')
 
     def form_valid(self, form):
+        print("kita")
         form.save() # formの情報を保存
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
+        print("dddd")
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 

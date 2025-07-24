@@ -32,3 +32,5 @@ urlpatterns = [
 router = DefaultRouter()
 router.register('holidaycalendar', views.HolidayCalendarApiView,basename="holidaycalendar")
 router.register('room', views.RoomApiView,basename="room")
+router.register('userinformation', views.UserInformationApiView,basename="userinformation")
+router.register('usagerecord', views.UsageRecordApiView,basename="usagerecord")
