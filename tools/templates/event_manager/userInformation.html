@@ -12,18 +12,12 @@
 			<div class="bg-gray-50 border border-red-300 text-red-600 text-sm rounded-lg block w-1/2 p-2.5">
 				{{ message }}
 			</div>
-			{% endfor %} {% endif %}
-
-			<div class="space-y-2 mr-4">
-				<form method="post">
-					{% csrf_token %}
-					<button type="submit"
-						class="modal-open-button inline-flex justify-center items-center py-3 px-5 text-xl font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300">
-						隔週指定のイベントを自動生成（{{target_year}}）
-					</button>
-				</form>
+			{% endfor %}
+			{% else %}
+			<div class="bg-gray-50 border border-green-300 text-green-600 text-sm rounded-lg block w-1/2 p-2.5">
+				隔週指定のある利用者は「展開」を押下するとイベント登録できます。
 			</div>
-
+			 {% endif %}
 			<div class="space-y-2 mr-4">
 				<button type="button" data-modal-target="#create-modal" data-modal-toggle="authentication-modal"
 					data-modal-id="0"
@@ -52,6 +46,7 @@
 					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">部屋指定<br>(初期値)</th>
 					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">備考<br>(初期値)</th>
 					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-16">利用内容<br>(初期値)</th>
+					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">展開</th>
 					<th scope="col" class="border-gray-500 border-x border-solid p-1 w-8">削除</th>
 				</tr>
 			</thead>
@@ -71,10 +66,14 @@
 							</a>
 					</td>
 					<td class="border-gray-500 border-x border-solid text-center">{{ object.organization_name }}</td>
-					<td class="border-gray-500 border-x border-solid text-center">{{ object.get_usage_category_display }}</td>
-					<td class="border-gray-500 border-x border-solid text-center">{{ object.get_educational_category_display }}</td>
-					<td class="border-gray-500 border-x border-solid text-center">{{ object.get_day_of_week_display }}</td>
-					<td class="border-gray-500 border-x border-solid text-center">{{ object.get_semiweekly_display }}</td>
+					<td class="border-gray-500 border-x border-solid text-center">{{ object.get_usage_category_display}}
+					</td>
+					<td class="border-gray-500 border-x border-solid text-center">
+						{{ object.get_educational_category_display }}</td>
+					<td class="border-gray-500 border-x border-solid text-center">{{ object.get_day_of_week_display }}
+					</td>
+					<td class="border-gray-500 border-x border-solid text-center">{{ object.get_semiweekly_display }}
+					</td>
 					<td class="border-gray-500 border-x border-solid text-center">{{ object.responsible_party }}</td>
 					<td class="border-gray-500 border-x border-solid text-center">{{ object.address }}</td>
 					<td class="border-gray-500 border-x border-solid text-center">{{ object.tel }}</td>
@@ -83,6 +82,18 @@
 					<td class="border-gray-500 border-x border-solid text-center">{{ object.default_room }}</td>
 					<td class="border-gray-500 border-x border-solid text-center">{{ object.default_remarks }}</td>
 					<td class="border-gray-500 border-x border-solid text-center">{{ object.default_details }}</td>
+					<td class="border-gray-500 border-x border-solid text-center">
+						{% if object.get_semiweekly_display != '指定なし'%}
+						<a href="/event_manager/userinformation/record/{{object.pk}}/expand">
+							<button type="button" class="font-medium text-green-600 mx-auto">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path fill="currentColor"
+										d="M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V2h2v2h8V2h2v2h1q.825 0 1.413.588T21 6v6h-2v-2H5v10h7v2zm14 2q-1.825 0-3.187-1.137T14.1 20h1.55q.325 1.1 1.238 1.8t2.112.7q1.45 0 2.475-1.025T22.5 19t-1.025-2.475T19 15.5q-.725 0-1.35.262t-1.1.738H18V18h-4v-4h1.5v1.425q.675-.65 1.575-1.037T19 14q2.075 0 3.538 1.463T24 19t-1.463 3.538T19 24M5 8h14V6H5zm0 0V6z" />
+								</svg>
+							</button>
+						</a>
+						{% endif %}
+					</td>
 					<td class="border-gray-500 border-x border-solid text-center">
 						<button type="button" class="modal-open-button font-medium text-red-600 mx-auto"
 							data-modal-hide="authentication-modal" data-modal-target="#delete-modal"

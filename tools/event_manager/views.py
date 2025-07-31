@@ -6,13 +6,14 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from rest_framework import viewsets
-from .models import HolidayCalendar,UsageRecord,UserInformation,Room
-from common.models import RegularHoliday,UsageFee
+from .models import HolidayCalendar, UsageRecord, UserInformation, Room
+from common.models import RegularHoliday, UsageFee
 from .forms import HolidayCalendarForm, HolidayCalendarDeleteForm, HolidayCalendarUpdateForm, UsageRecordForm, UsageRecordUpdateForm, UsageRecordDeleteForm, UserInformationForm, UserInformationUpdateForm, UserInformationDeleteForm, RoomForm, RoomDeleteForm, RoomUpdateForm
 import datetime
 import jpholiday
 import calendar
-from .serializer import HolidayCalendarSerializer,UsageRecordSerializer,UserInformationSerializer,RoomSerializer
+from .serializer import HolidayCalendarSerializer, UsageRecordSerializer, UserInformationSerializer, RoomSerializer
+from django.db.models import Max
 
 
 class CalendarView(LoginRequiredMixin, TemplateView):
@@ -87,10 +88,10 @@ class HolidayCalendarListView(LoginRequiredMixin, ListView):
                                     # 翌日が祝日でなければ振替休館日にする
                                     try:
                                         holiday = HolidayCalendar.objects.filter(
-                                          date=date, public_hall=current_public_hall).get()
+                                            date=date, public_hall=current_public_hall).get()
                                     except HolidayCalendar.DoesNotExist:
                                         HolidayCalendar.objects.create(
-                                           date=date, name='振替休館日', public_hall=current_public_hall)
+                                            date=date, name='振替休館日', public_hall=current_public_hall)
                             except HolidayCalendar.DoesNotExist:
                                 # print('休館日')
                                 HolidayCalendar.objects.create(
@@ -135,26 +136,32 @@ class ModalHolidayCalendarDeleteView(LoginRequiredMixin, DeleteView):
 
 class HolidayCalendarApiView(viewsets.ModelViewSet):
     serializer_class = HolidayCalendarSerializer
-    
+
     def get_queryset(self):
         queryset = HolidayCalendar.objects.all()
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        current_public_hall = self.request.user.public_hall  # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
+            # QuerySet（ログインしている公民館）
+            queryset = queryset.filter(public_hall=current_public_hall)
         current_year = self.request.query_params.get('year')
         if current_year is not None:
-            queryset = queryset.filter(date__year=current_year)       # QuerySet（期間指定が一致）
+            queryset = queryset.filter(
+                date__year=current_year)       # QuerySet（期間指定が一致）
         return queryset
 
-#イベント登録
-class UsageRecordListView(LoginRequiredMixin,ListView):
+# イベント登録
+
+
+class UsageRecordListView(LoginRequiredMixin, ListView):
     template_name = "event_manager/usagerecord.html"
     model = UsageRecord
 
     def get_queryset(self):
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        current_public_hall = self.request.user.public_hall  # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = UsageRecord.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
+            queryset = UsageRecord.objects.filter(
+                # QuerySet（一致するレコード全て取得）
+                public_hall=current_public_hall).all()
         return queryset
 
     def get_context_data(self):
@@ -166,61 +173,74 @@ class UsageRecordListView(LoginRequiredMixin,ListView):
         context['form_delete'] = UsageRecordDeleteForm()    # Delete Modal画面
         return context
 
-class ModalUsageRecordCreateView(LoginRequiredMixin,CreateView):
+
+class ModalUsageRecordCreateView(LoginRequiredMixin, CreateView):
     model = UsageRecord
     form_class = UsageRecordForm
     success_url = reverse_lazy('event_manager:usagerecord')
 
     def form_valid(self, form):
-        form.save() # formの情報を保存
+        form.save()  # formの情報を保存
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
-class ModalUsageRecordUpdateView(LoginRequiredMixin,UpdateView):
+
+class ModalUsageRecordUpdateView(LoginRequiredMixin, UpdateView):
     model = UsageRecord
     form_class = UsageRecordUpdateForm
     success_url = reverse_lazy('event_manager:usagerecord')
 
     def form_valid(self, form):
-        form.save() # formの情報を保存
+        form.save()  # formの情報を保存
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
-class ModalUsageRecordDeleteView(LoginRequiredMixin,DeleteView):
+
+class ModalUsageRecordDeleteView(LoginRequiredMixin, DeleteView):
     model = UsageRecord
     success_url = reverse_lazy('event_manager:usagerecord')
+
 
 class UsageRecordApiView(viewsets.ModelViewSet):
     serializer_class = UsageRecordSerializer
 
     def get_queryset(self):
         queryset = UsageRecord.objects.all()
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        current_public_hall = self.request.user.public_hall  # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
+            # QuerySet（ログインしている公民館）
+            queryset = queryset.filter(public_hall=current_public_hall)
         current_fiscal_terms = self.request.query_params.get('fiscal_terms')
         if current_fiscal_terms is not None:
-            queryset = queryset.filter(fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
-        current_event_manager_book = self.request.query_params.get('event_manager_book')
+            queryset = queryset.filter(
+                fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
+        current_event_manager_book = self.request.query_params.get(
+            'event_manager_book')
         if current_event_manager_book is not None:
-            queryset = queryset.filter(event_manager_book=current_event_manager_book)   # QuerySet（出納帳が一致）
+            queryset = queryset.filter(
+                event_manager_book=current_event_manager_book)   # QuerySet（出納帳が一致）
         return queryset
 
 # 利用者情報
-class UserInformationListView(LoginRequiredMixin,ListView):
+
+
+class UserInformationListView(LoginRequiredMixin, ListView):
     template_name = "event_manager/userinformation.html"
     model = UserInformation
+    success_url = reverse_lazy('event_manager:userinformation')
 
     def get_queryset(self):
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        current_public_hall = self.request.user.public_hall  # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = UserInformation.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
+            queryset = UserInformation.objects.filter(
+                # QuerySet（一致するレコード全て取得）
+                public_hall=current_public_hall).all()
         return queryset
 
     def get_context_data(self):
@@ -234,57 +254,135 @@ class UserInformationListView(LoginRequiredMixin,ListView):
         context['target_year'] = today.strftime('%Y')+'年'
         return context
 
-class ModalUserInformationCreateView(LoginRequiredMixin,CreateView):
+
+class ModalUserInformationCreateView(LoginRequiredMixin, CreateView):
     model = UserInformation
     form_class = UserInformationForm
     success_url = reverse_lazy('event_manager:userinformation')
 
     def form_valid(self, form):
-        print("kita")
-        form.save() # formの情報を保存
+        form.save()  # formの情報を保存
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
-        print("dddd")
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
-class ModalUserInformationUpdateView(LoginRequiredMixin,UpdateView):
+
+class ModalUserInformationUpdateView(LoginRequiredMixin, UpdateView):
     model = UserInformation
     form_class = UserInformationUpdateForm
     success_url = reverse_lazy('event_manager:userinformation')
 
     def form_valid(self, form):
-        form.save() # formの情報を保存
+        form.save()  # formの情報を保存
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
-class ModalUserInformationDeleteView(LoginRequiredMixin,DeleteView):
+
+class ModalUserInformationDeleteView(LoginRequiredMixin, DeleteView):
     model = UserInformation
     success_url = reverse_lazy('event_manager:userinformation')
+
+
+class UserInformationToRecord(LoginRequiredMixin, TemplateView):
+    model = UserInformation
+    template_name = "event_manager/userinformation_to_record.html"
+    success_url = reverse_lazy('event_manager:calendar')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # page_title を追加する
+        context['page_title'] = '隔週指定利用者情報の展開'
+        today = datetime.date.today()
+        context['target_year'] = today.strftime('%Y')
+        context['today'] = today.strftime('%Y-%m-%d')
+        context['user_id'] = self.kwargs['user_id']
+        return context
+
+    def post(self, request, user_id):
+        # パラメーター取得
+        bl_holiday_ignore = (request.POST.get("holiday_ignore") == None)
+        bl_event_clear = (request.POST.get("event_clear") == None)
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+        application_date = request.POST.get("application_date")
+
+        current_year = datetime.date.today().year
+        current_public_hall = self.request.user.public_hall
+
+        user_information = UserInformation.objects.get(id=user_id)
+# 受付番号の取得(最大値に1を加算)
+        number = UsageRecord.objects.filter(
+            user=user_id, date_of_use__year=current_year, public_hall=current_public_hall).aggregate( Max('number', default=0)) 
+        receiption_number = number["number__max"] + 1
+
+
+# 該当(年度、所属公民館）するデータを削除
+        if bl_event_clear:
+            UsageRecord.objects.filter(user=user_id, date_of_use__year=current_year, public_hall=current_public_hall).delete()
+
+		# for month in range(1, 13):
+		# 	weekday_count = 1
+		# 	_, end_day = calendar.monthrange(current_year, month)
+		# 	for day in range(1, end_day+1):
+		# 		date = datetime.datetime(current_year, month, day)
+		# 		if date.weekday() == int(regularHoliday.day_of_week):
+		# 			if int(regularHoliday.semiweekly) == weekday_count or int(regularHoliday.day_of_week) == 0:
+		# 				try:
+		# 					holiday = HolidayCalendar.objects.filter(
+		# 						date=date, public_hall=current_public_hall).get()
+		# 					# 祝日の振替か確認する。
+		# 					if (holiday.name.find('振替') == (-1)):
+		# 						# print('振替')
+		# 						date = datetime.datetime(
+		# 							current_year, month, day+1)
+		# 						# 翌日が祝日でなければ振替休館日にする
+		# 						try:
+		# 							holiday = HolidayCalendar.objects.filter(
+		# 								date=date, public_hall=current_public_hall).get()
+		# 						except HolidayCalendar.DoesNotExist:
+		# 							HolidayCalendar.objects.create(
+		# 								date=date, name='振替休館日', public_hall=current_public_hall)
+		# 				except HolidayCalendar.DoesNotExist:
+		# 					# print('休館日')
+		# 					HolidayCalendar.objects.create(
+		# 						date=date, name='休館日', public_hall=current_public_hall)
+		# 			weekday_count = weekday_count+1
+
+
+
+
+        return HttpResponseRedirect(self.success_url)
+
 
 class UserInformationApiView(viewsets.ModelViewSet):
     serializer_class = UserInformationSerializer
 
     def get_queryset(self):
         queryset = UserInformation.objects.all()
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        current_public_hall = self.request.user.public_hall  # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
+            # QuerySet（ログインしている公民館）
+            queryset = queryset.filter(public_hall=current_public_hall)
         return queryset
 
-#公民館の施設情報
-class RoomListView(LoginRequiredMixin,ListView):
+# 公民館の施設情報
+
+
+class RoomListView(LoginRequiredMixin, ListView):
     template_name = "event_manager/room.html"
     model = Room
 
     def get_queryset(self):
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        current_public_hall = self.request.user.public_hall  # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = Room.objects.filter(public_hall=current_public_hall).all() # QuerySet（一致するレコード全て取得）
+            queryset = Room.objects.filter(
+                # QuerySet（一致するレコード全て取得）
+                public_hall=current_public_hall).all()
         return queryset
 
     def get_context_data(self):
@@ -296,42 +394,47 @@ class RoomListView(LoginRequiredMixin,ListView):
         context['form_delete'] = RoomDeleteForm()    # Delete Modal画面
         return context
 
-class ModalRoomCreateView(LoginRequiredMixin,CreateView):
+
+class ModalRoomCreateView(LoginRequiredMixin, CreateView):
     model = Room
     form_class = RoomForm
     success_url = reverse_lazy('event_manager:room')
 
     def form_valid(self, form):
-        form.save() # formの情報を保存
+        form.save()  # formの情報を保存
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
-class ModalRoomUpdateView(LoginRequiredMixin,UpdateView):
+
+class ModalRoomUpdateView(LoginRequiredMixin, UpdateView):
     model = Room
     form_class = RoomUpdateForm
     success_url = reverse_lazy('event_manager:room')
 
     def form_valid(self, form):
-        form.save() # formの情報を保存
+        form.save()  # formの情報を保存
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, form.errors)
         return HttpResponseRedirect(self.success_url)
 
-class ModalRoomDeleteView(LoginRequiredMixin,DeleteView):
+
+class ModalRoomDeleteView(LoginRequiredMixin, DeleteView):
     model = Room
     success_url = reverse_lazy('event_manager:room')
+
 
 class RoomApiView(viewsets.ModelViewSet):
     serializer_class = RoomSerializer
 
     def get_queryset(self):
         queryset = Room.objects.all()
-        current_public_hall = self.request.user.public_hall # ログイン中の公民館を取得
+        current_public_hall = self.request.user.public_hall  # ログイン中の公民館を取得
         if current_public_hall:
-            queryset = queryset.filter(public_hall=current_public_hall)         # QuerySet（ログインしている公民館）
+            # QuerySet（ログインしている公民館）
+            queryset = queryset.filter(public_hall=current_public_hall)
         return queryset

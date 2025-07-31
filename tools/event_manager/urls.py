@@ -23,6 +23,8 @@ urlpatterns = [
     path('userinformation/modal/<int:pk>/update', views.ModalUserInformationUpdateView.as_view(), name="modal_update_userinformation"),
     path('userinformation/modal/<int:pk>/delete', views.ModalUserInformationDeleteView.as_view(), name="modal_delete_userinformation"),
 
+    path('userinformation/record/<int:user_id>/expand',views.UserInformationToRecord.as_view(), name ="userinformation_to_record"),
+
 	path('room', views.RoomListView.as_view(), name="room"),
     path('room/modal/create', views.ModalRoomCreateView.as_view(), name="modal_create_room"),
     path('room/modal/<int:pk>/update', views.ModalRoomUpdateView.as_view(), name="modal_update_room"),
