@@ -76,7 +76,7 @@ class HolidayCalendarListView(LoginRequiredMixin, ListView):
                 for day in range(1, end_day+1):
                     date = datetime.datetime(current_year, month, day)
                     if date.weekday() == int(regularHoliday.day_of_week):
-                        if int(regularHoliday.semiweekly) == weekday_count or int(regularHoliday.day_of_week) == 0:
+                        if int(regularHoliday.semiweekly) == weekday_count or int(regularHoliday.semiweekly) == 0:
                             try:
                                 holiday = HolidayCalendar.objects.filter(
                                     date=date, public_hall=current_public_hall).get()
@@ -305,17 +305,22 @@ class UserInformationToRecord(LoginRequiredMixin, TemplateView):
 
     def post(self, request, user_id):
         # パラメーター取得
-        bl_holiday_ignore = (request.POST.get("holiday_ignore") == None)
-        bl_event_clear = (request.POST.get("event_clear") == None)
-        start_date = request.POST.get("start_date")
-        end_date = request.POST.get("end_date")
+        bl_holiday_ignore = (request.POST.get("holiday_ignore") != None)
+        bl_event_clear = (request.POST.get("event_clear") != None)
+# 期間の開始・終了をDate型に変換
+        start_date_sprit = datetime.datetime.strptime(request.POST.get("start_date"),'%Y-%m-%d')
+        start_date = datetime.date(start_date_sprit.year, start_date_sprit.month, start_date_sprit.day)
+        end_date_sprit = datetime.datetime.strptime(request.POST.get("end_date"),'%Y-%m-%d')
+        end_date = datetime.date(end_date_sprit.year, end_date_sprit.month, end_date_sprit.day)
+
         application_date = request.POST.get("application_date")
 
         current_year = datetime.date.today().year
         current_public_hall = self.request.user.public_hall
+        current_user = self.request.user
 
-        user_information = UserInformation.objects.get(id=user_id)
-# 受付番号の取得(最大値に1を加算)
+        userInformation = UserInformation.objects.get(id=user_id)
+# 受付番号の取得(最\大値に1を加算)
         number = UsageRecord.objects.filter(
             user=user_id, date_of_use__year=current_year, public_hall=current_public_hall).aggregate( Max('number', default=0)) 
         receiption_number = number["number__max"] + 1
@@ -324,37 +329,33 @@ class UserInformationToRecord(LoginRequiredMixin, TemplateView):
 # 該当(年度、所属公民館）するデータを削除
         if bl_event_clear:
             UsageRecord.objects.filter(user=user_id, date_of_use__year=current_year, public_hall=current_public_hall).delete()
-
-		# for month in range(1, 13):
-		# 	weekday_count = 1
-		# 	_, end_day = calendar.monthrange(current_year, month)
-		# 	for day in range(1, end_day+1):
-		# 		date = datetime.datetime(current_year, month, day)
-		# 		if date.weekday() == int(regularHoliday.day_of_week):
-		# 			if int(regularHoliday.semiweekly) == weekday_count or int(regularHoliday.day_of_week) == 0:
-		# 				try:
-		# 					holiday = HolidayCalendar.objects.filter(
-		# 						date=date, public_hall=current_public_hall).get()
-		# 					# 祝日の振替か確認する。
-		# 					if (holiday.name.find('振替') == (-1)):
-		# 						# print('振替')
-		# 						date = datetime.datetime(
-		# 							current_year, month, day+1)
-		# 						# 翌日が祝日でなければ振替休館日にする
-		# 						try:
-		# 							holiday = HolidayCalendar.objects.filter(
-		# 								date=date, public_hall=current_public_hall).get()
-		# 						except HolidayCalendar.DoesNotExist:
-		# 							HolidayCalendar.objects.create(
-		# 								date=date, name='振替休館日', public_hall=current_public_hall)
-		# 				except HolidayCalendar.DoesNotExist:
-		# 					# print('休館日')
-		# 					HolidayCalendar.objects.create(
-		# 						date=date, name='休館日', public_hall=current_public_hall)
-		# 			weekday_count = weekday_count+1
-
-
-
+            
+        for month in range(start_date.month, end_date.month+1):
+            weekday_count = 1
+            # 期間の開始日付
+            if month == start_date.month:
+                start_day = start_date.day
+            else:
+                start_day =1
+            # 期間の終了日付
+            if month == end_date.month:
+                end_day == end_date.day
+            else:
+                _, end_day = calendar.monthrange(current_year, month)
+            # 周期処理
+            for day in range(1, end_day+1):
+                date = datetime.datetime(current_year, month, day)
+                if date.weekday() == int(userInformation.day_of_week):
+                    if day >= start_day:
+                        if int(userInformation.semiweekly) == weekday_count or int(userInformation.semiweekly) == 0:
+                            holiday_cnt = HolidayCalendar.objects.filter(date=date, public_hall=current_public_hall).count()
+                            # 休館日でないか、休館日を無視するか
+                            if holiday_cnt == 0 or bl_holiday_ignore:
+                                print(holiday_cnt,bl_holiday_ignore)
+                                UsageRecord.objects.create(number=receiption_number, user=userInformation, details=userInformation.default_details,
+                                application_date=application_date, date_of_use=date,start_time=userInformation.default_start_time,end_time=userInformation.default_end_time,
+                                number_of_users=0, room1=userInformation.default_room, reception=current_user, public_hall=current_public_hall)
+                    weekday_count = weekday_count+1
 
         return HttpResponseRedirect(self.success_url)
 
