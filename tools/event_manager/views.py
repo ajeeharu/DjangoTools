@@ -216,15 +216,10 @@ class UsageRecordApiView(viewsets.ModelViewSet):
         if current_public_hall:
             # QuerySet（ログインしている公民館）
             queryset = queryset.filter(public_hall=current_public_hall)
-        current_fiscal_terms = self.request.query_params.get('fiscal_terms')
-        if current_fiscal_terms is not None:
+        current_year = self.request.query_params.get('year')
+        if current_year is not None:
             queryset = queryset.filter(
-                fiscal_terms=current_fiscal_terms)       # QuerySet（期間指定が一致）
-        current_event_manager_book = self.request.query_params.get(
-            'event_manager_book')
-        if current_event_manager_book is not None:
-            queryset = queryset.filter(
-                event_manager_book=current_event_manager_book)   # QuerySet（出納帳が一致）
+                date_of_use__year=current_year)       # QuerySet（期間指定が一致）
         return queryset
 
 # 利用者情報
@@ -351,7 +346,7 @@ class UserInformationToRecord(LoginRequiredMixin, TemplateView):
                             holiday_cnt = HolidayCalendar.objects.filter(date=date, public_hall=current_public_hall).count()
                             # 休館日でないか、休館日を無視するか
                             if holiday_cnt == 0 or bl_holiday_ignore:
-                                print(holiday_cnt,bl_holiday_ignore)
+                                # print(holiday_cnt,bl_holiday_ignore)
                                 UsageRecord.objects.create(number=receiption_number, user=userInformation, details=userInformation.default_details,
                                 application_date=application_date, date_of_use=date,start_time=userInformation.default_start_time,end_time=userInformation.default_end_time,
                                 number_of_users=0, room1=userInformation.default_room, reception=current_user, public_hall=current_public_hall)

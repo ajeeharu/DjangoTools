@@ -14,20 +14,21 @@ class HolidayCalendarSerializer(serializers.ModelSerializer):
 		model = HolidayCalendar
 		fields = '__all__'
 
-class UsageRecordSerializer(serializers.ModelSerializer):
-	serializer_choice_field = GetChoiceField
-	public_hall = PublicHallSerializer()
- 
-	class Meta:
-		model = UsageRecord
-		fields = '__all__'
-
 class UserInformationSerializer(serializers.ModelSerializer):
 	serializer_choice_field = GetChoiceField
 	public_hall = PublicHallSerializer()
  
 	class Meta:
 		model = UserInformation
+		fields = '__all__'
+
+class UsageRecordSerializer(serializers.ModelSerializer):
+	serializer_choice_field = GetChoiceField
+	public_hall = PublicHallSerializer()
+	user = UserInformationSerializer()
+ 
+	class Meta:
+		model = UsageRecord
 		fields = '__all__'
 
 class RoomSerializer(serializers.ModelSerializer):

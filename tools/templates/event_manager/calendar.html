@@ -65,7 +65,7 @@
 		events: []
 	});
 
-	const EventRendar = async (year) => {
+	const EventRendarHoliday = async (year) => {
 		// 休日データの取得
 		try {
 			// API経由でData取得
@@ -88,6 +88,44 @@
 					allDay: true,
 					id: data.id,
 					classNames: "event-holiday",
+				});
+			}
+			calendar.render();
+		} catch (error) {
+			console.error("GET API通信エラーが発生しました,error");
+		}
+
+		// Event 削除
+		// calendar.getEventById("123").remove();
+
+		// EventのDrag & Dropの挙動
+		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
+	}
+
+		const EventRendarUsageRecord = async (year) => {
+		// 休日データの取得
+		try {
+			// API経由でData取得
+			const CreateEndPoint =
+				"/api/event_manager/usagerecord/?year=" + year;
+			let response = await fetch(CreateEndPoint, {
+				method: "GET",
+				headers: {
+					"X-CSRFToken": getCookie("csrftoken"),
+					"Content-Type": "application/json",
+				},
+			});
+			let result = await response.json(); // 読み込むのはJSON部分（ヘッダー等は削除）
+
+			for (let i = 0; i < result.length; i++) {
+				let data = result[i];
+				calendar.addEvent({
+					title: data.user.organization_name,
+					start: data.date_of_use+'T'+data.start_time,
+					end: data.date_of_use+'T'+data.end_time,
+					allDay: false,
+					id: data.number,
+					classNames: "event-usage-record",
 				});
 			}
 			calendar.render();
@@ -126,7 +164,8 @@
 	document.addEventListener('DOMContentLoaded', () => {
 		let today = new Date();
 		const year = today.getFullYear();
-		EventRendar(year);
+		EventRendarHoliday(year);
+		EventRendarUsageRecord(year);
 	});
 </script>
 {% endblock %}
