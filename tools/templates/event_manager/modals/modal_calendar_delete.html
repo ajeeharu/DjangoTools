@@ -5,7 +5,7 @@
 		<div class="relative bg-white rounded-lg shadow">
 			<!-- Modal header -->
 			<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-				<h3 class="text-xl font-semibold text-gray-900">{{ page_title }}削除</h3>
+				<h3 class="text-xl font-semibold text-gray-900">カレンダーイベントの削除</h3>
 				<button type="button"
 					class="modal-close-button end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
 					data-modal-hide="authentication-modal" data-modal-target="#delete-modal">
@@ -24,7 +24,7 @@
 					<span class="block">下記の内容が削除されます。</span>
 				</div>
 				<div>
-					<label for="name" class="block mb-2 text-xl font-medium text-gray-900">祝日名</label>
+					<label for="name" class="block mb-2 text-xl font-medium text-gray-900">タイトル</label>
 					<input type="text" name="name"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 						readonly="readonly" id="id_delete_name">
@@ -44,6 +44,7 @@
 				<form id="form-cancel" class="mt-4 space-y-4" method="post">
 					{% csrf_token %}
 					<button type="submit"
+						id = "id_delete_button"
 						class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-4 mt-4 text-center">
 						削除
 					</button>
@@ -53,37 +54,20 @@
 	</div>
 </div>
 <script type="text/javascript">
-	const Delete = (id) => {
+	const Delete = (url, title, date, event_id, callback) => {
 		let element_form = document.querySelector('#form-cancel');
 		let element_name = document.querySelector('#id_delete_name');
 		let element_date = document.querySelector('#id_delete_date');
-		let element_public_hall = document.querySelector('#id_delete_public_hall');
-
-
+		let element_button = document.querySelector('#id_delete_button');
 
 		// Delete処理パラメーター追加（form文）
-		element_form.setAttribute("action",
-			"/event_manager/usagerecord/modal/" + id + "/delete"
-		);
+		element_form.setAttribute("action",url);
 
-		// API経由でData取得
-		const CreateEndPoint = "/api/event_manager/holidaycalendar/" + id + "/";
-
-		fetch(CreateEndPoint, {
-			method: 'GET',
-			headers: {
-				'X-CSRFToken': getCookie('csrftoken'),
-				'Content-Type': 'application/json',
-			}
-		})
-			.then((response) => {
-				return response.json(); // 読み込むデータをJSONに設定
-			})
-			.then((data) => {
-				element_name.value = data["name"];
-				element_date.value = data["date"];
-				element_public_hall.value = data["public_hall"]["name"];
-			});
-
+		element_name.value = title;
+		element_date.value = date;
+    	element_button.addEventListener("click", (event_id) => {
+			callback(event_id);
+	    });
+		return false;
 	};
 </script>

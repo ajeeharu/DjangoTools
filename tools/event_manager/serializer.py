@@ -22,15 +22,6 @@ class UserInformationSerializer(serializers.ModelSerializer):
 		model = UserInformation
 		fields = '__all__'
 
-class UsageRecordSerializer(serializers.ModelSerializer):
-	serializer_choice_field = GetChoiceField
-	public_hall = PublicHallSerializer()
-	user = UserInformationSerializer()
- 
-	class Meta:
-		model = UsageRecord
-		fields = '__all__'
-
 class RoomSerializer(serializers.ModelSerializer):
 	serializer_choice_field = GetChoiceField
 	public_hall = PublicHallSerializer()
@@ -38,4 +29,14 @@ class RoomSerializer(serializers.ModelSerializer):
  
 	class Meta:
 		model = Room
+		fields = '__all__'
+
+class UsageRecordSerializer(serializers.ModelSerializer):
+	serializer_choice_field = GetChoiceField
+	public_hall = PublicHallSerializer()
+	user = UserInformationSerializer()
+	room1 = RoomSerializer()
+ 
+	class Meta:
+		model = UsageRecord
 		fields = '__all__'

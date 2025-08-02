@@ -12,10 +12,13 @@
 		<div id='calendar'></div>
 	</div>
 </div>
+<!-- Modal Delete -->
+{% include 'event_manager/modals/modal_calendar_delete.html' %}
 <script>
 	/* initialize the external events
 -----------------------------------------------------------------*/
-
+	const UAGE_RECORD_GROUP = "usageRecord";
+	const HOLIDAY_GROUP = "holiday";
 	const containerEl = document.querySelector('#external-events-list');
 	new FullCalendar.Draggable(containerEl, {
 		itemSelector: '.fc-event',
@@ -54,14 +57,27 @@
 		},
 		// イベント削除
 		eventClick: (event) => {
-			// 対象項目のDBを削除⇒再表示
-			console.log("削除", event);
-			RemoveEventRendar();
+			console.log("削除", event.event._def.publicId);
+			RemoveEventRendar(event);
 		},
+		eventMouseEnter: (event) => {
+			console.log("MouseEnter", event.event._def.publicId);
+			// RemoveEventRendar(event);
+		},
+		eventMouseLeave: (event) => {
+			console.log("MouseLeave", event.event._def.publicId);
+			// RemoveEventRendar(event);
+		},
+		// https://atomiks.github.io/tippyjs/
+		// eventDidMount: (e)=>{// カレンダーに配置された時のイベント
+		// tippy(e.el, {// TippyでTooltipを設定する
+		// 	content: e.event.extendedProps.description,
+		// 	});
+		// },
 		// 通常表示
 		//　DBの内容を表示
 		// Eventの項目
-		// https://fullcalendar.io/docs/event-object
+		// https://fullcalendar.io/docs/event-objecta
 		events: []
 	});
 
@@ -88,6 +104,7 @@
 					allDay: true,
 					id: data.id,
 					classNames: "event-holiday",
+					groupId: HOLIDAY_GROUP,
 				});
 			}
 			calendar.render();
@@ -102,7 +119,7 @@
 		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
 	}
 
-		const EventRendarUsageRecord = async (year) => {
+	const EventRendarUsageRecord = async (year) => {
 		// 休日データの取得
 		try {
 			// API経由でData取得
@@ -120,12 +137,13 @@
 			for (let i = 0; i < result.length; i++) {
 				let data = result[i];
 				calendar.addEvent({
-					title: data.user.organization_name,
+					title: data.user.organization_name+'('+data.room1.name+')',
 					start: data.date_of_use+'T'+data.start_time,
 					end: data.date_of_use+'T'+data.end_time,
 					allDay: false,
-					id: data.number,
+					id: data.id,
 					classNames: "event-usage-record",
+					groupId: UAGE_RECORD_GROUP,
 				});
 			}
 			calendar.render();
@@ -152,11 +170,26 @@
 		// EventのDrag & Dropの挙動
 		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
 	}
-	const RemoveEventRendar = () => {
-
+	const CallBackRemove = ( id ) => {
 		// Event 削除
-		calendar.getEventById("123").remove();
+		calendar.getEventById(id).remove();
 		calendar.render();
+	}
+	const RemoveEventRendar = (event) => {
+		let title= event.event._def.title;
+		let id = event.event._def.publicId;
+		let event_id = event.event._def.defId;
+		let url = "/event_manager/usagerecord/modal/" + id + "/delete"
+		let date = event.event._instance.range.start.toLocaleDateString();
+		if( event.event._def.groupId == HOLIDAY_GROUP)
+		{
+			url = "/event_manager/holidaycalendar/modal/" + id + "/delete";
+		}
+		Delete(url, title, date, event_id, CallBackRemove );
+  		const modal = document.querySelector('#delete-modal');
+  		modal.classList.add("flex");
+  		modal.classList.remove("hidden");
+
 		// EventのDrag & Dropの挙動
 		// https://qiita.com/si-ma/items/b2cd87444e5e24c8d286
 	}
