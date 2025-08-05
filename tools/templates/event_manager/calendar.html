@@ -7,7 +7,7 @@
 		background-color: #CC0000 !important;
 	}
 </style>
-<div id='content'>
+<div id='content'  onContextmenu="return false;">
 	<div id='calendar-wrap'>
 		<div id='calendar'></div>
 	</div>
@@ -199,6 +199,13 @@
 		const year = today.getFullYear();
 		EventRendarHoliday(year);
 		EventRendarUsageRecord(year);
+	});
+	// 右クリック時に表示
+	document.addEventListener('contextmenu', (event) => {
+		if(event.target.fcSeg)
+		{
+			console.log(event.target.fcSeg);
+		}
 	});
 </script>
 {% endblock %}
